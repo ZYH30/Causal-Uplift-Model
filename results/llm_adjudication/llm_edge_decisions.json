@@ -1,0 +1,4177 @@
+[
+  {
+    "task": "antihypertensive_sbp",
+    "pair_id": "antihypertensive_sbp::BMXHT::RIDAGEYR",
+    "node_a": "BMXHT",
+    "node_b": "RIDAGEYR",
+    "priority": "P0",
+    "current_parent": "BMXHT",
+    "current_child": "RIDAGEYR",
+    "consensus_judgement": "B_TO_A",
+    "proposed_parent": "RIDAGEYR",
+    "proposed_child": "BMXHT",
+    "semantic_confidence": 0.97,
+    "mean_winning_confidence": 0.97,
+    "agreement_ratio": 1.0,
+    "vote_count": 2,
+    "vote_counts": {
+      "B_TO_A": 2
+    },
+    "providers": [
+      "kimi",
+      "deepseek"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash"
+    ],
+    "reasons": [
+      "Age is immutable and predetermined; adult height is largely set but age-related shrinkage occurs. Chronological age cannot be caused by height. Reverse violates temporal order.",
+      "Chronological age (RIDAGEYR) is predetermined and cannot be caused by height. Adult height may change with age due to shrinkage, making age a plausible cause."
+    ],
+    "constraints_applied": [
+      "immutable-variable constraints",
+      "predetermined variable",
+      "predetermined variable order",
+      "temporal order"
+    ],
+    "selection_reasons": [
+      "changes_c_or_s_set_under_perturbation",
+      "violates_predetermined_variable_order",
+      "low_or_missing_statistical_confidence"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 1,
+      "accepted_decision_count": 1,
+      "accepted_orientations": [
+        "BMXHT->RIDAGEYR"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.2368508544583369,
+      "confidence_mean": 0.2368508544583369,
+      "confidence_max": 0.2368508544583369,
+      "max_abs_corr": 0.22218020094580498,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": []
+  },
+  {
+    "task": "antihypertensive_sbp",
+    "pair_id": "antihypertensive_sbp::BMXHT::T",
+    "node_a": "BMXHT",
+    "node_b": "T",
+    "priority": "P0",
+    "current_parent": "BMXHT",
+    "current_child": "T",
+    "consensus_judgement": "NO_DIRECT_EDGE",
+    "proposed_parent": "",
+    "proposed_child": "",
+    "semantic_confidence": 0.85,
+    "mean_winning_confidence": 0.85,
+    "agreement_ratio": 1.0,
+    "vote_count": 2,
+    "vote_counts": {
+      "NO_DIRECT_EDGE": 2
+    },
+    "providers": [
+      "kimi",
+      "deepseek"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash"
+    ],
+    "reasons": [
+      "No plausible direct causal path. Height may weakly correlate with treatment via BMI/body size affecting cardiovascular risk, but this is indirect through adiposity or confounded by age/sex.",
+      "Adult standing height is fixed and cannot be caused by current antihypertensive medication. Height itself does not directly cause medication use."
+    ],
+    "constraints_applied": [
+      "immutable variable",
+      "indirect confounding path",
+      "no direct causal edge justification",
+      "temporal order"
+    ],
+    "selection_reasons": [
+      "touches_treatment_or_outcome",
+      "changes_c_or_s_set_under_perturbation",
+      "algorithmic_rescue_edge",
+      "low_or_missing_statistical_confidence"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 1,
+      "accepted_decision_count": 0,
+      "accepted_orientations": [],
+      "orientation_conflict": false,
+      "confidence_min": null,
+      "confidence_mean": null,
+      "confidence_max": null,
+      "max_abs_corr": 0.0972581040054876,
+      "max_ci_p_value": 0.7776718641391944,
+      "methods": []
+    },
+    "provenance": [
+      "treatment_rescue"
+    ]
+  },
+  {
+    "task": "antihypertensive_sbp",
+    "pair_id": "antihypertensive_sbp::BMXWAIST::T",
+    "node_a": "BMXWAIST",
+    "node_b": "T",
+    "priority": "P0",
+    "current_parent": "BMXWAIST",
+    "current_child": "T",
+    "consensus_judgement": "A_TO_B",
+    "proposed_parent": "BMXWAIST",
+    "proposed_child": "T",
+    "semantic_confidence": 0.5333333333333333,
+    "mean_winning_confidence": 0.8,
+    "agreement_ratio": 0.6666666666666666,
+    "vote_count": 3,
+    "vote_counts": {
+      "UNRESOLVED": 1,
+      "A_TO_B": 2
+    },
+    "providers": [
+      "kimi",
+      "deepseek",
+      "kimi"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash",
+      "kimi-k2.6"
+    ],
+    "reasons": [
+      "Waist circumference reflects central adiposity, a risk factor for hypertension, influencing prescription. Medication does not directly cause waist circumference.",
+      "Waist circumference reflects long-term adiposity that predates current medication and influences cardiovascular risk and prescribing decisions. Current medication cannot retroactively alter anthropometric history."
+    ],
+    "constraints_applied": [
+      "confounding by indication",
+      "confounding_by_indication",
+      "temporal plausibility",
+      "temporal_order"
+    ],
+    "selection_reasons": [
+      "touches_treatment_or_outcome",
+      "changes_c_or_s_set_under_perturbation",
+      "algorithmic_rescue_edge",
+      "low_or_missing_statistical_confidence"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 1,
+      "accepted_decision_count": 0,
+      "accepted_orientations": [],
+      "orientation_conflict": false,
+      "confidence_min": null,
+      "confidence_mean": null,
+      "confidence_max": null,
+      "max_abs_corr": 0.08140055493318725,
+      "max_ci_p_value": 0.18936112231880797,
+      "methods": []
+    },
+    "provenance": [
+      "treatment_rescue"
+    ]
+  },
+  {
+    "task": "antihypertensive_sbp",
+    "pair_id": "antihypertensive_sbp::BMXWAIST::Y",
+    "node_a": "BMXWAIST",
+    "node_b": "Y",
+    "priority": "P0",
+    "current_parent": "BMXWAIST",
+    "current_child": "Y",
+    "consensus_judgement": "A_TO_B",
+    "proposed_parent": "BMXWAIST",
+    "proposed_child": "Y",
+    "semantic_confidence": 0.4666666666666666,
+    "mean_winning_confidence": 0.7,
+    "agreement_ratio": 0.6666666666666666,
+    "vote_count": 3,
+    "vote_counts": {
+      "A_TO_B": 2,
+      "NO_DIRECT_EDGE": 1
+    },
+    "providers": [
+      "kimi",
+      "deepseek",
+      "kimi"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash",
+      "kimi-k2.6"
+    ],
+    "reasons": [
+      "Waist circumference reflects chronic adiposity that elevates SBP through established hemodynamic mechanisms. Current SBP cannot instantaneously alter waist. Temporal order supports this direction.",
+      "Central adiposity is a chronic risk factor for elevated blood pressure through established hemodynamic and metabolic mechanisms. Same-visit timing does not reverse this physiological arrow."
+    ],
+    "constraints_applied": [
+      "clinical knowledge",
+      "clinical_knowledge",
+      "study time order",
+      "temporal_order"
+    ],
+    "selection_reasons": [
+      "touches_treatment_or_outcome",
+      "changes_c_or_s_set_under_perturbation",
+      "algorithmic_rescue_edge",
+      "low_or_missing_statistical_confidence"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 1,
+      "accepted_decision_count": 0,
+      "accepted_orientations": [],
+      "orientation_conflict": false,
+      "confidence_min": null,
+      "confidence_mean": null,
+      "confidence_max": null,
+      "max_abs_corr": 0.039431469645411873,
+      "max_ci_p_value": 0.14688633963600825,
+      "methods": []
+    },
+    "provenance": [
+      "outcome_rescue"
+    ]
+  },
+  {
+    "task": "antihypertensive_sbp",
+    "pair_id": "antihypertensive_sbp::BMXWT::RIDAGEYR",
+    "node_a": "BMXWT",
+    "node_b": "RIDAGEYR",
+    "priority": "P0",
+    "current_parent": "BMXWT",
+    "current_child": "RIDAGEYR",
+    "consensus_judgement": "B_TO_A",
+    "proposed_parent": "RIDAGEYR",
+    "proposed_child": "BMXWT",
+    "semantic_confidence": 0.97,
+    "mean_winning_confidence": 0.97,
+    "agreement_ratio": 1.0,
+    "vote_count": 2,
+    "vote_counts": {
+      "B_TO_A": 2
+    },
+    "providers": [
+      "kimi",
+      "deepseek"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash"
+    ],
+    "reasons": [
+      "Age is immutable and fixed before examination. Weight is measured concurrently but age causally influences weight through lifecycle changes, not vice versa. Direct reversal is temporally impossible.",
+      "Age is predetermined and cannot be caused by weight. Age may affect weight through metabolic changes, but not vice versa."
+    ],
+    "constraints_applied": [
+      "immutable-variable constraints",
+      "predetermined variable",
+      "predetermined variable order",
+      "temporal order"
+    ],
+    "selection_reasons": [
+      "changes_c_or_s_set_under_perturbation",
+      "violates_predetermined_variable_order",
+      "low_or_missing_statistical_confidence"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 1,
+      "accepted_decision_count": 1,
+      "accepted_orientations": [
+        "BMXWT->RIDAGEYR"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.3049191062566061,
+      "confidence_mean": 0.3049191062566061,
+      "confidence_max": 0.3049191062566061,
+      "max_abs_corr": 0.2792764626709608,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": []
+  },
+  {
+    "task": "antihypertensive_sbp",
+    "pair_id": "antihypertensive_sbp::BMXWT::Y",
+    "node_a": "BMXWT",
+    "node_b": "Y",
+    "priority": "P0",
+    "current_parent": "BMXWT",
+    "current_child": "Y",
+    "consensus_judgement": "A_TO_B",
+    "proposed_parent": "BMXWT",
+    "proposed_child": "Y",
+    "semantic_confidence": 0.5499999999999999,
+    "mean_winning_confidence": 0.825,
+    "agreement_ratio": 0.6666666666666666,
+    "vote_count": 3,
+    "vote_counts": {
+      "UNRESOLVED": 1,
+      "A_TO_B": 2
+    },
+    "providers": [
+      "kimi",
+      "deepseek",
+      "kimi"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash",
+      "kimi-k2.6"
+    ],
+    "reasons": [
+      "Body weight is a well-established cause of hypertension; SBP cannot causally influence current weight in this cross-sectional setting.",
+      "Body weight is a stable trait affecting blood pressure through volume loading and hormonal mechanisms. Reverse causation physiologically implausible for acute SBP to determine weight."
+    ],
+    "constraints_applied": [
+      "clinical knowledge",
+      "clinical_knowledge",
+      "temporal_order"
+    ],
+    "selection_reasons": [
+      "touches_treatment_or_outcome",
+      "changes_c_or_s_set_under_perturbation",
+      "algorithmic_rescue_edge",
+      "low_or_missing_statistical_confidence"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 1,
+      "accepted_decision_count": 0,
+      "accepted_orientations": [],
+      "orientation_conflict": false,
+      "confidence_min": null,
+      "confidence_mean": null,
+      "confidence_max": null,
+      "max_abs_corr": 0.09731926166367284,
+      "max_ci_p_value": 0.09041268983141004,
+      "methods": []
+    },
+    "provenance": [
+      "precision_rescue"
+    ]
+  },
+  {
+    "task": "antihypertensive_sbp",
+    "pair_id": "antihypertensive_sbp::BPQ080::RIDAGEYR",
+    "node_a": "BPQ080",
+    "node_b": "RIDAGEYR",
+    "priority": "P0",
+    "current_parent": "BPQ080",
+    "current_child": "RIDAGEYR",
+    "consensus_judgement": "B_TO_A",
+    "proposed_parent": "RIDAGEYR",
+    "proposed_child": "BPQ080",
+    "semantic_confidence": 0.975,
+    "mean_winning_confidence": 0.975,
+    "agreement_ratio": 1.0,
+    "vote_count": 2,
+    "vote_counts": {
+      "B_TO_A": 2
+    },
+    "providers": [
+      "kimi",
+      "deepseek"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash"
+    ],
+    "reasons": [
+      "Age is immutable and fixed before cholesterol diagnosis. Chronological age causally precedes and influences disease risk, not vice versa. Statistical direction violates predetermined order.",
+      "Age is predetermined and cannot be caused by a later diagnosis; age is a risk factor for hypercholesterolemia."
+    ],
+    "constraints_applied": [
+      "immutable variable constraint",
+      "predetermined variable",
+      "temporal order"
+    ],
+    "selection_reasons": [
+      "violates_predetermined_variable_order"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 2,
+      "accepted_decision_count": 2,
+      "accepted_orientations": [
+        "BPQ080->RIDAGEYR"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.5521787192204144,
+      "confidence_mean": 0.5521787192204144,
+      "confidence_max": 0.5521787192204144,
+      "max_abs_corr": 0.22793971097843782,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": []
+  },
+  {
+    "task": "antihypertensive_sbp",
+    "pair_id": "antihypertensive_sbp::BPQ080::T",
+    "node_a": "BPQ080",
+    "node_b": "T",
+    "priority": "P0",
+    "current_parent": "BPQ080",
+    "current_child": "T",
+    "consensus_judgement": "A_TO_B",
+    "proposed_parent": "BPQ080",
+    "proposed_child": "T",
+    "semantic_confidence": 0.825,
+    "mean_winning_confidence": 0.825,
+    "agreement_ratio": 1.0,
+    "vote_count": 2,
+    "vote_counts": {
+      "A_TO_B": 2
+    },
+    "providers": [
+      "kimi",
+      "deepseek"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash"
+    ],
+    "reasons": [
+      "Prior high-cholesterol diagnosis indicates cardiometabolic risk that influences antihypertensive prescribing. Historical disease status precedes current medication initiation.",
+      "Hypercholesterolemia diagnosis temporally precedes current medication and may influence prescribing through overall risk assessment."
+    ],
+    "constraints_applied": [
+      "disease history precedes treatment",
+      "temporal order"
+    ],
+    "selection_reasons": [
+      "touches_treatment_or_outcome",
+      "changes_c_or_s_set_under_perturbation"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 2,
+      "accepted_decision_count": 2,
+      "accepted_orientations": [
+        "BPQ080->T"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.7992229686403771,
+      "confidence_mean": 0.7992229686403771,
+      "confidence_max": 0.7992229686403771,
+      "max_abs_corr": 0.19074042209428768,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": []
+  },
+  {
+    "task": "antihypertensive_sbp",
+    "pair_id": "antihypertensive_sbp::BPXPLS::RIDAGEYR",
+    "node_a": "BPXPLS",
+    "node_b": "RIDAGEYR",
+    "priority": "P0",
+    "current_parent": "BPXPLS",
+    "current_child": "RIDAGEYR",
+    "consensus_judgement": "B_TO_A",
+    "proposed_parent": "RIDAGEYR",
+    "proposed_child": "BPXPLS",
+    "semantic_confidence": 0.975,
+    "mean_winning_confidence": 0.975,
+    "agreement_ratio": 1.0,
+    "vote_count": 2,
+    "vote_counts": {
+      "B_TO_A": 2
+    },
+    "providers": [
+      "kimi",
+      "deepseek"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash"
+    ],
+    "reasons": [
+      "Age is predetermined before examination. Pulse measured during MEC visit cannot cause chronological age. Statistical direction is temporally impossible.",
+      "Age is predetermined; pulse rate is a physiological measure that can be influenced by age."
+    ],
+    "constraints_applied": [
+      "immutable variable constraint",
+      "predetermined variable",
+      "temporal order"
+    ],
+    "selection_reasons": [
+      "changes_c_or_s_set_under_perturbation",
+      "violates_predetermined_variable_order"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 1,
+      "accepted_decision_count": 1,
+      "accepted_orientations": [
+        "BPXPLS->RIDAGEYR"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.6145792780057928,
+      "confidence_mean": 0.6145792780057928,
+      "confidence_max": 0.6145792780057928,
+      "max_abs_corr": 0.223210293470921,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": []
+  },
+  {
+    "task": "antihypertensive_sbp",
+    "pair_id": "antihypertensive_sbp::BPXPLS::T",
+    "node_a": "BPXPLS",
+    "node_b": "T",
+    "priority": "P0",
+    "current_parent": "BPXPLS",
+    "current_child": "T",
+    "consensus_judgement": "UNRESOLVED",
+    "proposed_parent": "",
+    "proposed_child": "",
+    "semantic_confidence": 0.2833333333333333,
+    "mean_winning_confidence": 0.425,
+    "agreement_ratio": 0.6666666666666666,
+    "vote_count": 3,
+    "vote_counts": {
+      "UNRESOLVED": 2,
+      "B_TO_A": 1
+    },
+    "providers": [
+      "kimi",
+      "deepseek",
+      "kimi"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash",
+      "kimi-k2.6"
+    ],
+    "reasons": [
+      "Pulse and medication status are concurrent in cross-sectional data. Beta-blockers lower pulse, but elevated pulse may indicate severity prompting treatment. Cannot establish direct causal direction.",
+      "Pulse and medication are contemporaneously associated; medication may lower pulse, yet prior autonomic tone influences prescribing. Cross-sectional design prevents disambiguating shared causes from direct effects."
+    ],
+    "constraints_applied": [
+      "concurrent measurement",
+      "cross-sectional ambiguity",
+      "cross_sectional_limitation",
+      "possible reverse causation",
+      "temporal_order"
+    ],
+    "selection_reasons": [
+      "touches_treatment_or_outcome",
+      "changes_c_or_s_set_under_perturbation",
+      "algorithmic_rescue_edge",
+      "low_or_missing_statistical_confidence"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 1,
+      "accepted_decision_count": 0,
+      "accepted_orientations": [],
+      "orientation_conflict": false,
+      "confidence_min": null,
+      "confidence_mean": null,
+      "confidence_max": null,
+      "max_abs_corr": 0.09161171806397621,
+      "max_ci_p_value": 0.524969170173477,
+      "methods": []
+    },
+    "provenance": [
+      "treatment_rescue"
+    ]
+  },
+  {
+    "task": "antihypertensive_sbp",
+    "pair_id": "antihypertensive_sbp::DIQ050::T",
+    "node_a": "DIQ050",
+    "node_b": "T",
+    "priority": "P0",
+    "current_parent": "DIQ050",
+    "current_child": "T",
+    "consensus_judgement": "NO_DIRECT_EDGE",
+    "proposed_parent": "",
+    "proposed_child": "",
+    "semantic_confidence": 0.775,
+    "mean_winning_confidence": 0.775,
+    "agreement_ratio": 1.0,
+    "vote_count": 2,
+    "vote_counts": {
+      "NO_DIRECT_EDGE": 2
+    },
+    "providers": [
+      "kimi",
+      "deepseek"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash"
+    ],
+    "reasons": [
+      "DIQ050 (insulin) and T (antihypertensives) are concurrent co-treatments for diabetes/hypertension. Both are prescribed based on shared underlying disease severity and healthcare access. No direct causal pathway; association is confounded by comorbidity burden and physician care patterns.",
+      "Insulin use is a co-treatment marker; any association is likely due to shared diabetes severity, not a direct causal effect."
+    ],
+    "constraints_applied": [
+      "co-treatment/severity marker",
+      "confounding by indication",
+      "confounding_by_indication",
+      "cross-sectional_design",
+      "treatment-to-outcome fixed"
+    ],
+    "selection_reasons": [
+      "touches_treatment_or_outcome",
+      "changes_c_or_s_set_under_perturbation",
+      "low_or_missing_statistical_confidence"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 2,
+      "accepted_decision_count": 2,
+      "accepted_orientations": [
+        "DIQ050->T"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.12078543646627604,
+      "confidence_mean": 0.12078543646627604,
+      "confidence_max": 0.12078543646627604,
+      "max_abs_corr": 0.11329353528618274,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": []
+  },
+  {
+    "task": "antihypertensive_sbp",
+    "pair_id": "antihypertensive_sbp::INDFMPIR::T",
+    "node_a": "INDFMPIR",
+    "node_b": "T",
+    "priority": "P0",
+    "current_parent": "INDFMPIR",
+    "current_child": "T",
+    "consensus_judgement": "A_TO_B",
+    "proposed_parent": "INDFMPIR",
+    "proposed_child": "T",
+    "semantic_confidence": 0.8,
+    "mean_winning_confidence": 0.8,
+    "agreement_ratio": 1.0,
+    "vote_count": 2,
+    "vote_counts": {
+      "A_TO_B": 2
+    },
+    "providers": [
+      "kimi",
+      "deepseek"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash"
+    ],
+    "reasons": [
+      "Higher income improves healthcare access, insurance coverage, and medication adherence, directly increasing likelihood of current antihypertensive use. Reverse causation implausible: current blood pressure medication does not alter prior-reported family income. Temporal order supports INDFMPIR -> T.",
+      "Income precedes and enables medication access; temporally plausible as direct cause of treatment."
+    ],
+    "constraints_applied": [
+      "immutable_variable",
+      "socioeconomic baseline",
+      "temporal_order",
+      "treatment-to-outcome fixed"
+    ],
+    "selection_reasons": [
+      "touches_treatment_or_outcome",
+      "changes_c_or_s_set_under_perturbation",
+      "algorithmic_rescue_edge",
+      "low_or_missing_statistical_confidence"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 1,
+      "accepted_decision_count": 0,
+      "accepted_orientations": [],
+      "orientation_conflict": false,
+      "confidence_min": null,
+      "confidence_mean": null,
+      "confidence_max": null,
+      "max_abs_corr": 0.05782141266307478,
+      "max_ci_p_value": 0.15948428061173103,
+      "methods": []
+    },
+    "provenance": [
+      "treatment_rescue"
+    ]
+  },
+  {
+    "task": "antihypertensive_sbp",
+    "pair_id": "antihypertensive_sbp::INDFMPIR::Y",
+    "node_a": "INDFMPIR",
+    "node_b": "Y",
+    "priority": "P0",
+    "current_parent": "INDFMPIR",
+    "current_child": "Y",
+    "consensus_judgement": "A_TO_B",
+    "proposed_parent": "INDFMPIR",
+    "proposed_child": "Y",
+    "semantic_confidence": 0.7250000000000001,
+    "mean_winning_confidence": 0.7250000000000001,
+    "agreement_ratio": 1.0,
+    "vote_count": 2,
+    "vote_counts": {
+      "A_TO_B": 2
+    },
+    "providers": [
+      "kimi",
+      "deepseek"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash"
+    ],
+    "reasons": [
+      "Income affects diet quality, healthcare access, stress, and medication adherence, which directly influence blood pressure control. Reverse causation (SBP causing income) is temporally implausible for current SBP affecting prior-reported income, though long-term illness may reduce income. Cross-sectional design leaves some ambiguity, but forward direction is semantically preferred.",
+      "Income influences blood pressure through access to care and lifestyle; reverse direction impossible."
+    ],
+    "constraints_applied": [
+      "Y cannot cause predetermined baseline",
+      "socioeconomic baseline",
+      "temporal_order"
+    ],
+    "selection_reasons": [
+      "touches_treatment_or_outcome",
+      "changes_c_or_s_set_under_perturbation",
+      "algorithmic_rescue_edge",
+      "task_sanitizer_audit"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 1,
+      "accepted_decision_count": 1,
+      "accepted_orientations": [
+        "Y->INDFMPIR"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.40040527499675116,
+      "confidence_mean": 0.40040527499675116,
+      "confidence_max": 0.40040527499675116,
+      "max_abs_corr": 0.0485483325310867,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": [
+      "outcome_rescue",
+      "sanitized"
+    ]
+  },
+  {
+    "task": "antihypertensive_sbp",
+    "pair_id": "antihypertensive_sbp::LBXGH::RIDAGEYR",
+    "node_a": "LBXGH",
+    "node_b": "RIDAGEYR",
+    "priority": "P0",
+    "current_parent": "LBXGH",
+    "current_child": "RIDAGEYR",
+    "consensus_judgement": "B_TO_A",
+    "proposed_parent": "RIDAGEYR",
+    "proposed_child": "LBXGH",
+    "semantic_confidence": 0.975,
+    "mean_winning_confidence": 0.975,
+    "agreement_ratio": 1.0,
+    "vote_count": 2,
+    "vote_counts": {
+      "B_TO_A": 2
+    },
+    "providers": [
+      "kimi",
+      "deepseek"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash"
+    ],
+    "reasons": [
+      "Age is chronologically fixed and immutable. HbA1c reflects prior months' glycemia and is influenced by age-related insulin resistance and beta-cell decline. The statistical direction LBXGH->RIDAGEYR violates the predetermined variable order constraint. Reverse is the only semantically defensible orientation.",
+      "Age is a predetermined cause of HbA1c; HbA1c cannot cause age."
+    ],
+    "constraints_applied": [
+      "immutable-variable constraints",
+      "immutable_variable",
+      "predetermined demographic"
+    ],
+    "selection_reasons": [
+      "violates_predetermined_variable_order",
+      "low_or_missing_statistical_confidence"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 1,
+      "accepted_decision_count": 1,
+      "accepted_orientations": [
+        "LBXGH->RIDAGEYR"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.2624256611795786,
+      "confidence_mean": 0.2624256611795786,
+      "confidence_max": 0.2624256611795786,
+      "max_abs_corr": 0.22076569184562395,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": []
+  },
+  {
+    "task": "antihypertensive_sbp",
+    "pair_id": "antihypertensive_sbp::LBXGH::T",
+    "node_a": "LBXGH",
+    "node_b": "T",
+    "priority": "P0",
+    "current_parent": "LBXGH",
+    "current_child": "T",
+    "consensus_judgement": "UNRESOLVED",
+    "proposed_parent": "",
+    "proposed_child": "",
+    "semantic_confidence": 0.0,
+    "mean_winning_confidence": 0.6,
+    "agreement_ratio": 0.0,
+    "vote_count": 3,
+    "vote_counts": {
+      "NO_DIRECT_EDGE": 1,
+      "UNRESOLVED": 1,
+      "A_TO_B": 1
+    },
+    "providers": [
+      "kimi",
+      "deepseek",
+      "kimi"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash",
+      "kimi-k2.6"
+    ],
+    "reasons": [
+      "Both directions are plausible but confounded by unmeasured metabolic syndrome severity."
+    ],
+    "constraints_applied": [
+      "confounding_by_indication",
+      "cross-sectional_design"
+    ],
+    "selection_reasons": [
+      "touches_treatment_or_outcome",
+      "changes_c_or_s_set_under_perturbation",
+      "algorithmic_rescue_edge",
+      "low_or_missing_statistical_confidence"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 1,
+      "accepted_decision_count": 0,
+      "accepted_orientations": [],
+      "orientation_conflict": false,
+      "confidence_min": null,
+      "confidence_mean": null,
+      "confidence_max": null,
+      "max_abs_corr": 0.24246039194641764,
+      "max_ci_p_value": 0.4508509506392714,
+      "methods": []
+    },
+    "provenance": [
+      "treatment_rescue"
+    ]
+  },
+  {
+    "task": "antihypertensive_sbp",
+    "pair_id": "antihypertensive_sbp::MCQ220::RIDAGEYR",
+    "node_a": "MCQ220",
+    "node_b": "RIDAGEYR",
+    "priority": "P0",
+    "current_parent": "MCQ220",
+    "current_child": "RIDAGEYR",
+    "consensus_judgement": "NO_DIRECT_EDGE",
+    "proposed_parent": "",
+    "proposed_child": "",
+    "semantic_confidence": 0.5666666666666667,
+    "mean_winning_confidence": 0.85,
+    "agreement_ratio": 0.6666666666666666,
+    "vote_count": 3,
+    "vote_counts": {
+      "NO_DIRECT_EDGE": 2,
+      "B_TO_A": 1
+    },
+    "providers": [
+      "kimi",
+      "deepseek",
+      "kimi"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash",
+      "kimi-k2.6"
+    ],
+    "reasons": [
+      "Cancer history and age are associated but neither directly causes the other. Both influenced by unmeasured factors (survival, healthcare access, era effects). Age is immutable; cancer history does not alter birth year.",
+      "Cancer history and age are associated through population dynamics and survivorship, not direct causation. Age causes cancer risk; cancer does not cause birth year. No plausible direct biological mechanism from cancer history to chronological age."
+    ],
+    "constraints_applied": [
+      "Prefer no direct edge when only nonspecific comorbidity association is plausible",
+      "immutable-variable constraints"
+    ],
+    "selection_reasons": [
+      "changes_c_or_s_set_under_perturbation",
+      "violates_predetermined_variable_order"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 1,
+      "accepted_decision_count": 1,
+      "accepted_orientations": [
+        "MCQ220->RIDAGEYR"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.6684909023901343,
+      "confidence_mean": 0.6684909023901343,
+      "confidence_max": 0.6684909023901343,
+      "max_abs_corr": 0.26306307592877926,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": []
+  },
+  {
+    "task": "antihypertensive_sbp",
+    "pair_id": "antihypertensive_sbp::PAQ605::RIAGENDR",
+    "node_a": "PAQ605",
+    "node_b": "RIAGENDR",
+    "priority": "P0",
+    "current_parent": "PAQ605",
+    "current_child": "RIAGENDR",
+    "consensus_judgement": "NO_DIRECT_EDGE",
+    "proposed_parent": "",
+    "proposed_child": "",
+    "semantic_confidence": 0.6333333333333333,
+    "mean_winning_confidence": 0.95,
+    "agreement_ratio": 0.6666666666666666,
+    "vote_count": 3,
+    "vote_counts": {
+      "NO_DIRECT_EDGE": 2,
+      "B_TO_A": 1
+    },
+    "providers": [
+      "kimi",
+      "deepseek",
+      "kimi"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash",
+      "kimi-k2.6"
+    ],
+    "reasons": [
+      "Recorded sex is biologically predetermined and cannot be caused by current work activity. Reverse direction also biologically implausible as direct cause. Association reflects occupational sex segregation, not direct causation.",
+      "Recorded sex is biologically immutable and fixed at birth. Current work activity cannot cause sex. Reverse is impossible; forward lacks direct mechanism. Association reflects socioeconomic and cultural patterning by sex, not causation."
+    ],
+    "constraints_applied": [
+      "Variables measured in this study cannot causally determine recorded sex",
+      "immutable-variable constraints",
+      "violates_predetermined variable order"
+    ],
+    "selection_reasons": [
+      "changes_c_or_s_set_under_perturbation",
+      "violates_predetermined_variable_order",
+      "low_or_missing_statistical_confidence"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 1,
+      "accepted_decision_count": 1,
+      "accepted_orientations": [
+        "PAQ605->RIAGENDR"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.16830662778271469,
+      "confidence_mean": 0.16830662778271469,
+      "confidence_max": 0.16830662778271469,
+      "max_abs_corr": 0.1500697759142374,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": []
+  },
+  {
+    "task": "antihypertensive_sbp",
+    "pair_id": "antihypertensive_sbp::PAQ605::RIDAGEYR",
+    "node_a": "PAQ605",
+    "node_b": "RIDAGEYR",
+    "priority": "P0",
+    "current_parent": "PAQ605",
+    "current_child": "RIDAGEYR",
+    "consensus_judgement": "NO_DIRECT_EDGE",
+    "proposed_parent": "",
+    "proposed_child": "",
+    "semantic_confidence": 0.6333333333333333,
+    "mean_winning_confidence": 0.95,
+    "agreement_ratio": 0.6666666666666666,
+    "vote_count": 3,
+    "vote_counts": {
+      "NO_DIRECT_EDGE": 2,
+      "B_TO_A": 1
+    },
+    "providers": [
+      "kimi",
+      "deepseek",
+      "kimi"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash",
+      "kimi-k2.6"
+    ],
+    "reasons": [
+      "Chronological age is immutable; current work activity cannot alter birth year. Reverse direction possible only as influence on employment type, not direct causal edge. Association reflects age-related workforce patterns and health.",
+      "Chronological age is immutable. Current work activity cannot cause age. Reverse causation (age affects activity) is plausible but the edge would be age->activity, not activity->age. No direct edge justified in either direction for this pair orientation."
+    ],
+    "constraints_applied": [
+      "Current treatment, current outcome, disease status, and behavior cannot cause chronological age",
+      "immutable-variable constraints"
+    ],
+    "selection_reasons": [
+      "violates_predetermined_variable_order"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 1,
+      "accepted_decision_count": 1,
+      "accepted_orientations": [
+        "PAQ605->RIDAGEYR"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.49835413815101365,
+      "confidence_mean": 0.49835413815101365,
+      "confidence_max": 0.49835413815101365,
+      "max_abs_corr": 0.18555594478881832,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": []
+  },
+  {
+    "task": "antihypertensive_sbp",
+    "pair_id": "antihypertensive_sbp::PAQ605::T",
+    "node_a": "PAQ605",
+    "node_b": "T",
+    "priority": "P0",
+    "current_parent": "PAQ605",
+    "current_child": "T",
+    "consensus_judgement": "UNRESOLVED",
+    "proposed_parent": "",
+    "proposed_child": "",
+    "semantic_confidence": 0.39999999999999997,
+    "mean_winning_confidence": 0.6,
+    "agreement_ratio": 0.6666666666666666,
+    "vote_count": 3,
+    "vote_counts": {
+      "UNRESOLVED": 2,
+      "NO_DIRECT_EDGE": 1
+    },
+    "providers": [
+      "kimi",
+      "deepseek",
+      "kimi"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash",
+      "kimi-k2.6"
+    ],
+    "reasons": [
+      "Current activity and medication use are contemporaneous behaviors. Chronic illness could reduce activity and increase prescribing (common cause). Activity might modestly influence BP control and prescribing decisions, but timing is ambiguous in cross-sectional data.",
+      "Cross-sectional timing is ambiguous. Current work activity may reflect health status that also influences medication prescribing (confounding). Alternatively, treated patients may have different activity recommendations or functional capacity. Cannot distinguish PAQ605->T from shared causes or T-related health effects on activity."
+    ],
+    "constraints_applied": [
+      "Allow reverse causation from chronic illness or functional limitation; use UNRESOLVED if timing is not identifiable",
+      "Bidirectional long-term relations with health are possible"
+    ],
+    "selection_reasons": [
+      "touches_treatment_or_outcome",
+      "changes_c_or_s_set_under_perturbation"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 2,
+      "accepted_decision_count": 2,
+      "accepted_orientations": [
+        "PAQ605->T"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.7890085727601144,
+      "confidence_mean": 0.7890085727601144,
+      "confidence_max": 0.7890085727601144,
+      "max_abs_corr": 0.12794281514129108,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": []
+  },
+  {
+    "task": "antihypertensive_sbp",
+    "pair_id": "antihypertensive_sbp::PAQ650::RIDAGEYR",
+    "node_a": "PAQ650",
+    "node_b": "RIDAGEYR",
+    "priority": "P0",
+    "current_parent": "PAQ650",
+    "current_child": "RIDAGEYR",
+    "consensus_judgement": "NO_DIRECT_EDGE",
+    "proposed_parent": "",
+    "proposed_child": "",
+    "semantic_confidence": 0.6333333333333333,
+    "mean_winning_confidence": 0.95,
+    "agreement_ratio": 0.6666666666666666,
+    "vote_count": 3,
+    "vote_counts": {
+      "NO_DIRECT_EDGE": 2,
+      "B_TO_A": 1
+    },
+    "providers": [
+      "kimi",
+      "deepseek",
+      "kimi"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash",
+      "kimi-k2.6"
+    ],
+    "reasons": [
+      "Recreational activity cannot change chronological age. Age influences activity through health, retirement, and social factors, but this is indirect. Direct edge biologically and temporally impossible in either direction.",
+      "Recreational activity cannot cause chronological age. Age is predetermined and immutable. Association reflects age-related changes in activity participation, not a causal effect of activity on birth year. No direct edge in this orientation."
+    ],
+    "constraints_applied": [
+      "Current treatment, current outcome, disease status, and behavior cannot cause chronological age",
+      "immutable-variable constraints"
+    ],
+    "selection_reasons": [
+      "changes_c_or_s_set_under_perturbation",
+      "violates_predetermined_variable_order"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 1,
+      "accepted_decision_count": 1,
+      "accepted_orientations": [
+        "PAQ650->RIDAGEYR"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.39887917986508903,
+      "confidence_mean": 0.39887917986508903,
+      "confidence_max": 0.39887917986508903,
+      "max_abs_corr": 0.21723256674253225,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": []
+  },
+  {
+    "task": "antihypertensive_sbp",
+    "pair_id": "antihypertensive_sbp::RIDAGEYR::T",
+    "node_a": "RIDAGEYR",
+    "node_b": "T",
+    "priority": "P0",
+    "current_parent": "RIDAGEYR",
+    "current_child": "T",
+    "consensus_judgement": "A_TO_B",
+    "proposed_parent": "RIDAGEYR",
+    "proposed_child": "T",
+    "semantic_confidence": 0.975,
+    "mean_winning_confidence": 0.975,
+    "agreement_ratio": 1.0,
+    "vote_count": 2,
+    "vote_counts": {
+      "A_TO_B": 2
+    },
+    "providers": [
+      "kimi",
+      "deepseek"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash"
+    ],
+    "reasons": [
+      "Chronological age is immutable and predates treatment assignment. Age influences cardiovascular risk, hypertension prevalence, and prescribing decisions. Cannot be caused by current medication.",
+      "Age is predetermined and cannot be caused by current medication; older age increases treatment probability. Thus age directly affects treatment."
+    ],
+    "constraints_applied": [
+      "immutable-variable constraints",
+      "immutable_variable",
+      "study time order"
+    ],
+    "selection_reasons": [
+      "touches_treatment_or_outcome",
+      "changes_c_or_s_set_under_perturbation"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 2,
+      "accepted_decision_count": 2,
+      "accepted_orientations": [
+        "RIDAGEYR->T"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.40018842758468715,
+      "confidence_mean": 0.40018842758468715,
+      "confidence_max": 0.40018842758468715,
+      "max_abs_corr": 0.4116574845362712,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": []
+  },
+  {
+    "task": "antihypertensive_sbp",
+    "pair_id": "antihypertensive_sbp::RIDAGEYR::Y",
+    "node_a": "RIDAGEYR",
+    "node_b": "Y",
+    "priority": "P0",
+    "current_parent": "RIDAGEYR",
+    "current_child": "Y",
+    "consensus_judgement": "A_TO_B",
+    "proposed_parent": "RIDAGEYR",
+    "proposed_child": "Y",
+    "semantic_confidence": 0.95,
+    "mean_winning_confidence": 0.95,
+    "agreement_ratio": 1.0,
+    "vote_count": 2,
+    "vote_counts": {
+      "A_TO_B": 2
+    },
+    "providers": [
+      "kimi",
+      "deepseek"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash"
+    ],
+    "reasons": [
+      "Age is predetermined before outcome measurement. Age affects arterial stiffness, vascular compliance, and SBP. Reverse causation impossible; Y cannot cause chronological age. Statistical Y->X orientation is spurious.",
+      "Age is fixed and cannot be caused by current SBP; age directly influences vascular aging and SBP. Direction age->SBP is temporally and clinically sound."
+    ],
+    "constraints_applied": [
+      "immutable-variable constraints",
+      "immutable_variable",
+      "study time order",
+      "terminal outcome constraint"
+    ],
+    "selection_reasons": [
+      "touches_treatment_or_outcome",
+      "changes_c_or_s_set_under_perturbation",
+      "algorithmic_rescue_edge",
+      "task_sanitizer_audit"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 2,
+      "accepted_decision_count": 2,
+      "accepted_orientations": [
+        "Y->RIDAGEYR"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.6684902174409354,
+      "confidence_mean": 0.6684902174409354,
+      "confidence_max": 0.6684902174409354,
+      "max_abs_corr": 0.24272185944121002,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": [
+      "outcome_rescue",
+      "sanitized"
+    ]
+  },
+  {
+    "task": "antihypertensive_sbp",
+    "pair_id": "antihypertensive_sbp::T::Y",
+    "node_a": "T",
+    "node_b": "Y",
+    "priority": "P0",
+    "current_parent": "",
+    "current_child": "",
+    "consensus_judgement": "A_TO_B",
+    "proposed_parent": "T",
+    "proposed_child": "Y",
+    "semantic_confidence": 0.975,
+    "mean_winning_confidence": 0.975,
+    "agreement_ratio": 1.0,
+    "vote_count": 2,
+    "vote_counts": {
+      "A_TO_B": 2
+    },
+    "providers": [
+      "kimi",
+      "deepseek"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash"
+    ],
+    "reasons": [
+      "Intervention query fixes T->Y. Medication initiated before MEC measurement; antihypertensives are pharmacologically intended to lower SBP. Reverse causation violates temporal order and study design.",
+      "Intervention query fixes T->Y; current medication can directly lower SBP. Reverse direction Y->T is implausible as medication use precedes SBP measurement."
+    ],
+    "constraints_applied": [
+      "fixed treatment-to-outcome direction",
+      "fixed_treatment_outcome",
+      "study time order"
+    ],
+    "selection_reasons": [
+      "fixed_treatment_outcome_query",
+      "touches_treatment_or_outcome",
+      "changes_c_or_s_set_under_perturbation",
+      "low_or_missing_statistical_confidence"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 2,
+      "accepted_decision_count": 0,
+      "accepted_orientations": [],
+      "orientation_conflict": false,
+      "confidence_min": null,
+      "confidence_mean": null,
+      "confidence_max": null,
+      "max_abs_corr": 0.052119188207411175,
+      "max_ci_p_value": 0.4560467823475184,
+      "methods": []
+    },
+    "provenance": []
+  },
+  {
+    "task": "antihypertensive_sbp",
+    "pair_id": "antihypertensive_sbp::BMXHT::Y",
+    "node_a": "BMXHT",
+    "node_b": "Y",
+    "priority": "P1",
+    "current_parent": "BMXHT",
+    "current_child": "Y",
+    "consensus_judgement": "A_TO_B",
+    "proposed_parent": "BMXHT",
+    "proposed_child": "Y",
+    "semantic_confidence": 0.8,
+    "mean_winning_confidence": 0.8,
+    "agreement_ratio": 1.0,
+    "vote_count": 2,
+    "vote_counts": {
+      "A_TO_B": 2
+    },
+    "providers": [
+      "kimi",
+      "deepseek"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash"
+    ],
+    "reasons": [
+      "Adult standing height is predetermined before current treatment and outcome. Height affects body-size scaling and may influence BP through hemodynamic factors. Reverse causation physiologically implausible.",
+      "Adult height is predetermined; SBP cannot cause height. Height may affect SBP through arterial physiology, though edge is indirect. Only plausible direction is height->SBP."
+    ],
+    "constraints_applied": [
+      "immutable_variable",
+      "predetermined adult height",
+      "terminal outcome constraint"
+    ],
+    "selection_reasons": [
+      "touches_treatment_or_outcome",
+      "algorithmic_rescue_edge",
+      "low_or_missing_statistical_confidence"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 1,
+      "accepted_decision_count": 0,
+      "accepted_orientations": [],
+      "orientation_conflict": false,
+      "confidence_min": null,
+      "confidence_mean": null,
+      "confidence_max": null,
+      "max_abs_corr": 0.0841505249347359,
+      "max_ci_p_value": 0.18508685220495447,
+      "methods": []
+    },
+    "provenance": [
+      "outcome_rescue"
+    ]
+  },
+  {
+    "task": "antihypertensive_sbp",
+    "pair_id": "antihypertensive_sbp::BMXWAIST::DIQ050",
+    "node_a": "BMXWAIST",
+    "node_b": "DIQ050",
+    "priority": "P1",
+    "current_parent": "DIQ050",
+    "current_child": "BMXWAIST",
+    "consensus_judgement": "UNRESOLVED",
+    "proposed_parent": "",
+    "proposed_child": "",
+    "semantic_confidence": 0.3,
+    "mean_winning_confidence": 0.45,
+    "agreement_ratio": 0.6666666666666666,
+    "vote_count": 3,
+    "vote_counts": {
+      "UNRESOLVED": 2,
+      "A_TO_B": 1
+    },
+    "providers": [
+      "kimi",
+      "deepseek",
+      "kimi"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash",
+      "kimi-k2.6"
+    ],
+    "reasons": [
+      "Cross-sectional design: insulin use and waist circumference measured concurrently. Diabetes severity/insulin use may affect adiposity; adiposity may precede insulin initiation. Unmeasured common causes (disease duration, SES, care access) likely explain association.",
+      "Cross-sectional design: insulin use and waist circumference are concurrent. Diabetes severity causes both; central adiposity worsens diabetes requiring insulin. Temporal ambiguity prevents defensible direction."
+    ],
+    "constraints_applied": [
+      "cross-sectional ambiguity",
+      "healthcare access confounding",
+      "shared disease severity"
+    ],
+    "selection_reasons": [
+      "changes_c_or_s_set_under_perturbation"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 1,
+      "accepted_decision_count": 1,
+      "accepted_orientations": [
+        "DIQ050->BMXWAIST"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.3520576950564203,
+      "confidence_mean": 0.3520576950564203,
+      "confidence_max": 0.3520576950564203,
+      "max_abs_corr": 0.15295154843831388,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": []
+  },
+  {
+    "task": "antihypertensive_sbp",
+    "pair_id": "antihypertensive_sbp::BPQ080::DIQ010",
+    "node_a": "BPQ080",
+    "node_b": "DIQ010",
+    "priority": "P1",
+    "current_parent": "BPQ080",
+    "current_child": "DIQ010",
+    "consensus_judgement": "NO_DIRECT_EDGE",
+    "proposed_parent": "",
+    "proposed_child": "",
+    "semantic_confidence": 0.5,
+    "mean_winning_confidence": 0.75,
+    "agreement_ratio": 0.6666666666666666,
+    "vote_count": 3,
+    "vote_counts": {
+      "UNRESOLVED": 1,
+      "NO_DIRECT_EDGE": 2
+    },
+    "providers": [
+      "kimi",
+      "deepseek",
+      "kimi"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash",
+      "kimi-k2.6"
+    ],
+    "reasons": [
+      "Both are historical diagnoses; no direct causal mechanism; association due to shared cardiometabolic risk factors and confounding.",
+      "Both are historical diagnoses preceding examination. High cholesterol diagnosis does not directly cause diabetes diagnosis; both reflect shared cardiometabolic risk, lifestyle, and healthcare access."
+    ],
+    "constraints_applied": [
+      "common cause",
+      "healthcare access confounding",
+      "historical co-diagnoses",
+      "shared disease severity",
+      "temporal ordering"
+    ],
+    "selection_reasons": [
+      "changes_c_or_s_set_under_perturbation",
+      "low_or_missing_statistical_confidence"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 1,
+      "accepted_decision_count": 1,
+      "accepted_orientations": [
+        "BPQ080->DIQ010"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.30464125296246186,
+      "confidence_mean": 0.30464125296246186,
+      "confidence_max": 0.30464125296246186,
+      "max_abs_corr": 0.17636699851300464,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": []
+  },
+  {
+    "task": "antihypertensive_sbp",
+    "pair_id": "antihypertensive_sbp::BPQ080::LBXGH",
+    "node_a": "BPQ080",
+    "node_b": "LBXGH",
+    "priority": "P1",
+    "current_parent": "BPQ080",
+    "current_child": "LBXGH",
+    "consensus_judgement": "NO_DIRECT_EDGE",
+    "proposed_parent": "",
+    "proposed_child": "",
+    "semantic_confidence": 0.4666666666666666,
+    "mean_winning_confidence": 0.7,
+    "agreement_ratio": 0.6666666666666666,
+    "vote_count": 3,
+    "vote_counts": {
+      "UNRESOLVED": 1,
+      "NO_DIRECT_EDGE": 2
+    },
+    "providers": [
+      "kimi",
+      "deepseek",
+      "kimi"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash",
+      "kimi-k2.6"
+    ],
+    "reasons": [
+      "LBXGH is a concurrent lab measure, cannot cause past diagnosis; reverse lacks direct path; association via underlying diabetes or metabolic syndrome.",
+      "HbA1c reflects months of glycemia, not caused by a cholesterol diagnosis. Both share diabetes, obesity, and metabolic syndrome. No plausible direct causal pathway from cholesterol diagnosis to glycohemoglobin."
+    ],
+    "constraints_applied": [
+      "common cause",
+      "no plausible direct mechanism",
+      "shared disease severity",
+      "temporal ordering"
+    ],
+    "selection_reasons": [
+      "changes_c_or_s_set_under_perturbation"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 1,
+      "accepted_decision_count": 1,
+      "accepted_orientations": [
+        "BPQ080->LBXGH"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.39284590418943865,
+      "confidence_mean": 0.39284590418943865,
+      "confidence_max": 0.39284590418943865,
+      "max_abs_corr": 0.1865029732632752,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": []
+  },
+  {
+    "task": "antihypertensive_sbp",
+    "pair_id": "antihypertensive_sbp::BPQ080::MCQ160C",
+    "node_a": "BPQ080",
+    "node_b": "MCQ160C",
+    "priority": "P1",
+    "current_parent": "BPQ080",
+    "current_child": "MCQ160C",
+    "consensus_judgement": "NO_DIRECT_EDGE",
+    "proposed_parent": "",
+    "proposed_child": "",
+    "semantic_confidence": 0.4833333333333334,
+    "mean_winning_confidence": 0.7250000000000001,
+    "agreement_ratio": 0.6666666666666666,
+    "vote_count": 3,
+    "vote_counts": {
+      "UNRESOLVED": 1,
+      "NO_DIRECT_EDGE": 2
+    },
+    "providers": [
+      "kimi",
+      "deepseek",
+      "kimi"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash",
+      "kimi-k2.6"
+    ],
+    "reasons": [
+      "Both historical diagnoses; CHD is a complication of dyslipidemia, not a direct cause; association due to common risk factors.",
+      "Both are historical cardiovascular conditions. Hypercholesterolemia and coronary heart disease share common causes (atherosclerosis, diabetes, smoking) rather than one directly causing the other."
+    ],
+    "constraints_applied": [
+      "common cause",
+      "common etiology",
+      "shared disease severity",
+      "temporal ordering"
+    ],
+    "selection_reasons": [
+      "changes_c_or_s_set_under_perturbation",
+      "low_or_missing_statistical_confidence"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 1,
+      "accepted_decision_count": 1,
+      "accepted_orientations": [
+        "BPQ080->MCQ160C"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.20401701757194823,
+      "confidence_mean": 0.20401701757194823,
+      "confidence_max": 0.20401701757194823,
+      "max_abs_corr": 0.15280069736706664,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": []
+  },
+  {
+    "task": "antihypertensive_sbp",
+    "pair_id": "antihypertensive_sbp::BPQ080::MCQ160E",
+    "node_a": "BPQ080",
+    "node_b": "MCQ160E",
+    "priority": "P1",
+    "current_parent": "BPQ080",
+    "current_child": "MCQ160E",
+    "consensus_judgement": "NO_DIRECT_EDGE",
+    "proposed_parent": "",
+    "proposed_child": "",
+    "semantic_confidence": 0.4833333333333334,
+    "mean_winning_confidence": 0.7250000000000001,
+    "agreement_ratio": 0.6666666666666666,
+    "vote_count": 3,
+    "vote_counts": {
+      "UNRESOLVED": 1,
+      "NO_DIRECT_EDGE": 2
+    },
+    "providers": [
+      "kimi",
+      "deepseek",
+      "kimi"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash",
+      "kimi-k2.6"
+    ],
+    "reasons": [
+      "Heart attack and high cholesterol share common causes; no direct causal edge between the two historical diagnoses.",
+      "Prior heart attack and prior high cholesterol diagnosis are both manifestations of atherosclerotic disease. Cholesterol diagnosis does not directly cause infarction; shared risk factors explain association."
+    ],
+    "constraints_applied": [
+      "common cause",
+      "common etiology",
+      "shared disease severity",
+      "temporal ordering"
+    ],
+    "selection_reasons": [
+      "changes_c_or_s_set_under_perturbation",
+      "low_or_missing_statistical_confidence"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 1,
+      "accepted_decision_count": 1,
+      "accepted_orientations": [
+        "BPQ080->MCQ160E"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.2141887161090015,
+      "confidence_mean": 0.2141887161090015,
+      "confidence_max": 0.2141887161090015,
+      "max_abs_corr": 0.12398209792878566,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": []
+  },
+  {
+    "task": "antihypertensive_sbp",
+    "pair_id": "antihypertensive_sbp::BPXPLS::Y",
+    "node_a": "BPXPLS",
+    "node_b": "Y",
+    "priority": "P1",
+    "current_parent": "BPXPLS",
+    "current_child": "Y",
+    "consensus_judgement": "UNRESOLVED",
+    "proposed_parent": "",
+    "proposed_child": "",
+    "semantic_confidence": 0.26666666666666666,
+    "mean_winning_confidence": 0.4,
+    "agreement_ratio": 0.6666666666666666,
+    "vote_count": 3,
+    "vote_counts": {
+      "B_TO_A": 1,
+      "UNRESOLVED": 2
+    },
+    "providers": [
+      "kimi",
+      "deepseek",
+      "kimi"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash",
+      "kimi-k2.6"
+    ],
+    "reasons": [
+      "Bidirectional physiological relation (baroreflex, cardiac output); concurrent measurement; temporally ambiguous; cannot determine direct causal direction.",
+      "Pulse and SBP are concurrent MEC measurements with mutual physiological influence. T->Y is fixed, but pulse could respond to BP or vice versa. Cross-sectional design cannot distinguish direction; no defensible direct causal arrow between these concurrent biomarkers."
+    ],
+    "constraints_applied": [
+      "T -> Y fixed by intervention query",
+      "bidirectional plausibility",
+      "concurrent MEC examination",
+      "concurrent measurement",
+      "cross-sectional design"
+    ],
+    "selection_reasons": [
+      "touches_treatment_or_outcome",
+      "algorithmic_rescue_edge",
+      "task_sanitizer_audit",
+      "low_or_missing_statistical_confidence"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 1,
+      "accepted_decision_count": 1,
+      "accepted_orientations": [
+        "Y->BPXPLS"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.13987556028695533,
+      "confidence_mean": 0.13987556028695533,
+      "confidence_max": 0.13987556028695533,
+      "max_abs_corr": 0.08126801707336372,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": [
+      "outcome_rescue",
+      "sanitized"
+    ]
+  },
+  {
+    "task": "antihypertensive_sbp",
+    "pair_id": "antihypertensive_sbp::DIQ050::MCQ160B",
+    "node_a": "DIQ050",
+    "node_b": "MCQ160B",
+    "priority": "P1",
+    "current_parent": "DIQ050",
+    "current_child": "MCQ160B",
+    "consensus_judgement": "NO_DIRECT_EDGE",
+    "proposed_parent": "",
+    "proposed_child": "",
+    "semantic_confidence": 0.85,
+    "mean_winning_confidence": 0.85,
+    "agreement_ratio": 1.0,
+    "vote_count": 2,
+    "vote_counts": {
+      "NO_DIRECT_EDGE": 2
+    },
+    "providers": [
+      "kimi",
+      "deepseek"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash"
+    ],
+    "reasons": [
+      "Current insulin use and prior CHF history are associated via shared diabetes severity, healthcare access, and cardiometabolic disease burden. No plausible direct causal mechanism; both are effects of common underlying disease processes.",
+      "CHF history and insulin use share common causes like diabetes severity; no direct causal path is justified."
+    ],
+    "constraints_applied": [
+      "confounding by indication",
+      "shared disease severity",
+      "temporal precedence of Y",
+      "temporal_precedence"
+    ],
+    "selection_reasons": [
+      "changes_c_or_s_set_under_perturbation"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 1,
+      "accepted_decision_count": 1,
+      "accepted_orientations": [
+        "DIQ050->MCQ160B"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.8959659575191611,
+      "confidence_mean": 0.8959659575191611,
+      "confidence_max": 0.8959659575191611,
+      "max_abs_corr": 0.13675038556012706,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": []
+  },
+  {
+    "task": "antihypertensive_sbp",
+    "pair_id": "antihypertensive_sbp::DIQ050::MCQ160C",
+    "node_a": "DIQ050",
+    "node_b": "MCQ160C",
+    "priority": "P1",
+    "current_parent": "DIQ050",
+    "current_child": "MCQ160C",
+    "consensus_judgement": "NO_DIRECT_EDGE",
+    "proposed_parent": "",
+    "proposed_child": "",
+    "semantic_confidence": 0.85,
+    "mean_winning_confidence": 0.85,
+    "agreement_ratio": 1.0,
+    "vote_count": 2,
+    "vote_counts": {
+      "NO_DIRECT_EDGE": 2
+    },
+    "providers": [
+      "kimi",
+      "deepseek"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash"
+    ],
+    "reasons": [
+      "Current insulin and prior coronary disease share common causes: diabetes duration, severity, healthcare contact, and systemic atherosclerosis. Insulin does not retroactively cause prior diagnosis; coronary disease does not directly cause current insulin need.",
+      "Coronary heart disease history and insulin use are comorbid conditions; direct causation is implausible."
+    ],
+    "constraints_applied": [
+      "confounding by indication",
+      "shared disease severity",
+      "temporal precedence of Y",
+      "temporal_precedence"
+    ],
+    "selection_reasons": [
+      "changes_c_or_s_set_under_perturbation"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 1,
+      "accepted_decision_count": 1,
+      "accepted_orientations": [
+        "DIQ050->MCQ160C"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.5179291174709757,
+      "confidence_mean": 0.5179291174709757,
+      "confidence_max": 0.5179291174709757,
+      "max_abs_corr": 0.11038087082734767,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": []
+  },
+  {
+    "task": "antihypertensive_sbp",
+    "pair_id": "antihypertensive_sbp::DIQ050::MCQ160F",
+    "node_a": "DIQ050",
+    "node_b": "MCQ160F",
+    "priority": "P1",
+    "current_parent": "MCQ160F",
+    "current_child": "DIQ050",
+    "consensus_judgement": "UNRESOLVED",
+    "proposed_parent": "",
+    "proposed_child": "",
+    "semantic_confidence": 0.0,
+    "mean_winning_confidence": 0.0,
+    "agreement_ratio": 0.0,
+    "vote_count": 3,
+    "vote_counts": {
+      "A_TO_B": 1,
+      "B_TO_A": 1,
+      "NO_DIRECT_EDGE": 1
+    },
+    "providers": [
+      "kimi",
+      "deepseek",
+      "kimi"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash",
+      "kimi-k2.6"
+    ],
+    "reasons": [],
+    "constraints_applied": [],
+    "selection_reasons": [
+      "changes_c_or_s_set_under_perturbation",
+      "low_or_missing_statistical_confidence"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 1,
+      "accepted_decision_count": 1,
+      "accepted_orientations": [
+        "MCQ160F->DIQ050"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.31885143288192275,
+      "confidence_mean": 0.31885143288192275,
+      "confidence_max": 0.31885143288192275,
+      "max_abs_corr": 0.07763165686311126,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": []
+  },
+  {
+    "task": "antihypertensive_sbp",
+    "pair_id": "antihypertensive_sbp::LBXGH::Y",
+    "node_a": "LBXGH",
+    "node_b": "Y",
+    "priority": "P1",
+    "current_parent": "LBXGH",
+    "current_child": "Y",
+    "consensus_judgement": "A_TO_B",
+    "proposed_parent": "LBXGH",
+    "proposed_child": "Y",
+    "semantic_confidence": 0.9,
+    "mean_winning_confidence": 0.9,
+    "agreement_ratio": 1.0,
+    "vote_count": 2,
+    "vote_counts": {
+      "A_TO_B": 2
+    },
+    "providers": [
+      "kimi",
+      "deepseek"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash"
+    ],
+    "reasons": [
+      "HbA1c reflects 2-3 month glycemic history preceding the examination. Current SBP measured after medication report cannot cause prior glycemic exposure. Diabetes severity directly affects vascular tone and volume status.",
+      "Chronic hyperglycemia (HbA1c) causes increased systolic blood pressure; SBP does not affect HbA1c."
+    ],
+    "constraints_applied": [
+      "T->Y fixed",
+      "Y cannot cause past glycemic history",
+      "clinical_knowledge",
+      "temporal precedence of X",
+      "temporal_ordering"
+    ],
+    "selection_reasons": [
+      "touches_treatment_or_outcome",
+      "algorithmic_rescue_edge",
+      "low_or_missing_statistical_confidence"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 1,
+      "accepted_decision_count": 0,
+      "accepted_orientations": [],
+      "orientation_conflict": false,
+      "confidence_min": null,
+      "confidence_mean": null,
+      "confidence_max": null,
+      "max_abs_corr": 0.09434681273567361,
+      "max_ci_p_value": 0.10306282665476897,
+      "methods": []
+    },
+    "provenance": [
+      "outcome_rescue"
+    ]
+  },
+  {
+    "task": "antihypertensive_sbp",
+    "pair_id": "antihypertensive_sbp::PAD680::PAQ605",
+    "node_a": "PAD680",
+    "node_b": "PAQ605",
+    "priority": "P1",
+    "current_parent": "PAD680",
+    "current_child": "PAQ605",
+    "consensus_judgement": "UNRESOLVED",
+    "proposed_parent": "",
+    "proposed_child": "",
+    "semantic_confidence": 0.0,
+    "mean_winning_confidence": 0.6,
+    "agreement_ratio": 0.0,
+    "vote_count": 3,
+    "vote_counts": {
+      "UNRESOLVED": 1,
+      "B_TO_A": 1,
+      "NO_DIRECT_EDGE": 1
+    },
+    "providers": [
+      "kimi",
+      "deepseek",
+      "kimi"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash",
+      "kimi-k2.6"
+    ],
+    "reasons": [
+      "Cross-sectional behavioral reports have ambiguous causal direction. Vigorous work may reduce sedentary time, but disability/illness may reduce both. Occupational structure confounds both. NHANES timing cannot distinguish directions."
+    ],
+    "constraints_applied": [
+      "cross-sectional ambiguity",
+      "reverse causation plausible",
+      "shared occupational causes"
+    ],
+    "selection_reasons": [
+      "changes_c_or_s_set_under_perturbation",
+      "low_or_missing_statistical_confidence"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 1,
+      "accepted_decision_count": 1,
+      "accepted_orientations": [
+        "PAD680->PAQ605"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.14818192173313538,
+      "confidence_mean": 0.14818192173313538,
+      "confidence_max": 0.14818192173313538,
+      "max_abs_corr": 0.16805589155690456,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": []
+  },
+  {
+    "task": "antihypertensive_sbp",
+    "pair_id": "antihypertensive_sbp::PAQ605::PAQ620",
+    "node_a": "PAQ605",
+    "node_b": "PAQ620",
+    "priority": "P1",
+    "current_parent": "PAQ605",
+    "current_child": "PAQ620",
+    "consensus_judgement": "A_TO_B",
+    "proposed_parent": "PAQ605",
+    "proposed_child": "PAQ620",
+    "semantic_confidence": 0.95,
+    "mean_winning_confidence": 0.95,
+    "agreement_ratio": 1.0,
+    "vote_count": 2,
+    "vote_counts": {
+      "A_TO_B": 2
+    },
+    "providers": [
+      "kimi",
+      "deepseek"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash"
+    ],
+    "reasons": [
+      "PAQ605 (whether vigorous work activity occurs) structurally determines eligibility for PAQ620 (days per week conditional on participation). This is a deterministic gate: zero days only possible if PAQ605=2. Frequency cannot cause participation status.",
+      "Frequency of work activity is conditional on participation; PAQ605 logically precedes PAQ620."
+    ],
+    "constraints_applied": [
+      "deterministic calculation relations",
+      "deterministic relation",
+      "temporal order"
+    ],
+    "selection_reasons": [
+      "changes_c_or_s_set_under_perturbation",
+      "low_or_missing_statistical_confidence"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 1,
+      "accepted_decision_count": 1,
+      "accepted_orientations": [
+        "PAQ605->PAQ620"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.2543231593135533,
+      "confidence_mean": 0.2543231593135533,
+      "confidence_max": 0.2543231593135533,
+      "max_abs_corr": 0.443218097639829,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": []
+  },
+  {
+    "task": "antihypertensive_sbp",
+    "pair_id": "antihypertensive_sbp::PAQ605::PAQ650",
+    "node_a": "PAQ605",
+    "node_b": "PAQ650",
+    "priority": "P1",
+    "current_parent": "PAQ605",
+    "current_child": "PAQ650",
+    "consensus_judgement": "NO_DIRECT_EDGE",
+    "proposed_parent": "",
+    "proposed_child": "",
+    "semantic_confidence": 0.4,
+    "mean_winning_confidence": 0.6000000000000001,
+    "agreement_ratio": 0.6666666666666666,
+    "vote_count": 3,
+    "vote_counts": {
+      "UNRESOLVED": 1,
+      "NO_DIRECT_EDGE": 2
+    },
+    "providers": [
+      "kimi",
+      "deepseek",
+      "kimi"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash",
+      "kimi-k2.6"
+    ],
+    "reasons": [
+      "Both are current behaviors measured at same time; no clear temporal ordering. Association likely due to common causes like overall physical activity or health status.",
+      "Vigorous work and recreational activity are distinct behavioral domains. Work activity does not directly cause recreational activity; both are influenced by underlying fitness, health status, socioeconomic resources, and time constraints. Association reflects shared causes, not direct causation."
+    ],
+    "constraints_applied": [
+      "cross-sectional ambiguity",
+      "cross-sectional design",
+      "distinct behavioral domains",
+      "shared fitness and socioeconomic causes"
+    ],
+    "selection_reasons": [
+      "changes_c_or_s_set_under_perturbation",
+      "low_or_missing_statistical_confidence"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 1,
+      "accepted_decision_count": 1,
+      "accepted_orientations": [
+        "PAQ605->PAQ650"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.16548247033533,
+      "confidence_mean": 0.16548247033533,
+      "confidence_max": 0.16548247033533,
+      "max_abs_corr": 0.12795307362549702,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": []
+  },
+  {
+    "task": "chol_med_tchol",
+    "pair_id": "chol_med_tchol::BMXHT::Y",
+    "node_a": "BMXHT",
+    "node_b": "Y",
+    "priority": "P0",
+    "current_parent": "BMXHT",
+    "current_child": "Y",
+    "consensus_judgement": "NO_DIRECT_EDGE",
+    "proposed_parent": "",
+    "proposed_child": "",
+    "semantic_confidence": 0.875,
+    "mean_winning_confidence": 0.875,
+    "agreement_ratio": 1.0,
+    "vote_count": 2,
+    "vote_counts": {
+      "NO_DIRECT_EDGE": 2
+    },
+    "providers": [
+      "kimi",
+      "deepseek"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash"
+    ],
+    "reasons": [
+      "Adult height is predetermined; current cholesterol cannot cause it. No plausible direct mechanism from height to cholesterol—any association is indirect via body composition, genetics, or confounding.",
+      "Height is predetermined; current cholesterol cannot cause height. Association is likely indirect through BMI or confounding; no strong evidence for direct effect."
+    ],
+    "constraints_applied": [
+      "deterministic calculation relations",
+      "immutable-variable constraints",
+      "predetermined_variable"
+    ],
+    "selection_reasons": [
+      "touches_treatment_or_outcome",
+      "changes_c_or_s_set_under_perturbation",
+      "algorithmic_rescue_edge",
+      "low_or_missing_statistical_confidence"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 1,
+      "accepted_decision_count": 0,
+      "accepted_orientations": [],
+      "orientation_conflict": false,
+      "confidence_min": null,
+      "confidence_mean": null,
+      "confidence_max": null,
+      "max_abs_corr": 0.13918662142619026,
+      "max_ci_p_value": 0.36399122793835703,
+      "methods": []
+    },
+    "provenance": [
+      "precision_rescue"
+    ]
+  },
+  {
+    "task": "chol_med_tchol",
+    "pair_id": "chol_med_tchol::BMXWAIST::T",
+    "node_a": "BMXWAIST",
+    "node_b": "T",
+    "priority": "P0",
+    "current_parent": "BMXWAIST",
+    "current_child": "T",
+    "consensus_judgement": "UNRESOLVED",
+    "proposed_parent": "",
+    "proposed_child": "",
+    "semantic_confidence": 0.3333333333333333,
+    "mean_winning_confidence": 0.5,
+    "agreement_ratio": 0.6666666666666666,
+    "vote_count": 3,
+    "vote_counts": {
+      "UNRESOLVED": 2,
+      "A_TO_B": 1
+    },
+    "providers": [
+      "kimi",
+      "deepseek",
+      "kimi"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash",
+      "kimi-k2.6"
+    ],
+    "reasons": [
+      "Waist circumference and treatment are concurrent in NHANES. Central adiposity influences prescribing risk scores, but long-term medication may also affect weight/waist. Cross-sectional data cannot distinguish direction; unmeasured confounders likely.",
+      "Waist circumference and medication use are both influenced by long-term metabolic risk and prior clinical assessment. Same-visit measurement cannot temporally precede ongoing treatment decision. Reverse causation implausible (treatment does not acutely alter waist). Likely confounded by unmeasured prior cardiometabolic severity."
+    ],
+    "constraints_applied": [
+      "confounding_by_indication",
+      "temporal ambiguity",
+      "temporal_ambiguity_same_visit",
+      "unmeasured common cause",
+      "unmeasured_common_cause"
+    ],
+    "selection_reasons": [
+      "touches_treatment_or_outcome",
+      "changes_c_or_s_set_under_perturbation",
+      "algorithmic_rescue_edge",
+      "low_or_missing_statistical_confidence"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 2,
+      "accepted_decision_count": 0,
+      "accepted_orientations": [],
+      "orientation_conflict": false,
+      "confidence_min": null,
+      "confidence_mean": null,
+      "confidence_max": null,
+      "max_abs_corr": 0.055586219882656294,
+      "max_ci_p_value": 0.7950377614189222,
+      "methods": []
+    },
+    "provenance": [
+      "treatment_rescue"
+    ]
+  },
+  {
+    "task": "chol_med_tchol",
+    "pair_id": "chol_med_tchol::BMXWAIST::Y",
+    "node_a": "BMXWAIST",
+    "node_b": "Y",
+    "priority": "P0",
+    "current_parent": "BMXWAIST",
+    "current_child": "Y",
+    "consensus_judgement": "UNRESOLVED",
+    "proposed_parent": "",
+    "proposed_child": "",
+    "semantic_confidence": 0.0,
+    "mean_winning_confidence": 0.55,
+    "agreement_ratio": 0.0,
+    "vote_count": 3,
+    "vote_counts": {
+      "UNRESOLVED": 1,
+      "A_TO_B": 1,
+      "NO_DIRECT_EDGE": 1
+    },
+    "providers": [
+      "kimi",
+      "deepseek",
+      "kimi"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash",
+      "kimi-k2.6"
+    ],
+    "reasons": [
+      "Same-visit measurement timing. Central adiposity affects lipid metabolism, but statins also alter adiposity over time. In cross-sectional data, reverse causation and confounding by metabolic syndrome cannot be ruled out."
+    ],
+    "constraints_applied": [
+      "reverse causation plausible",
+      "temporal ambiguity"
+    ],
+    "selection_reasons": [
+      "touches_treatment_or_outcome",
+      "changes_c_or_s_set_under_perturbation",
+      "algorithmic_rescue_edge",
+      "low_or_missing_statistical_confidence"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 1,
+      "accepted_decision_count": 0,
+      "accepted_orientations": [],
+      "orientation_conflict": false,
+      "confidence_min": null,
+      "confidence_mean": null,
+      "confidence_max": null,
+      "max_abs_corr": 0.11257153004322566,
+      "max_ci_p_value": 0.4389417730852633,
+      "methods": []
+    },
+    "provenance": [
+      "outcome_rescue"
+    ]
+  },
+  {
+    "task": "chol_med_tchol",
+    "pair_id": "chol_med_tchol::BMXWT::Y",
+    "node_a": "BMXWT",
+    "node_b": "Y",
+    "priority": "P0",
+    "current_parent": "BMXWT",
+    "current_child": "Y",
+    "consensus_judgement": "UNRESOLVED",
+    "proposed_parent": "",
+    "proposed_child": "",
+    "semantic_confidence": 0.0,
+    "mean_winning_confidence": 0.55,
+    "agreement_ratio": 0.0,
+    "vote_count": 3,
+    "vote_counts": {
+      "UNRESOLVED": 1,
+      "A_TO_B": 1,
+      "NO_DIRECT_EDGE": 1
+    },
+    "providers": [
+      "kimi",
+      "deepseek",
+      "kimi"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash",
+      "kimi-k2.6"
+    ],
+    "reasons": [
+      "Concurrent measurement; body weight relates to lipids via metabolic pathways, but medication effects on weight and confounding by lifestyle/diet obscure direction. No clear temporal ordering in cross-sectional design."
+    ],
+    "constraints_applied": [
+      "temporal ambiguity",
+      "unmeasured common cause"
+    ],
+    "selection_reasons": [
+      "touches_treatment_or_outcome",
+      "changes_c_or_s_set_under_perturbation",
+      "algorithmic_rescue_edge",
+      "low_or_missing_statistical_confidence"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 1,
+      "accepted_decision_count": 0,
+      "accepted_orientations": [],
+      "orientation_conflict": false,
+      "confidence_min": null,
+      "confidence_mean": null,
+      "confidence_max": null,
+      "max_abs_corr": 0.1139701296211017,
+      "max_ci_p_value": 0.6111542796782732,
+      "methods": []
+    },
+    "provenance": [
+      "precision_rescue"
+    ]
+  },
+  {
+    "task": "chol_med_tchol",
+    "pair_id": "chol_med_tchol::BPQ020::RIDAGEYR",
+    "node_a": "BPQ020",
+    "node_b": "RIDAGEYR",
+    "priority": "P0",
+    "current_parent": "BPQ020",
+    "current_child": "RIDAGEYR",
+    "consensus_judgement": "B_TO_A",
+    "proposed_parent": "RIDAGEYR",
+    "proposed_child": "BPQ020",
+    "semantic_confidence": 0.975,
+    "mean_winning_confidence": 0.975,
+    "agreement_ratio": 1.0,
+    "vote_count": 2,
+    "vote_counts": {
+      "B_TO_A": 2
+    },
+    "providers": [
+      "kimi",
+      "deepseek"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash"
+    ],
+    "reasons": [
+      "Chronological age is immutable and precedes hypertension diagnosis. Age causes cumulative cardiovascular risk and diagnosis likelihood; hypertension diagnosis cannot cause birth age. Statistical direction violates predetermined order.",
+      "Age is predetermined and directly increases hypertension risk; reverse direction is impossible."
+    ],
+    "constraints_applied": [
+      "immutable-variable constraints",
+      "predetermined_variable",
+      "study time order",
+      "temporal_order"
+    ],
+    "selection_reasons": [
+      "violates_predetermined_variable_order",
+      "low_or_missing_statistical_confidence"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 1,
+      "accepted_decision_count": 1,
+      "accepted_orientations": [
+        "BPQ020->RIDAGEYR"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.2701340904648708,
+      "confidence_mean": 0.2701340904648708,
+      "confidence_max": 0.2701340904648708,
+      "max_abs_corr": 0.16228208628285246,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": []
+  },
+  {
+    "task": "chol_med_tchol",
+    "pair_id": "chol_med_tchol::BPQ020::T",
+    "node_a": "BPQ020",
+    "node_b": "T",
+    "priority": "P0",
+    "current_parent": "",
+    "current_child": "",
+    "consensus_judgement": "NO_DIRECT_EDGE",
+    "proposed_parent": "",
+    "proposed_child": "",
+    "semantic_confidence": 0.5166666666666666,
+    "mean_winning_confidence": 0.7749999999999999,
+    "agreement_ratio": 0.6666666666666666,
+    "vote_count": 3,
+    "vote_counts": {
+      "NO_DIRECT_EDGE": 2,
+      "A_TO_B": 1
+    },
+    "providers": [
+      "kimi",
+      "deepseek",
+      "kimi"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash",
+      "kimi-k2.6"
+    ],
+    "reasons": [
+      "Prior hypertension diagnosis and cholesterol medication are associated through shared cardiometabolic risk and common prescribing determinants, not direct causation. Both caused by unmeasured global cardiovascular risk.",
+      "Prior hypertension diagnosis and statin prescription share common causes (age, cardiovascular risk, diabetes) but hypertension diagnosis does not directly cause cholesterol medication initiation. Both are determined by physician risk assessment. No direct mechanism: hypertension is not an indication for statins independent of global risk."
+    ],
+    "constraints_applied": [
+      "NO_DIRECT_EDGE_preference_disease_co-occurrence",
+      "common_cause_structure",
+      "confounding_by_indication",
+      "disease_co-occurrence_not_causation"
+    ],
+    "selection_reasons": [
+      "touches_treatment_or_outcome",
+      "changes_c_or_s_set_under_perturbation",
+      "task_sanitizer_audit",
+      "low_or_missing_statistical_confidence"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 3,
+      "accepted_decision_count": 3,
+      "accepted_orientations": [
+        "T->BPQ020"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.14523994191844117,
+      "confidence_mean": 0.14523994191844117,
+      "confidence_max": 0.14523994191844117,
+      "max_abs_corr": 0.13233372438227362,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": [
+      "sanitized"
+    ]
+  },
+  {
+    "task": "chol_med_tchol",
+    "pair_id": "chol_med_tchol::BPQ020::Y",
+    "node_a": "BPQ020",
+    "node_b": "Y",
+    "priority": "P0",
+    "current_parent": "BPQ020",
+    "current_child": "Y",
+    "consensus_judgement": "NO_DIRECT_EDGE",
+    "proposed_parent": "",
+    "proposed_child": "",
+    "semantic_confidence": 0.675,
+    "mean_winning_confidence": 0.675,
+    "agreement_ratio": 1.0,
+    "vote_count": 2,
+    "vote_counts": {
+      "NO_DIRECT_EDGE": 2
+    },
+    "providers": [
+      "kimi",
+      "deepseek"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash"
+    ],
+    "reasons": [
+      "Hypertension diagnosis reflects underlying vascular pathology that also elevates cholesterol; no direct biological mechanism from diagnosis label to serum cholesterol. Shared cardiometabolic risk explains association.",
+      "Hypertension diagnosis and current cholesterol share common causes (e.g., age, obesity); no direct causal mechanism evident."
+    ],
+    "constraints_applied": [
+      "NO_DIRECT_EDGE_preferred",
+      "disease_co-occurrence_not_causation",
+      "no direct mechanism",
+      "shared cardiometabolic risk factors"
+    ],
+    "selection_reasons": [
+      "touches_treatment_or_outcome",
+      "changes_c_or_s_set_under_perturbation",
+      "low_or_missing_statistical_confidence"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 2,
+      "accepted_decision_count": 2,
+      "accepted_orientations": [
+        "BPQ020->Y"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.1883221711277038,
+      "confidence_mean": 0.1883221711277038,
+      "confidence_max": 0.1883221711277038,
+      "max_abs_corr": 0.1521047257765542,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": []
+  },
+  {
+    "task": "chol_med_tchol",
+    "pair_id": "chol_med_tchol::BPXPLS::RIDAGEYR",
+    "node_a": "BPXPLS",
+    "node_b": "RIDAGEYR",
+    "priority": "P0",
+    "current_parent": "BPXPLS",
+    "current_child": "RIDAGEYR",
+    "consensus_judgement": "B_TO_A",
+    "proposed_parent": "RIDAGEYR",
+    "proposed_child": "BPXPLS",
+    "semantic_confidence": 0.97,
+    "mean_winning_confidence": 0.97,
+    "agreement_ratio": 1.0,
+    "vote_count": 2,
+    "vote_counts": {
+      "B_TO_A": 2
+    },
+    "providers": [
+      "kimi",
+      "deepseek"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash"
+    ],
+    "reasons": [
+      "Age is immutable and predetermined. Pulse cannot cause age. Age causes cardiovascular changes including pulse rate via autonomic aging, fitness decline, and disease accumulation.",
+      "Age is predetermined and cannot be caused by pulse; age affects pulse via cardiovascular aging."
+    ],
+    "constraints_applied": [
+      "immutable_variable_constraint",
+      "predetermined variable",
+      "predetermined_variable_order",
+      "temporal order"
+    ],
+    "selection_reasons": [
+      "violates_predetermined_variable_order"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 1,
+      "accepted_decision_count": 1,
+      "accepted_orientations": [
+        "BPXPLS->RIDAGEYR"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.4299050542755104,
+      "confidence_mean": 0.4299050542755104,
+      "confidence_max": 0.4299050542755104,
+      "max_abs_corr": 0.15941131581227067,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": []
+  },
+  {
+    "task": "chol_med_tchol",
+    "pair_id": "chol_med_tchol::BPXPLS::T",
+    "node_a": "BPXPLS",
+    "node_b": "T",
+    "priority": "P0",
+    "current_parent": "BPXPLS",
+    "current_child": "T",
+    "consensus_judgement": "UNRESOLVED",
+    "proposed_parent": "",
+    "proposed_child": "",
+    "semantic_confidence": 0.31666666666666665,
+    "mean_winning_confidence": 0.475,
+    "agreement_ratio": 0.6666666666666666,
+    "vote_count": 3,
+    "vote_counts": {
+      "UNRESOLVED": 2,
+      "NO_DIRECT_EDGE": 1
+    },
+    "providers": [
+      "kimi",
+      "deepseek",
+      "kimi"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash",
+      "kimi-k2.6"
+    ],
+    "reasons": [
+      "Pulse and statin use measured concurrently in cross-sectional data. Long-term statin may affect autonomic tone (T→pulse), but cardiovascular disease severity causing both is unmeasured. Temporal ambiguity precludes defensible direction.",
+      "Pulse measured concurrently with examination cannot temporally precede ongoing medication use. Long-term statin use may affect autonomic tone or fitness indirectly; beta-blocker co-treatment affects pulse. Prior cardiovascular disease severity causes both treatment and autonomic state. Direction unidentifiable from cross-sectional data."
+    ],
+    "constraints_applied": [
+      "confounding_by_indication",
+      "cross_sectional_temporal_ambiguity",
+      "medication_confounding",
+      "same_visit_timing",
+      "temporal_ambiguity_same_visit",
+      "unmeasured_common_cause"
+    ],
+    "selection_reasons": [
+      "touches_treatment_or_outcome",
+      "changes_c_or_s_set_under_perturbation",
+      "algorithmic_rescue_edge",
+      "low_or_missing_statistical_confidence"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 2,
+      "accepted_decision_count": 0,
+      "accepted_orientations": [],
+      "orientation_conflict": false,
+      "confidence_min": null,
+      "confidence_mean": null,
+      "confidence_max": null,
+      "max_abs_corr": 0.042413907023230675,
+      "max_ci_p_value": 0.6721403779335916,
+      "methods": []
+    },
+    "provenance": [
+      "treatment_rescue"
+    ]
+  },
+  {
+    "task": "chol_med_tchol",
+    "pair_id": "chol_med_tchol::DIQ050::T",
+    "node_a": "DIQ050",
+    "node_b": "T",
+    "priority": "P0",
+    "current_parent": "DIQ050",
+    "current_child": "T",
+    "consensus_judgement": "UNRESOLVED",
+    "proposed_parent": "",
+    "proposed_child": "",
+    "semantic_confidence": 0.0,
+    "mean_winning_confidence": 0.4,
+    "agreement_ratio": 0.0,
+    "vote_count": 3,
+    "vote_counts": {
+      "NO_DIRECT_EDGE": 1,
+      "A_TO_B": 1,
+      "UNRESOLVED": 1
+    },
+    "providers": [
+      "kimi",
+      "deepseek",
+      "kimi"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash",
+      "kimi-k2.6"
+    ],
+    "reasons": [
+      "Insulin and statins share confounders: diabetes severity, cardiometabolic risk, prescribing physicians. No clear temporal priority for direct causation. Cross-sectional NHANES cannot distinguish insulin→statin from common causes."
+    ],
+    "constraints_applied": [
+      "co_treatment_confounding",
+      "temporal_ambiguity_same_visit",
+      "unmeasured_common_cause"
+    ],
+    "selection_reasons": [
+      "touches_treatment_or_outcome",
+      "changes_c_or_s_set_under_perturbation"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 2,
+      "accepted_decision_count": 2,
+      "accepted_orientations": [
+        "DIQ050->T"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.7000180772439036,
+      "confidence_mean": 0.7000180772439036,
+      "confidence_max": 0.7000180772439036,
+      "max_abs_corr": 0.10090267940706825,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": []
+  },
+  {
+    "task": "chol_med_tchol",
+    "pair_id": "chol_med_tchol::DMDMARTL::RIAGENDR",
+    "node_a": "DMDMARTL",
+    "node_b": "RIAGENDR",
+    "priority": "P0",
+    "current_parent": "DMDMARTL",
+    "current_child": "RIAGENDR",
+    "consensus_judgement": "NO_DIRECT_EDGE",
+    "proposed_parent": "",
+    "proposed_child": "",
+    "semantic_confidence": 0.6,
+    "mean_winning_confidence": 0.9,
+    "agreement_ratio": 0.6666666666666666,
+    "vote_count": 3,
+    "vote_counts": {
+      "NO_DIRECT_EDGE": 2,
+      "B_TO_A": 1
+    },
+    "providers": [
+      "kimi",
+      "deepseek",
+      "kimi"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash",
+      "kimi-k2.6"
+    ],
+    "reasons": [
+      "Marital status and sex are both social/demographic baselines with no plausible direct causal mechanism. Association reflects socioeconomic confounding or stratification, not direct causation.",
+      "Recorded sex is biologically immutable and determined at birth. Marital status cannot causally affect sex. Reverse is also medically implausible as direct. Association is socioeconomic confounding without direct mechanism."
+    ],
+    "constraints_applied": [
+      "immutable-variable constraints",
+      "immutable_variable_constraint",
+      "no direct medical direction for socioeconomic association",
+      "no_direct_medical_mechanism"
+    ],
+    "selection_reasons": [
+      "violates_predetermined_variable_order"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 1,
+      "accepted_decision_count": 1,
+      "accepted_orientations": [
+        "DMDMARTL->RIAGENDR"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.4881208471669059,
+      "confidence_mean": 0.4881208471669059,
+      "confidence_max": 0.4881208471669059,
+      "max_abs_corr": 0.27106219204616555,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": []
+  },
+  {
+    "task": "chol_med_tchol",
+    "pair_id": "chol_med_tchol::LBXGH::T",
+    "node_a": "LBXGH",
+    "node_b": "T",
+    "priority": "P0",
+    "current_parent": "LBXGH",
+    "current_child": "T",
+    "consensus_judgement": "UNRESOLVED",
+    "proposed_parent": "",
+    "proposed_child": "",
+    "semantic_confidence": 0.2833333333333333,
+    "mean_winning_confidence": 0.425,
+    "agreement_ratio": 0.6666666666666666,
+    "vote_count": 3,
+    "vote_counts": {
+      "B_TO_A": 1,
+      "UNRESOLVED": 2
+    },
+    "providers": [
+      "kimi",
+      "deepseek",
+      "kimi"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash",
+      "kimi-k2.6"
+    ],
+    "reasons": [
+      "Plausible reverse causation (prior glycemia affects both medication and current HbA1c) and unmeasured confounding; direction not defensible.",
+      "HbA1c reflects 2-3 month glycemic history; statin use precedes current cholesterol measurement. But HbA1c and statin initiation share diabetes diagnosis, cardiovascular risk, and prescribing decisions. Cross-sectional data cannot separate direct effect from confounding by indication."
+    ],
+    "constraints_applied": [
+      "confounding_by_indication",
+      "reverse_causation",
+      "temporal_ambiguity_same_visit",
+      "unmeasured_common_cause",
+      "unmeasured_confounding"
+    ],
+    "selection_reasons": [
+      "touches_treatment_or_outcome",
+      "changes_c_or_s_set_under_perturbation",
+      "algorithmic_rescue_edge",
+      "low_or_missing_statistical_confidence"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 2,
+      "accepted_decision_count": 0,
+      "accepted_orientations": [],
+      "orientation_conflict": false,
+      "confidence_min": null,
+      "confidence_mean": null,
+      "confidence_max": null,
+      "max_abs_corr": 0.1338685273885076,
+      "max_ci_p_value": 0.2888549976590721,
+      "methods": []
+    },
+    "provenance": [
+      "treatment_rescue"
+    ]
+  },
+  {
+    "task": "chol_med_tchol",
+    "pair_id": "chol_med_tchol::MCQ160C::T",
+    "node_a": "MCQ160C",
+    "node_b": "T",
+    "priority": "P0",
+    "current_parent": "",
+    "current_child": "",
+    "consensus_judgement": "A_TO_B",
+    "proposed_parent": "MCQ160C",
+    "proposed_child": "T",
+    "semantic_confidence": 0.95,
+    "mean_winning_confidence": 0.95,
+    "agreement_ratio": 1.0,
+    "vote_count": 2,
+    "vote_counts": {
+      "A_TO_B": 2
+    },
+    "providers": [
+      "kimi",
+      "deepseek"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash"
+    ],
+    "reasons": [
+      "Prior coronary heart disease diagnosis precedes current medication status. Established atherosclerotic disease directly causes preventive statin prescription and adherence. T cannot cause prior disease in this time ordering.",
+      "Coronary heart disease diagnosis precedes medication use; clinical indication for treatment; direction from CHD to medication is plausible."
+    ],
+    "constraints_applied": [
+      "clinical_indication",
+      "predetermined diagnosis",
+      "temporal order",
+      "temporal_order",
+      "treatment-to-outcome direction fixed"
+    ],
+    "selection_reasons": [
+      "touches_treatment_or_outcome",
+      "changes_c_or_s_set_under_perturbation",
+      "task_sanitizer_audit"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 2,
+      "accepted_decision_count": 2,
+      "accepted_orientations": [
+        "T->MCQ160C"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.9927817016453399,
+      "confidence_mean": 0.9927817016453399,
+      "confidence_max": 0.9927817016453399,
+      "max_abs_corr": 0.09965312869813026,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": [
+      "sanitized"
+    ]
+  },
+  {
+    "task": "chol_med_tchol",
+    "pair_id": "chol_med_tchol::MCQ160E::RIAGENDR",
+    "node_a": "MCQ160E",
+    "node_b": "RIAGENDR",
+    "priority": "P0",
+    "current_parent": "MCQ160E",
+    "current_child": "RIAGENDR",
+    "consensus_judgement": "NO_DIRECT_EDGE",
+    "proposed_parent": "",
+    "proposed_child": "",
+    "semantic_confidence": 0.6333333333333333,
+    "mean_winning_confidence": 0.95,
+    "agreement_ratio": 0.6666666666666666,
+    "vote_count": 3,
+    "vote_counts": {
+      "NO_DIRECT_EDGE": 2,
+      "B_TO_A": 1
+    },
+    "providers": [
+      "kimi",
+      "deepseek",
+      "kimi"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash",
+      "kimi-k2.6"
+    ],
+    "reasons": [
+      "Prior heart attack cannot cause recorded sex. Sex cannot cause prior heart attack in this cross-sectional observation window. Association is confounded by age, risk factors, or survival; no direct edge justified.",
+      "Prior heart attack cannot change recorded sex. Sex cannot directly cause prior heart attack in this cross-sectional snapshot—sex is a risk marker, not a direct causal mechanism for the historical event. Association is indirect through lifetime risk factors."
+    ],
+    "constraints_applied": [
+      "immutable-variable constraints",
+      "immutable_variable_constraint",
+      "no direct mechanism",
+      "no_direct_mechanism",
+      "temporal order",
+      "temporal_order_violation"
+    ],
+    "selection_reasons": [
+      "violates_predetermined_variable_order",
+      "low_or_missing_statistical_confidence"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 1,
+      "accepted_decision_count": 1,
+      "accepted_orientations": [
+        "MCQ160E->RIAGENDR"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.14717025552693058,
+      "confidence_mean": 0.14717025552693058,
+      "confidence_max": 0.14717025552693058,
+      "max_abs_corr": 0.09634340545956882,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": []
+  },
+  {
+    "task": "chol_med_tchol",
+    "pair_id": "chol_med_tchol::MCQ160E::Y",
+    "node_a": "MCQ160E",
+    "node_b": "Y",
+    "priority": "P0",
+    "current_parent": "MCQ160E",
+    "current_child": "Y",
+    "consensus_judgement": "UNRESOLVED",
+    "proposed_parent": "",
+    "proposed_child": "",
+    "semantic_confidence": 0.35,
+    "mean_winning_confidence": 0.525,
+    "agreement_ratio": 0.6666666666666666,
+    "vote_count": 3,
+    "vote_counts": {
+      "UNRESOLVED": 2,
+      "A_TO_B": 1
+    },
+    "providers": [
+      "kimi",
+      "deepseek",
+      "kimi"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash",
+      "kimi-k2.6"
+    ],
+    "reasons": [
+      "Prior MI affects current cholesterol indirectly via treatment initiation and lifestyle changes, not via direct biological effect on serum cholesterol. However, residual confounding by unmeasured severity and long-term disease processes prevents defensible direct edge orientation.",
+      "Prior MI affects statin prescribing (confounds T→Y) and indicates cardiometabolic risk that predicts current cholesterol. But direct effect of historical MI on current total cholesterol is unclear; likely mediated by treatment adherence, diet, or unmeasured severity. Cross-sectional design prevents disambiguation."
+    ],
+    "constraints_applied": [
+      "confounding by indication",
+      "confounding_by_indication",
+      "indirect mechanism via treatment",
+      "possible_mediation_by_treatment",
+      "unmeasured common cause",
+      "unmeasured_common_cause"
+    ],
+    "selection_reasons": [
+      "touches_treatment_or_outcome",
+      "changes_c_or_s_set_under_perturbation"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 2,
+      "accepted_decision_count": 2,
+      "accepted_orientations": [
+        "MCQ160E->Y"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.5323533202358308,
+      "confidence_mean": 0.5323533202358308,
+      "confidence_max": 0.5323533202358308,
+      "max_abs_corr": 0.1416736472968767,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": []
+  },
+  {
+    "task": "chol_med_tchol",
+    "pair_id": "chol_med_tchol::PAQ605::RIAGENDR",
+    "node_a": "PAQ605",
+    "node_b": "RIAGENDR",
+    "priority": "P0",
+    "current_parent": "PAQ605",
+    "current_child": "RIAGENDR",
+    "consensus_judgement": "B_TO_A",
+    "proposed_parent": "RIAGENDR",
+    "proposed_child": "PAQ605",
+    "semantic_confidence": 0.95,
+    "mean_winning_confidence": 0.95,
+    "agreement_ratio": 1.0,
+    "vote_count": 2,
+    "vote_counts": {
+      "B_TO_A": 2
+    },
+    "providers": [
+      "kimi",
+      "deepseek"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash"
+    ],
+    "reasons": [
+      "Recorded sex is predetermined and immutable; current work activity cannot cause it. Reverse causation from sex to activity patterns (via physiology, occupation, social roles) is plausible.",
+      "Sex is predetermined; work activity cannot cause sex. Statistical direction Y_TO_X is impossible."
+    ],
+    "constraints_applied": [
+      "immutable",
+      "immutable_variable",
+      "predetermined demographic",
+      "predetermined_variable_order"
+    ],
+    "selection_reasons": [
+      "violates_predetermined_variable_order"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 1,
+      "accepted_decision_count": 1,
+      "accepted_orientations": [
+        "PAQ605->RIAGENDR"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.41964407962064476,
+      "confidence_mean": 0.41964407962064476,
+      "confidence_max": 0.41964407962064476,
+      "max_abs_corr": 0.1527843100524779,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": []
+  },
+  {
+    "task": "chol_med_tchol",
+    "pair_id": "chol_med_tchol::RIAGENDR::SMQ020",
+    "node_a": "RIAGENDR",
+    "node_b": "SMQ020",
+    "priority": "P0",
+    "current_parent": "SMQ020",
+    "current_child": "RIAGENDR",
+    "consensus_judgement": "A_TO_B",
+    "proposed_parent": "RIAGENDR",
+    "proposed_child": "SMQ020",
+    "semantic_confidence": 0.95,
+    "mean_winning_confidence": 0.95,
+    "agreement_ratio": 1.0,
+    "vote_count": 2,
+    "vote_counts": {
+      "A_TO_B": 2
+    },
+    "providers": [
+      "kimi",
+      "deepseek"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash"
+    ],
+    "reasons": [
+      "Recorded sex is fixed at birth; lifetime smoking history cannot determine it. Sex may influence smoking uptake through social and biological pathways.",
+      "Sex is predetermined; lifetime smoking cannot cause sex. Statistical direction Y_TO_X is impossible."
+    ],
+    "constraints_applied": [
+      "immutable",
+      "immutable_variable",
+      "predetermined demographic",
+      "predetermined_variable_order"
+    ],
+    "selection_reasons": [
+      "violates_predetermined_variable_order"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 1,
+      "accepted_decision_count": 1,
+      "accepted_orientations": [
+        "SMQ020->RIAGENDR"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.46976265266795814,
+      "confidence_mean": 0.46976265266795814,
+      "confidence_max": 0.46976265266795814,
+      "max_abs_corr": 0.20637003863928147,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": []
+  },
+  {
+    "task": "chol_med_tchol",
+    "pair_id": "chol_med_tchol::RIAGENDR::Y",
+    "node_a": "RIAGENDR",
+    "node_b": "Y",
+    "priority": "P0",
+    "current_parent": "RIAGENDR",
+    "current_child": "Y",
+    "consensus_judgement": "A_TO_B",
+    "proposed_parent": "RIAGENDR",
+    "proposed_child": "Y",
+    "semantic_confidence": 0.9450000000000001,
+    "mean_winning_confidence": 0.9450000000000001,
+    "agreement_ratio": 1.0,
+    "vote_count": 2,
+    "vote_counts": {
+      "A_TO_B": 2
+    },
+    "providers": [
+      "kimi",
+      "deepseek"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash"
+    ],
+    "reasons": [
+      "Sex is predetermined before treatment and outcome measurement. Biological sex directly influences lipid metabolism, body composition, and cholesterol levels. Y cannot cause immutable sex.",
+      "Sex is predetermined; total cholesterol cannot cause sex, but sex influences cholesterol levels."
+    ],
+    "constraints_applied": [
+      "T_to_Y_fixed",
+      "predetermined demographic",
+      "predetermined_variable_order",
+      "terminal outcome cannot cause predetermined attributes",
+      "terminal_outcome_constraint"
+    ],
+    "selection_reasons": [
+      "touches_treatment_or_outcome",
+      "changes_c_or_s_set_under_perturbation"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 2,
+      "accepted_decision_count": 2,
+      "accepted_orientations": [
+        "RIAGENDR->Y"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.6776497306835324,
+      "confidence_mean": 0.6776497306835324,
+      "confidence_max": 0.6776497306835324,
+      "max_abs_corr": 0.20400497438404028,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": []
+  },
+  {
+    "task": "chol_med_tchol",
+    "pair_id": "chol_med_tchol::RIAGENDR::mean_dbp",
+    "node_a": "RIAGENDR",
+    "node_b": "mean_dbp",
+    "priority": "P0",
+    "current_parent": "mean_dbp",
+    "current_child": "RIAGENDR",
+    "consensus_judgement": "A_TO_B",
+    "proposed_parent": "RIAGENDR",
+    "proposed_child": "mean_dbp",
+    "semantic_confidence": 0.925,
+    "mean_winning_confidence": 0.925,
+    "agreement_ratio": 1.0,
+    "vote_count": 2,
+    "vote_counts": {
+      "A_TO_B": 2
+    },
+    "providers": [
+      "kimi",
+      "deepseek"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash"
+    ],
+    "reasons": [
+      "Recorded sex is immutable and predetermined. Sex influences body composition, vascular physiology, and thus diastolic pressure. Same-visit BP cannot cause sex.",
+      "Sex is predetermined; blood pressure cannot cause sex, but sex affects blood pressure."
+    ],
+    "constraints_applied": [
+      "immutable",
+      "immutable_variable",
+      "predetermined demographic",
+      "predetermined_variable_order"
+    ],
+    "selection_reasons": [
+      "changes_c_or_s_set_under_perturbation",
+      "violates_predetermined_variable_order",
+      "low_or_missing_statistical_confidence"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 2,
+      "accepted_decision_count": 1,
+      "accepted_orientations": [
+        "mean_dbp->RIAGENDR"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.1989909906092628,
+      "confidence_mean": 0.1989909906092628,
+      "confidence_max": 0.1989909906092628,
+      "max_abs_corr": 0.12829909283957106,
+      "max_ci_p_value": 0.06733110763521226,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": []
+  },
+  {
+    "task": "chol_med_tchol",
+    "pair_id": "chol_med_tchol::RIDAGEYR::T",
+    "node_a": "RIDAGEYR",
+    "node_b": "T",
+    "priority": "P0",
+    "current_parent": "RIDAGEYR",
+    "current_child": "T",
+    "consensus_judgement": "A_TO_B",
+    "proposed_parent": "RIDAGEYR",
+    "proposed_child": "T",
+    "semantic_confidence": 0.97,
+    "mean_winning_confidence": 0.97,
+    "agreement_ratio": 1.0,
+    "vote_count": 2,
+    "vote_counts": {
+      "A_TO_B": 2
+    },
+    "providers": [
+      "kimi",
+      "deepseek"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash"
+    ],
+    "reasons": [
+      "Age is chronologically fixed before treatment initiation. Age directly influences cardiovascular risk, prescribing guidelines, and treatment indication. Current medication cannot alter birth age.",
+      "Age is immutable; treatment cannot cause age, but age influences medication prescription."
+    ],
+    "constraints_applied": [
+      "T_to_Y_fixed",
+      "immutable",
+      "immutable_variable",
+      "predetermined demographic",
+      "predetermined_variable_order"
+    ],
+    "selection_reasons": [
+      "touches_treatment_or_outcome",
+      "changes_c_or_s_set_under_perturbation",
+      "algorithmic_rescue_edge",
+      "task_sanitizer_audit"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 2,
+      "accepted_decision_count": 2,
+      "accepted_orientations": [
+        "T->RIDAGEYR"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.8495636286414271,
+      "confidence_mean": 0.8495636286414271,
+      "confidence_max": 0.8495636286414271,
+      "max_abs_corr": 0.1925699534138904,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": [
+      "sanitized",
+      "treatment_rescue"
+    ]
+  },
+  {
+    "task": "chol_med_tchol",
+    "pair_id": "chol_med_tchol::RIDAGEYR::Y",
+    "node_a": "RIDAGEYR",
+    "node_b": "Y",
+    "priority": "P0",
+    "current_parent": "RIDAGEYR",
+    "current_child": "Y",
+    "consensus_judgement": "A_TO_B",
+    "proposed_parent": "RIDAGEYR",
+    "proposed_child": "Y",
+    "semantic_confidence": 0.975,
+    "mean_winning_confidence": 0.975,
+    "agreement_ratio": 1.0,
+    "vote_count": 2,
+    "vote_counts": {
+      "A_TO_B": 2
+    },
+    "providers": [
+      "kimi",
+      "deepseek"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash"
+    ],
+    "reasons": [
+      "Age is predetermined before treatment and examination. Age directly influences lipid metabolism, hepatic synthesis, and cholesterol levels. Reverse causation impossible.",
+      "Age is predetermined and cannot be caused by current cholesterol level."
+    ],
+    "constraints_applied": [
+      "Y_terminal_outcome",
+      "immutable_variable",
+      "predetermined_variable",
+      "temporal_order"
+    ],
+    "selection_reasons": [
+      "touches_treatment_or_outcome",
+      "changes_c_or_s_set_under_perturbation",
+      "algorithmic_rescue_edge",
+      "task_sanitizer_audit",
+      "low_or_missing_statistical_confidence"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 1,
+      "accepted_decision_count": 1,
+      "accepted_orientations": [
+        "Y->RIDAGEYR"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.1007935863553552,
+      "confidence_mean": 0.1007935863553552,
+      "confidence_max": 0.1007935863553552,
+      "max_abs_corr": 0.22894834336244968,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": [
+      "outcome_rescue",
+      "sanitized"
+    ]
+  },
+  {
+    "task": "chol_med_tchol",
+    "pair_id": "chol_med_tchol::RIDAGEYR::mean_dbp",
+    "node_a": "RIDAGEYR",
+    "node_b": "mean_dbp",
+    "priority": "P0",
+    "current_parent": "mean_dbp",
+    "current_child": "RIDAGEYR",
+    "consensus_judgement": "A_TO_B",
+    "proposed_parent": "RIDAGEYR",
+    "proposed_child": "mean_dbp",
+    "semantic_confidence": 0.99,
+    "mean_winning_confidence": 0.99,
+    "agreement_ratio": 1.0,
+    "vote_count": 2,
+    "vote_counts": {
+      "A_TO_B": 2
+    },
+    "providers": [
+      "kimi",
+      "deepseek"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash"
+    ],
+    "reasons": [
+      "Chronological age cannot be caused by any measured variable. Age directly influences vascular stiffness and diastolic pressure. Reverse direction violates immutable constraint.",
+      "Age is predetermined; mean DBP is a current measurement that can be influenced by age."
+    ],
+    "constraints_applied": [
+      "immutable_variable",
+      "predetermined_variable",
+      "temporal_order"
+    ],
+    "selection_reasons": [
+      "violates_predetermined_variable_order",
+      "low_or_missing_statistical_confidence"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 1,
+      "accepted_decision_count": 1,
+      "accepted_orientations": [
+        "mean_dbp->RIDAGEYR"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.23362330193445552,
+      "confidence_mean": 0.23362330193445552,
+      "confidence_max": 0.23362330193445552,
+      "max_abs_corr": 0.3629632189067256,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": []
+  },
+  {
+    "task": "chol_med_tchol",
+    "pair_id": "chol_med_tchol::T::Y",
+    "node_a": "T",
+    "node_b": "Y",
+    "priority": "P0",
+    "current_parent": "T",
+    "current_child": "Y",
+    "consensus_judgement": "A_TO_B",
+    "proposed_parent": "T",
+    "proposed_child": "Y",
+    "semantic_confidence": 1.0,
+    "mean_winning_confidence": 1.0,
+    "agreement_ratio": 1.0,
+    "vote_count": 2,
+    "vote_counts": {
+      "A_TO_B": 2
+    },
+    "providers": [
+      "kimi",
+      "deepseek"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash"
+    ],
+    "reasons": [
+      "Fixed by intervention query. Treatment initiation precedes laboratory measurement. Cholesterol-lowering medications directly reduce circulating cholesterol.",
+      "The intervention query fixes T -> Y; reverse is not permitted."
+    ],
+    "constraints_applied": [
+      "Y_terminal_outcome",
+      "fixed_treatment_outcome",
+      "fixed_treatment_outcome_query",
+      "temporal_order"
+    ],
+    "selection_reasons": [
+      "fixed_treatment_outcome_query",
+      "touches_treatment_or_outcome",
+      "changes_c_or_s_set_under_perturbation"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 3,
+      "accepted_decision_count": 3,
+      "accepted_orientations": [
+        "T->Y"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 1.0,
+      "confidence_mean": 1.0,
+      "confidence_max": 1.0,
+      "max_abs_corr": 0.4186452978112364,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": []
+  },
+  {
+    "task": "chol_med_tchol",
+    "pair_id": "chol_med_tchol::T::mean_dbp",
+    "node_a": "T",
+    "node_b": "mean_dbp",
+    "priority": "P0",
+    "current_parent": "mean_dbp",
+    "current_child": "T",
+    "consensus_judgement": "UNRESOLVED",
+    "proposed_parent": "",
+    "proposed_child": "",
+    "semantic_confidence": 0.5,
+    "mean_winning_confidence": 0.5,
+    "agreement_ratio": 1.0,
+    "vote_count": 3,
+    "vote_counts": {
+      "UNRESOLVED": 3
+    },
+    "providers": [
+      "kimi",
+      "deepseek",
+      "kimi"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash",
+      "kimi-k2.6"
+    ],
+    "reasons": [
+      "Same-visit timing ambiguity. Long-term medication may affect blood pressure, but prior cardiovascular risk confounds both. Cross-sectional data cannot distinguish direction reliably.",
+      "Same-visit measurements; temporal order ambiguous; weak and non-significant association; plausible unmeasured confounders.",
+      "Same-visit DBP cannot cleanly predate long-term statin use; prior cardiovascular risk confounds both. Reverse also implausible (T doesn't acutely cause DBP). Temporal ambiguity mandates UNRESOLVED."
+    ],
+    "constraints_applied": [
+      "confounding by indication",
+      "confounding_by_indication",
+      "same-visit timing ambiguity",
+      "same_visit_timing",
+      "temporal_ambiguity_same_visit",
+      "treatment precedes outcome fixed",
+      "unmeasured_confounding"
+    ],
+    "selection_reasons": [
+      "touches_treatment_or_outcome",
+      "changes_c_or_s_set_under_perturbation",
+      "algorithmic_rescue_edge",
+      "low_or_missing_statistical_confidence"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 3,
+      "accepted_decision_count": 0,
+      "accepted_orientations": [],
+      "orientation_conflict": false,
+      "confidence_min": null,
+      "confidence_mean": null,
+      "confidence_max": null,
+      "max_abs_corr": 0.10477267622825227,
+      "max_ci_p_value": 0.1326772666588238,
+      "methods": []
+    },
+    "provenance": [
+      "treatment_rescue"
+    ]
+  },
+  {
+    "task": "chol_med_tchol",
+    "pair_id": "chol_med_tchol::BPQ020::MCQ160B",
+    "node_a": "BPQ020",
+    "node_b": "MCQ160B",
+    "priority": "P1",
+    "current_parent": "BPQ020",
+    "current_child": "MCQ160B",
+    "consensus_judgement": "NO_DIRECT_EDGE",
+    "proposed_parent": "",
+    "proposed_child": "",
+    "semantic_confidence": 0.39999999999999997,
+    "mean_winning_confidence": 0.6,
+    "agreement_ratio": 0.6666666666666666,
+    "vote_count": 3,
+    "vote_counts": {
+      "NO_DIRECT_EDGE": 2,
+      "A_TO_B": 1
+    },
+    "providers": [
+      "kimi",
+      "deepseek",
+      "kimi"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash",
+      "kimi-k2.6"
+    ],
+    "reasons": [
+      "Both are historical cardiovascular diagnoses likely sharing common causes (aging, atherosclerotic risk, diabetes) rather than one directly causing the other. Disease co-occurrence pattern.",
+      "Hypertension and CHF share cardiometabolic etiology; neither directly causes the other. Both are historical diagnoses with common antecedents (atherosclerosis, diabetes, age). Association is confounded, not mechanistically direct."
+    ],
+    "constraints_applied": [
+      "NO_DIRECT_EDGE_preferred",
+      "disease co-occurrence",
+      "disease_co_occurrence",
+      "historical diagnoses",
+      "shared cardiometabolic risk",
+      "shared_cardiometabolic_risk"
+    ],
+    "selection_reasons": [
+      "changes_c_or_s_set_under_perturbation"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 1,
+      "accepted_decision_count": 1,
+      "accepted_orientations": [
+        "BPQ020->MCQ160B"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.44553402100865713,
+      "confidence_mean": 0.44553402100865713,
+      "confidence_max": 0.44553402100865713,
+      "max_abs_corr": 0.11909074767936924,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": []
+  },
+  {
+    "task": "chol_med_tchol",
+    "pair_id": "chol_med_tchol::BPQ020::MCQ160F",
+    "node_a": "BPQ020",
+    "node_b": "MCQ160F",
+    "priority": "P1",
+    "current_parent": "MCQ160F",
+    "current_child": "BPQ020",
+    "consensus_judgement": "NO_DIRECT_EDGE",
+    "proposed_parent": "",
+    "proposed_child": "",
+    "semantic_confidence": 0.41666666666666663,
+    "mean_winning_confidence": 0.625,
+    "agreement_ratio": 0.6666666666666666,
+    "vote_count": 3,
+    "vote_counts": {
+      "NO_DIRECT_EDGE": 2,
+      "A_TO_B": 1
+    },
+    "providers": [
+      "kimi",
+      "deepseek",
+      "kimi"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash",
+      "kimi-k2.6"
+    ],
+    "reasons": [
+      "Stroke and hypertension are both historical cardiovascular diagnoses with shared cardiometabolic etiology. Neither directly causes the other; association reflects common risk factors (diabetes, age, atherosclerosis). Temporal order is ambiguous without onset dates.",
+      "Stroke and hypertension are comorbid via shared vascular pathology. Stroke does not directly cause hypertension diagnosis; hypertension is a chronic risk factor, not a consequence. Common causes explain association."
+    ],
+    "constraints_applied": [
+      "disease co-occurrence",
+      "historical diagnoses",
+      "historical diagnosis timing",
+      "shared cardiometabolic risk"
+    ],
+    "selection_reasons": [
+      "changes_c_or_s_set_under_perturbation",
+      "low_or_missing_statistical_confidence"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 1,
+      "accepted_decision_count": 1,
+      "accepted_orientations": [
+        "MCQ160F->BPQ020"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.26154623963261103,
+      "confidence_mean": 0.26154623963261103,
+      "confidence_max": 0.26154623963261103,
+      "max_abs_corr": 0.12152360729091607,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": []
+  },
+  {
+    "task": "chol_med_tchol",
+    "pair_id": "chol_med_tchol::BPXPLS::LBXGH",
+    "node_a": "BPXPLS",
+    "node_b": "LBXGH",
+    "priority": "P1",
+    "current_parent": "BPXPLS",
+    "current_child": "LBXGH",
+    "consensus_judgement": "NO_DIRECT_EDGE",
+    "proposed_parent": "",
+    "proposed_child": "",
+    "semantic_confidence": 0.43333333333333335,
+    "mean_winning_confidence": 0.65,
+    "agreement_ratio": 0.6666666666666666,
+    "vote_count": 3,
+    "vote_counts": {
+      "UNRESOLVED": 1,
+      "NO_DIRECT_EDGE": 2
+    },
+    "providers": [
+      "kimi",
+      "deepseek",
+      "kimi"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash",
+      "kimi-k2.6"
+    ],
+    "reasons": [
+      "HbA1c reflects past glycemia; pulse is concurrent. No strong direct mechanism; association likely via shared metabolic factors.",
+      "Pulse and HbA1c are contemporaneous measures with no plausible direct mechanism. Autonomic tone (pulse) does not directly alter 2-3 month glycemic history; diabetes/autonomic neuropathy could affect both. Shared confounding likely."
+    ],
+    "constraints_applied": [
+      "no plausible direct mechanism",
+      "same-day measurements",
+      "same-visit timing ambiguity",
+      "shared confounding",
+      "temporal ambiguity"
+    ],
+    "selection_reasons": [
+      "changes_c_or_s_set_under_perturbation"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 1,
+      "accepted_decision_count": 1,
+      "accepted_orientations": [
+        "BPXPLS->LBXGH"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.3625297790097318,
+      "confidence_mean": 0.3625297790097318,
+      "confidence_max": 0.3625297790097318,
+      "max_abs_corr": 0.11752610851347052,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": []
+  },
+  {
+    "task": "chol_med_tchol",
+    "pair_id": "chol_med_tchol::BPXPLS::Y",
+    "node_a": "BPXPLS",
+    "node_b": "Y",
+    "priority": "P1",
+    "current_parent": "BPXPLS",
+    "current_child": "Y",
+    "consensus_judgement": "NO_DIRECT_EDGE",
+    "proposed_parent": "",
+    "proposed_child": "",
+    "semantic_confidence": 0.825,
+    "mean_winning_confidence": 0.825,
+    "agreement_ratio": 1.0,
+    "vote_count": 2,
+    "vote_counts": {
+      "NO_DIRECT_EDGE": 2
+    },
+    "providers": [
+      "kimi",
+      "deepseek"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash"
+    ],
+    "reasons": [
+      "Pulse and total cholesterol are contemporaneous cardiovascular measures without plausible direct mechanism. Association likely confounded by fitness, diabetes, medications, or autonomic state. Reverse creates cycle; no direct edge justified.",
+      "Total cholesterol (Y) is the terminal outcome; pulse cannot cause cholesterol. No direct causal pathway in cross-section."
+    ],
+    "constraints_applied": [
+      "T->Y fixed",
+      "Y is terminal outcome",
+      "no plausible direct mechanism",
+      "same-visit contemporaneous measurement",
+      "terminal outcome constraint"
+    ],
+    "selection_reasons": [
+      "touches_treatment_or_outcome"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 2,
+      "accepted_decision_count": 2,
+      "accepted_orientations": [
+        "BPXPLS->Y"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.36600213580128665,
+      "confidence_mean": 0.36600213580128665,
+      "confidence_max": 0.36600213580128665,
+      "max_abs_corr": 0.10874665828886844,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": []
+  },
+  {
+    "task": "chol_med_tchol",
+    "pair_id": "chol_med_tchol::DIQ050::MCQ160B",
+    "node_a": "DIQ050",
+    "node_b": "MCQ160B",
+    "priority": "P1",
+    "current_parent": "MCQ160B",
+    "current_child": "DIQ050",
+    "consensus_judgement": "NO_DIRECT_EDGE",
+    "proposed_parent": "",
+    "proposed_child": "",
+    "semantic_confidence": 0.4666666666666666,
+    "mean_winning_confidence": 0.7,
+    "agreement_ratio": 0.6666666666666666,
+    "vote_count": 3,
+    "vote_counts": {
+      "A_TO_B": 1,
+      "NO_DIRECT_EDGE": 2
+    },
+    "providers": [
+      "kimi",
+      "deepseek",
+      "kimi"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash",
+      "kimi-k2.6"
+    ],
+    "reasons": [
+      "Current insulin use cannot cause past CHF diagnosis. Association confounded by diabetes severity and shared risk factors.",
+      "CHF and insulin use associate through diabetes severity and cardiovascular risk, not direct causation. CHF does not directly cause insulin prescription; both stem from shared metabolic/vascular disease."
+    ],
+    "constraints_applied": [
+      "co-treatment severity marker",
+      "disease co-occurrence",
+      "historical diagnosis not caused by current medication",
+      "shared cardiometabolic risk"
+    ],
+    "selection_reasons": [
+      "changes_c_or_s_set_under_perturbation"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 1,
+      "accepted_decision_count": 1,
+      "accepted_orientations": [
+        "MCQ160B->DIQ050"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.3574697215401894,
+      "confidence_mean": 0.3574697215401894,
+      "confidence_max": 0.3574697215401894,
+      "max_abs_corr": 0.10691348267820704,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": []
+  },
+  {
+    "task": "chol_med_tchol",
+    "pair_id": "chol_med_tchol::DIQ050::MCQ160E",
+    "node_a": "DIQ050",
+    "node_b": "MCQ160E",
+    "priority": "P1",
+    "current_parent": "DIQ050",
+    "current_child": "MCQ160E",
+    "consensus_judgement": "NO_DIRECT_EDGE",
+    "proposed_parent": "",
+    "proposed_child": "",
+    "semantic_confidence": 0.3333333333333333,
+    "mean_winning_confidence": 0.5,
+    "agreement_ratio": 0.6666666666666666,
+    "vote_count": 3,
+    "vote_counts": {
+      "B_TO_A": 1,
+      "NO_DIRECT_EDGE": 2
+    },
+    "providers": [
+      "kimi",
+      "deepseek",
+      "kimi"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash",
+      "kimi-k2.6"
+    ],
+    "reasons": [
+      "Prior heart attack cannot be caused by current insulin. Both are consequences of diabetes; no direct edge.",
+      "Insulin use and prior heart attack share cardiometabolic risk confounders. Prior MI causes treatment intensity, not vice versa. No plausible direct mechanism from current insulin to historical MI."
+    ],
+    "constraints_applied": [
+      "confounding_by_indication",
+      "disease_co-occurrence_not_causal",
+      "historical diagnosis not caused by current medication",
+      "temporal_order"
+    ],
+    "selection_reasons": [
+      "changes_c_or_s_set_under_perturbation",
+      "low_or_missing_statistical_confidence"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 2,
+      "accepted_decision_count": 2,
+      "accepted_orientations": [
+        "DIQ050->MCQ160E"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.18330715337591452,
+      "confidence_mean": 0.18330715337591452,
+      "confidence_max": 0.18330715337591452,
+      "max_abs_corr": 0.1118379532452384,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": []
+  },
+  {
+    "task": "chol_med_tchol",
+    "pair_id": "chol_med_tchol::INDFMPIR::mean_dbp",
+    "node_a": "INDFMPIR",
+    "node_b": "mean_dbp",
+    "priority": "P1",
+    "current_parent": "mean_dbp",
+    "current_child": "INDFMPIR",
+    "consensus_judgement": "UNRESOLVED",
+    "proposed_parent": "",
+    "proposed_child": "",
+    "semantic_confidence": 0.0,
+    "mean_winning_confidence": 0.2,
+    "agreement_ratio": 0.0,
+    "vote_count": 3,
+    "vote_counts": {
+      "NO_DIRECT_EDGE": 1,
+      "A_TO_B": 1,
+      "UNRESOLVED": 1
+    },
+    "providers": [
+      "kimi",
+      "deepseek",
+      "kimi"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash",
+      "kimi-k2.6"
+    ],
+    "reasons": [
+      "Income affects healthcare access and thus BP management, but chronic illness may reduce income. Same-visit BP cannot clearly predate income reporting. Cross-sectional timing prevents defensible direction."
+    ],
+    "constraints_applied": [
+      "cross_sectional_ambiguity",
+      "reverse_causation_possible",
+      "same_visit_timing"
+    ],
+    "selection_reasons": [
+      "changes_c_or_s_set_under_perturbation",
+      "low_or_missing_statistical_confidence"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 1,
+      "accepted_decision_count": 1,
+      "accepted_orientations": [
+        "mean_dbp->INDFMPIR"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.17486881179229502,
+      "confidence_mean": 0.17486881179229502,
+      "confidence_max": 0.17486881179229502,
+      "max_abs_corr": 0.07356515827381468,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": []
+  },
+  {
+    "task": "chol_med_tchol",
+    "pair_id": "chol_med_tchol::LBXGH::Y",
+    "node_a": "LBXGH",
+    "node_b": "Y",
+    "priority": "P1",
+    "current_parent": "LBXGH",
+    "current_child": "Y",
+    "consensus_judgement": "NO_DIRECT_EDGE",
+    "proposed_parent": "",
+    "proposed_child": "",
+    "semantic_confidence": 0.7,
+    "mean_winning_confidence": 0.7,
+    "agreement_ratio": 1.0,
+    "vote_count": 2,
+    "vote_counts": {
+      "NO_DIRECT_EDGE": 2
+    },
+    "providers": [
+      "kimi",
+      "deepseek"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash"
+    ],
+    "reasons": [
+      "HbA1c and total cholesterol are concurrent cardiometabolic biomarkers. Their association arises from shared insulin resistance, diabetes, and lifestyle—not a direct causal effect. Reverse creates cycle with T->Y.",
+      "Both are concurrent metabolic markers with no direct causal mechanism; shared confounding by diabetes and metabolic syndrome is more plausible."
+    ],
+    "constraints_applied": [
+      "concurrent measurements",
+      "no direct biological pathway",
+      "reverse creates cycle",
+      "same-visit ambiguity",
+      "shared cardiometabolic risk"
+    ],
+    "selection_reasons": [
+      "touches_treatment_or_outcome",
+      "algorithmic_rescue_edge",
+      "low_or_missing_statistical_confidence"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 1,
+      "accepted_decision_count": 0,
+      "accepted_orientations": [],
+      "orientation_conflict": false,
+      "confidence_min": null,
+      "confidence_mean": null,
+      "confidence_max": null,
+      "max_abs_corr": 0.1037528103922601,
+      "max_ci_p_value": 0.1130689070696537,
+      "methods": []
+    },
+    "provenance": [
+      "outcome_rescue"
+    ]
+  },
+  {
+    "task": "chol_med_tchol",
+    "pair_id": "chol_med_tchol::Y::mean_dbp",
+    "node_a": "Y",
+    "node_b": "mean_dbp",
+    "priority": "P1",
+    "current_parent": "mean_dbp",
+    "current_child": "Y",
+    "consensus_judgement": "NO_DIRECT_EDGE",
+    "proposed_parent": "",
+    "proposed_child": "",
+    "semantic_confidence": 0.7,
+    "mean_winning_confidence": 0.7,
+    "agreement_ratio": 1.0,
+    "vote_count": 2,
+    "vote_counts": {
+      "NO_DIRECT_EDGE": 2
+    },
+    "providers": [
+      "kimi",
+      "deepseek"
+    ],
+    "models": [
+      "kimi-k2.6",
+      "deepseek-v4-flash"
+    ],
+    "reasons": [
+      "Concurrent DBP and cholesterol share common determinants (vascular health, diabetes, medications) but neither directly causes the other at the same examination. Reverse creates cycle with T->Y.",
+      "Concurrent measurements of total cholesterol and diastolic blood pressure lack a direct causal pathway; association likely driven by shared cardiometabolic risk."
+    ],
+    "constraints_applied": [
+      "concurrent measurements",
+      "no direct mechanism",
+      "reverse creates cycle",
+      "same-visit ambiguity",
+      "shared cardiometabolic risk"
+    ],
+    "selection_reasons": [
+      "touches_treatment_or_outcome",
+      "low_or_missing_statistical_confidence"
+    ],
+    "statistical_evidence": {
+      "candidate_decision_count": 2,
+      "accepted_decision_count": 2,
+      "accepted_orientations": [
+        "mean_dbp->Y"
+      ],
+      "orientation_conflict": false,
+      "confidence_min": 0.1477188258040973,
+      "confidence_mean": 0.1477188258040973,
+      "confidence_max": 0.1477188258040973,
+      "max_abs_corr": 0.18647368017296606,
+      "max_ci_p_value": null,
+      "methods": [
+        "task_adaptive"
+      ]
+    },
+    "provenance": []
+  }
+]

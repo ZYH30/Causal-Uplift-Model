@@ -1,0 +1,7 @@
+Model,Setting,MAE,R2,Spearman,Bias
+S-Learner,Naive,2.362,-6.897,-0.181,-2.362
+S-Learner,OCU + oracle graph,0.426,0.641,0.907,-0.344
+S-Learner,OCU + learned graph,0.411,0.653,0.917,-0.351
+ClassTransform,Naive,1.596,-3.070,0.169,-1.593
+ClassTransform,OCU + oracle graph,0.185,0.870,0.967,-0.115
+ClassTransform,OCU + learned graph,0.191,0.859,0.964,-0.126

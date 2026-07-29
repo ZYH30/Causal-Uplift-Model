@@ -1,0 +1,7 @@
+Figure,Source,Role
+figure_1_policy_value_curves,fig_primary_policy_value_curves,Main figure: DR policy value curves
+figure_2_metric_improvements,fig_primary_metric_improvements,Main figure: metric improvements over naive
+figure_3_covariate_balance,fig_primary_balance_smd,Main figure: covariate balance diagnostics
+figure_4_learned_causal_sets,fig_primary_learned_sets,Main figure: learned C/S sets
+figure_s1_candidate_qini_improvements,fig_all_candidate_qini_improvements,Supplementary figure: candidate DR-Qini gains
+figure_s2_local_graphs,fig_primary_local_graphs,Supplementary figure: local graph visualization

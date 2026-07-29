@@ -1,0 +1,3 @@
+Task,N (T/C),Variables (d/C/S),Raw difference,AIPW ATE [95% CI],C-set mean |SMD|,ESS ratio
+Antihypertensive medication / SBP,7711 (5830/1881),29/6/2,1.80 mmHg,"-3.49 [-5.03, -1.95]",0.383 to 0.079,0.795
+Cholesterol medication / total cholesterol,4521 (3483/1038),30/7/4,-49.50 mg/dL,"-43.82 [-47.95, -39.69]",0.239 to 0.105,0.960

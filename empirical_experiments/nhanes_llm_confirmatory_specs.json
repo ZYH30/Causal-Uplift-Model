@@ -1,0 +1,16 @@
+[
+  {
+    "task": "antihypertensive_sbp",
+    "graph_variant": "Statistical+LLM-Conservative",
+    "conf_type": "proximal",
+    "graph": "results/llm_adjudication/nhanes_antihypertensive_sbp_graph_llm_conservative.json",
+    "seeds": [2030, 2031, 2032, 2033, 2034, 2035, 2036, 2037, 2038, 2039]
+  },
+  {
+    "task": "chol_med_tchol",
+    "graph_variant": "Statistical+LLM-Conservative",
+    "conf_type": "proximal",
+    "graph": "results/llm_adjudication/nhanes_chol_med_tchol_graph_llm_conservative.json",
+    "seeds": [2030, 2031, 2032, 2033, 2034, 2035, 2036, 2037, 2038, 2039]
+  }
+]

@@ -1,0 +1,11 @@
+method,seed,accuracy,ambiguous_rate,n_edges
+pair_spearman_anm,2026,0.7407407407407407,0.0,27
+pair_spearman_anm,2027,0.4444444444444444,0.14814814814814814,27
+pair_spearman_anm,2028,0.48148148148148145,0.07407407407407407,27
+pair_spearman_anm,2029,0.5555555555555556,0.0,27
+pair_spearman_anm,2030,0.7037037037037037,0.0,27
+task_adaptive,2026,1.0,0.0,27
+task_adaptive,2027,1.0,0.0,27
+task_adaptive,2028,1.0,0.0,27
+task_adaptive,2029,1.0,0.0,27
+task_adaptive,2030,1.0,0.0,27

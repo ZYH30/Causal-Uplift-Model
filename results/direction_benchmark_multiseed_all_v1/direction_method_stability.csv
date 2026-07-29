@@ -1,0 +1,3 @@
+method,accuracy_seed_mean,accuracy_seed_std,accuracy_seed_min,accuracy_seed_max,ambiguous_seed_mean
+pair_spearman_anm,0.5851851851851851,0.13198910874967007,0.4444444444444444,0.7407407407407407,0.04444444444444444
+task_adaptive,1.0,0.0,1.0,1.0,0.0

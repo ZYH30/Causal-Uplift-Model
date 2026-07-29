@@ -1,0 +1,44 @@
+[
+  {
+    "task": "antihypertensive_sbp",
+    "graph_variant": "Statistical",
+    "conf_type": "proximal",
+    "graph": "results/nhanes_antihypertensive_sbp_v3_total_conf/nhanes_antihypertensive_sbp_ccia_graph.json",
+    "seeds": [2026, 2027, 2028, 2029]
+  },
+  {
+    "task": "antihypertensive_sbp",
+    "graph_variant": "Statistical+LLM",
+    "conf_type": "proximal",
+    "graph": "results/llm_adjudication/nhanes_antihypertensive_sbp_graph_llm.json",
+    "seeds": [2026, 2027, 2028, 2029]
+  },
+  {
+    "task": "antihypertensive_sbp",
+    "graph_variant": "Statistical",
+    "conf_type": "total",
+    "graph": "results/nhanes_antihypertensive_sbp_v3_total_conf/nhanes_antihypertensive_sbp_ccia_graph.json",
+    "seeds": [2026, 2027, 2028, 2029]
+  },
+  {
+    "task": "antihypertensive_sbp",
+    "graph_variant": "Statistical+LLM",
+    "conf_type": "total",
+    "graph": "results/llm_adjudication/nhanes_antihypertensive_sbp_graph_llm.json",
+    "seeds": [2026, 2027, 2028, 2029]
+  },
+  {
+    "task": "chol_med_tchol",
+    "graph_variant": "Statistical",
+    "conf_type": "proximal",
+    "graph": "results/nhanes_chol_med_tchol_v1_dr_metrics/nhanes_chol_med_tchol_ccia_graph.json",
+    "seeds": [2026, 2027, 2028, 2029]
+  },
+  {
+    "task": "chol_med_tchol",
+    "graph_variant": "Statistical+LLM",
+    "conf_type": "proximal",
+    "graph": "results/llm_adjudication/nhanes_chol_med_tchol_graph_llm.json",
+    "seeds": [2026, 2027, 2028, 2029]
+  }
+]

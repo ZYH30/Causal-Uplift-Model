@@ -1,0 +1,224 @@
+{
+  "graph": {
+    "BMXBMI": [
+      "BPQ020",
+      "RIAGENDR"
+    ],
+    "BMXHT": [
+      "RIAGENDR"
+    ],
+    "BMXWAIST": [
+      "BPXPLS",
+      "DIQ050"
+    ],
+    "BMXWT": [],
+    "BPQ020": [
+      "MCQ160F",
+      "T"
+    ],
+    "BPXPLS": [],
+    "DIQ010": [],
+    "DIQ050": [
+      "LBXGH",
+      "MCQ160B",
+      "MCQ160F"
+    ],
+    "DMDEDUC2": [],
+    "DMDMARTL": [],
+    "INDFMPIR": [
+      "MCQ160E",
+      "mean_dbp"
+    ],
+    "LBXGH": [
+      "BPXPLS"
+    ],
+    "MCQ160B": [
+      "BPQ020"
+    ],
+    "MCQ160C": [
+      "T"
+    ],
+    "MCQ160E": [
+      "BPQ020",
+      "BPXPLS",
+      "DIQ050",
+      "MCQ160B",
+      "MCQ160C"
+    ],
+    "MCQ160F": [],
+    "MCQ220": [],
+    "PAD680": [],
+    "PAQ605": [],
+    "PAQ620": [],
+    "PAQ635": [],
+    "PAQ650": [],
+    "PAQ665": [],
+    "RIAGENDR": [
+      "DMDMARTL",
+      "MCQ160E",
+      "PAQ605",
+      "SMQ020",
+      "mean_dbp"
+    ],
+    "RIDAGEYR": [
+      "BPQ020",
+      "BPXPLS",
+      "T",
+      "Y",
+      "mean_dbp"
+    ],
+    "RIDEXMON": [],
+    "RIDRETH3": [],
+    "SMQ020": [],
+    "T": [
+      "DIQ050"
+    ],
+    "Y": [
+      "BPQ020",
+      "BPXPLS",
+      "MCQ160E",
+      "RIAGENDR",
+      "T",
+      "mean_dbp"
+    ],
+    "cycle_year": [],
+    "mean_dbp": [
+      "BPXPLS",
+      "DIQ050"
+    ]
+  },
+  "conflicts": [],
+  "removed_edges": [],
+  "pruned_edges": [],
+  "treatment_rescue_edges": [
+    {
+      "parent": "LBXGH",
+      "child": "T",
+      "importance": 120.0,
+      "importance_ratio": 0.9022556390977443,
+      "importance_rank": 2,
+      "treatment_assoc": 0.1338685273885076,
+      "post_variables_excluded": [],
+      "outcome_excluded": "Y",
+      "reason": "treatment_importance_without_post_outcome"
+    },
+    {
+      "parent": "RIDAGEYR",
+      "child": "T",
+      "importance": 85.0,
+      "importance_ratio": 0.6390977443609023,
+      "importance_rank": 4,
+      "treatment_assoc": 0.1925699534138904,
+      "post_variables_excluded": [],
+      "outcome_excluded": "Y",
+      "reason": "treatment_importance_without_post_outcome"
+    },
+    {
+      "parent": "BMXWAIST",
+      "child": "T",
+      "importance": 84.0,
+      "importance_ratio": 0.631578947368421,
+      "importance_rank": 5,
+      "treatment_assoc": 0.055586219882656294,
+      "post_variables_excluded": [],
+      "outcome_excluded": "Y",
+      "reason": "treatment_importance_without_post_outcome"
+    },
+    {
+      "parent": "mean_dbp",
+      "child": "T",
+      "importance": 82.0,
+      "importance_ratio": 0.6165413533834586,
+      "importance_rank": 6,
+      "treatment_assoc": 0.10477267622825227,
+      "post_variables_excluded": [],
+      "outcome_excluded": "Y",
+      "reason": "treatment_importance_without_post_outcome"
+    },
+    {
+      "parent": "BPXPLS",
+      "child": "T",
+      "importance": 80.0,
+      "importance_ratio": 0.6015037593984962,
+      "importance_rank": 7,
+      "treatment_assoc": 0.04241390702323068,
+      "post_variables_excluded": [],
+      "outcome_excluded": "Y",
+      "reason": "treatment_importance_without_post_outcome"
+    }
+  ],
+  "outcome_rescue_edges": [
+    {
+      "parent": "BMXWAIST",
+      "child": "Y",
+      "importance": 72.0,
+      "importance_ratio": 0.5179856115107914,
+      "importance_rank": 7,
+      "post_variables_excluded": [],
+      "reason": "treatment_parent_with_outcome_importance"
+    },
+    {
+      "parent": "LBXGH",
+      "child": "Y",
+      "importance": 139.0,
+      "importance_ratio": 1.0,
+      "importance_rank": 1,
+      "post_variables_excluded": [],
+      "reason": "treatment_parent_with_outcome_importance"
+    },
+    {
+      "parent": "RIDAGEYR",
+      "child": "Y",
+      "importance": 77.0,
+      "importance_ratio": 0.5539568345323741,
+      "importance_rank": 6,
+      "post_variables_excluded": [],
+      "reason": "treatment_parent_with_outcome_importance"
+    }
+  ],
+  "precision_rescue_edges": [
+    {
+      "parent": "BMXHT",
+      "child": "Y",
+      "importance": 96.0,
+      "importance_ratio": 0.6906474820143885,
+      "importance_rank": 3,
+      "treatment_assoc": 0.009422590454683749,
+      "post_variables_excluded": [],
+      "reason": "precision_outcome_importance_low_treatment_assoc"
+    },
+    {
+      "parent": "BMXWT",
+      "child": "Y",
+      "importance": 94.0,
+      "importance_ratio": 0.6762589928057554,
+      "importance_rank": 5,
+      "treatment_assoc": 0.02056828915318662,
+      "post_variables_excluded": [],
+      "reason": "precision_outcome_importance_low_treatment_assoc"
+    }
+  ],
+  "post_treatment_rescue_edges": [],
+  "sanitized_edges": [
+    {
+      "parent": "T",
+      "child": "RIDAGEYR",
+      "reason": "task_temporal_sanitizer"
+    },
+    {
+      "parent": "Y",
+      "child": "RIDAGEYR",
+      "reason": "task_temporal_sanitizer"
+    },
+    {
+      "parent": "T",
+      "child": "BPQ020",
+      "reason": "task_temporal_sanitizer"
+    },
+    {
+      "parent": "T",
+      "child": "MCQ160C",
+      "reason": "task_temporal_sanitizer"
+    }
+  ]
+}

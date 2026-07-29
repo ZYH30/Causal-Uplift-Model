@@ -1,0 +1,15 @@
+method,tag,accuracy_mean,ambiguous_rate_mean,n_decisions
+pair_spearman_anm,collider_parent,0.5,0.05,20
+pair_spearman_anm,confounder_to_outcome,0.7333333333333333,0.06666666666666667,15
+pair_spearman_anm,confounder_to_treatment,0.26666666666666666,0.06666666666666667,15
+pair_spearman_anm,instrument_to_treatment,0.1,0.0,10
+pair_spearman_anm,precision_to_outcome,1.0,0.0,10
+pair_spearman_anm,root_to_proximal,0.65,0.05,60
+pair_spearman_anm,treatment_outcome,0.8,0.0,5
+task_adaptive,collider_parent,1.0,0.0,20
+task_adaptive,confounder_to_outcome,1.0,0.0,15
+task_adaptive,confounder_to_treatment,1.0,0.0,15
+task_adaptive,instrument_to_treatment,1.0,0.0,10
+task_adaptive,precision_to_outcome,1.0,0.0,10
+task_adaptive,root_to_proximal,1.0,0.0,60
+task_adaptive,treatment_outcome,1.0,0.0,5

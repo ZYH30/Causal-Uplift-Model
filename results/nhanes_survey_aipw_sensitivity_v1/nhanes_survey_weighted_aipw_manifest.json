@@ -1,0 +1,12 @@
+{
+  "cycles": [
+    2011,
+    2013,
+    2015,
+    2017
+  ],
+  "weight": "WTMEC2YR divided by four two-year cycles",
+  "variance": "Taylor linearization over cycle-specific masked strata and PSU; full MEC sample retained for domain variance",
+  "nuisance": "survey-weighted LightGBM with e(C) and m(C union S)",
+  "target": "US civilian noninstitutionalized population represented by combined 2011-2018 NHANES MEC cycles"
+}

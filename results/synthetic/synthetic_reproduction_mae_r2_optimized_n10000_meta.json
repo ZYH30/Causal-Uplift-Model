@@ -1,0 +1,19 @@
+{
+  "n": 10000,
+  "seed": 2026,
+  "test_size": 0.2,
+  "n_trials": 16,
+  "estimators": 100,
+  "forest_estimators": 100,
+  "runtime_sec": 44.189035415649414,
+  "train_shape": [
+    8000,
+    24
+  ],
+  "test_shape": [
+    2000,
+    24
+  ],
+  "treatment_rate_train": 0.5135,
+  "treatment_rate_test": 0.5135
+}

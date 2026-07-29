@@ -1,0 +1,225 @@
+{
+  "graph": {
+    "BMXBMI": [],
+    "BMXHT": [],
+    "BMXWAIST": [
+      "DIQ050"
+    ],
+    "BMXWT": [],
+    "BPQ020": [],
+    "BPQ080": [],
+    "BPXPLS": [
+      "Y"
+    ],
+    "DIQ010": [
+      "BPQ080"
+    ],
+    "DIQ050": [
+      "MCQ160F"
+    ],
+    "DMDEDUC2": [],
+    "DMDMARTL": [],
+    "INDFMPIR": [
+      "Y"
+    ],
+    "LBXGH": [
+      "BPQ080",
+      "DIQ050"
+    ],
+    "MCQ160B": [
+      "DIQ050"
+    ],
+    "MCQ160C": [
+      "BPQ080",
+      "DIQ050"
+    ],
+    "MCQ160E": [
+      "BPQ080"
+    ],
+    "MCQ160F": [],
+    "MCQ220": [],
+    "PAD680": [],
+    "PAQ605": [
+      "PAD680"
+    ],
+    "PAQ620": [
+      "PAQ605"
+    ],
+    "PAQ635": [],
+    "PAQ650": [
+      "PAQ605"
+    ],
+    "PAQ665": [],
+    "RIAGENDR": [
+      "PAQ605"
+    ],
+    "RIDAGEYR": [
+      "BMXHT",
+      "BMXWT",
+      "BPQ080",
+      "BPXPLS",
+      "LBXGH",
+      "MCQ220",
+      "PAQ605",
+      "PAQ650",
+      "Y"
+    ],
+    "RIDEXMON": [],
+    "RIDRETH3": [],
+    "SMQ020": [],
+    "T": [
+      "BPQ080",
+      "DIQ050",
+      "PAQ605",
+      "RIDAGEYR"
+    ],
+    "Y": [],
+    "cycle_year": []
+  },
+  "conflicts": [],
+  "removed_edges": [],
+  "pruned_edges": [],
+  "treatment_rescue_edges": [
+    {
+      "parent": "LBXGH",
+      "child": "T",
+      "importance": 163.0,
+      "importance_ratio": 0.8190954773869347,
+      "importance_rank": 2,
+      "treatment_assoc": 0.24246039194641764,
+      "post_variables_excluded": [],
+      "outcome_excluded": "Y",
+      "reason": "treatment_importance_without_post_outcome"
+    },
+    {
+      "parent": "BMXHT",
+      "child": "T",
+      "importance": 98.0,
+      "importance_ratio": 0.49246231155778897,
+      "importance_rank": 3,
+      "treatment_assoc": 0.0972581040054876,
+      "post_variables_excluded": [],
+      "outcome_excluded": "Y",
+      "reason": "treatment_importance_without_post_outcome"
+    },
+    {
+      "parent": "BMXWAIST",
+      "child": "T",
+      "importance": 94.0,
+      "importance_ratio": 0.4723618090452261,
+      "importance_rank": 4,
+      "treatment_assoc": 0.08140055493318725,
+      "post_variables_excluded": [],
+      "outcome_excluded": "Y",
+      "reason": "treatment_importance_without_post_outcome"
+    },
+    {
+      "parent": "BPXPLS",
+      "child": "T",
+      "importance": 93.0,
+      "importance_ratio": 0.46733668341708545,
+      "importance_rank": 5,
+      "treatment_assoc": 0.09161171806397621,
+      "post_variables_excluded": [],
+      "outcome_excluded": "Y",
+      "reason": "treatment_importance_without_post_outcome"
+    },
+    {
+      "parent": "INDFMPIR",
+      "child": "T",
+      "importance": 80.0,
+      "importance_ratio": 0.4020100502512563,
+      "importance_rank": 6,
+      "treatment_assoc": 0.05782141266307477,
+      "post_variables_excluded": [],
+      "outcome_excluded": "Y",
+      "reason": "treatment_importance_without_post_outcome"
+    }
+  ],
+  "outcome_rescue_edges": [
+    {
+      "parent": "BMXHT",
+      "child": "Y",
+      "importance": 123.0,
+      "importance_ratio": 0.7735849056603774,
+      "importance_rank": 2,
+      "post_variables_excluded": [],
+      "reason": "treatment_parent_with_outcome_importance"
+    },
+    {
+      "parent": "BMXWAIST",
+      "child": "Y",
+      "importance": 91.0,
+      "importance_ratio": 0.5723270440251572,
+      "importance_rank": 5,
+      "post_variables_excluded": [],
+      "reason": "treatment_parent_with_outcome_importance"
+    },
+    {
+      "parent": "BPXPLS",
+      "child": "Y",
+      "importance": 117.0,
+      "importance_ratio": 0.7358490566037735,
+      "importance_rank": 3,
+      "post_variables_excluded": [],
+      "reason": "treatment_parent_with_outcome_importance"
+    },
+    {
+      "parent": "INDFMPIR",
+      "child": "Y",
+      "importance": 89.0,
+      "importance_ratio": 0.559748427672956,
+      "importance_rank": 6,
+      "post_variables_excluded": [],
+      "reason": "treatment_parent_with_outcome_importance"
+    },
+    {
+      "parent": "LBXGH",
+      "child": "Y",
+      "importance": 78.0,
+      "importance_ratio": 0.49056603773584906,
+      "importance_rank": 7,
+      "post_variables_excluded": [],
+      "reason": "treatment_parent_with_outcome_importance"
+    },
+    {
+      "parent": "RIDAGEYR",
+      "child": "Y",
+      "importance": 159.0,
+      "importance_ratio": 1.0,
+      "importance_rank": 1,
+      "post_variables_excluded": [],
+      "reason": "treatment_parent_with_outcome_importance"
+    }
+  ],
+  "precision_rescue_edges": [
+    {
+      "parent": "BMXWT",
+      "child": "Y",
+      "importance": 96.0,
+      "importance_ratio": 0.6037735849056604,
+      "importance_rank": 4,
+      "treatment_assoc": 0.02280466696521404,
+      "post_variables_excluded": [],
+      "reason": "precision_outcome_importance_low_treatment_assoc"
+    }
+  ],
+  "post_treatment_rescue_edges": [],
+  "sanitized_edges": [
+    {
+      "parent": "Y",
+      "child": "RIDAGEYR",
+      "reason": "task_temporal_sanitizer"
+    },
+    {
+      "parent": "Y",
+      "child": "INDFMPIR",
+      "reason": "task_temporal_sanitizer"
+    },
+    {
+      "parent": "Y",
+      "child": "BPXPLS",
+      "reason": "task_temporal_sanitizer"
+    }
+  ]
+}

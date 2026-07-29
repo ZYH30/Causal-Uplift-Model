@@ -1,0 +1,484 @@
+{
+  "cycle_year": {
+    "nhanes_code": "cycle_year",
+    "label": "NHANES examination cycle start year",
+    "source_table": "derived from survey cycle",
+    "data_type": "categorical context",
+    "timing": "survey-design context",
+    "causal_role": "exogenous measurement context",
+    "coding": "2011, 2013, 2015, or 2017",
+    "medical_context": "Captures secular changes in population composition, clinical practice, and measurement procedures; it is not a biological attribute caused by an individual.",
+    "eligible_for_c_set": true,
+    "eligible_for_s_precision": true,
+    "semantic_constraints": [
+      "No individual-level treatment, outcome, biomarker, behavior, or diagnosis can cause the survey cycle."
+    ]
+  },
+  "RIDAGEYR": {
+    "nhanes_code": "RIDAGEYR",
+    "label": "Age in years at screening",
+    "source_table": "DEMO",
+    "data_type": "continuous",
+    "timing": "fixed before treatment assessment",
+    "causal_role": "predetermined demographic",
+    "coding": "0-79 years; age 80 or older is top-coded at 80",
+    "medical_context": "Age strongly influences cardiometabolic disease, prescribing, treatment response, blood pressure, and lipid levels.",
+    "eligible_for_c_set": true,
+    "eligible_for_s_precision": true,
+    "semantic_constraints": [
+      "Current treatment, current outcome, disease status, and behavior cannot cause chronological age."
+    ]
+  },
+  "RIAGENDR": {
+    "nhanes_code": "RIAGENDR",
+    "label": "Sex recorded by NHANES",
+    "source_table": "DEMO",
+    "data_type": "binary categorical",
+    "timing": "fixed before treatment assessment",
+    "causal_role": "predetermined demographic",
+    "coding": "1 male; 2 female",
+    "medical_context": "Sex is associated with body composition, cardiovascular risk, prescribing, and treatment response.",
+    "eligible_for_c_set": true,
+    "eligible_for_s_precision": true,
+    "semantic_constraints": [
+      "Variables measured in this study cannot causally determine recorded sex."
+    ]
+  },
+  "RIDRETH3": {
+    "nhanes_code": "RIDRETH3",
+    "label": "Race and Hispanic-origin category with non-Hispanic Asian category",
+    "source_table": "DEMO",
+    "data_type": "categorical",
+    "timing": "fixed before treatment assessment",
+    "causal_role": "predetermined social-demographic marker",
+    "coding": "NHANES categories for Mexican American, other Hispanic, non-Hispanic White, Black, Asian, and other/multiracial",
+    "medical_context": "A social-demographic marker associated with structural, socioeconomic, access-to-care, and health differences; it is not a manipulable biological treatment.",
+    "eligible_for_c_set": true,
+    "eligible_for_s_precision": true,
+    "semantic_constraints": [
+      "Current treatment, outcome, biomarker, and behavior cannot cause this recorded category."
+    ]
+  },
+  "DMDEDUC2": {
+    "nhanes_code": "DMDEDUC2",
+    "label": "Highest education level among adults aged 20 years or older",
+    "source_table": "DEMO",
+    "data_type": "ordinal categorical",
+    "timing": "mostly established before current treatment assessment",
+    "causal_role": "socioeconomic baseline",
+    "coding": "1 less than ninth grade through 5 college graduate or above",
+    "medical_context": "Education can affect health literacy, access to care, medication adherence, diet, and long-term cardiometabolic risk.",
+    "eligible_for_c_set": true,
+    "eligible_for_s_precision": true,
+    "semantic_constraints": [
+      "The current examination outcome cannot directly cause previously completed education."
+    ]
+  },
+  "DMDMARTL": {
+    "nhanes_code": "DMDMARTL",
+    "label": "Current marital status",
+    "source_table": "DEMO",
+    "data_type": "categorical",
+    "timing": "reported at baseline interview",
+    "causal_role": "social baseline",
+    "coding": "married, widowed, divorced, separated, never married, or living with partner",
+    "medical_context": "May proxy social support, household structure, health behavior, and care access; reverse effects from long-term illness are possible.",
+    "eligible_for_c_set": true,
+    "eligible_for_s_precision": true,
+    "semantic_constraints": [
+      "Do not force a direct medical direction when the association is likely socioeconomic or confounded."
+    ]
+  },
+  "INDFMPIR": {
+    "nhanes_code": "INDFMPIR",
+    "label": "Ratio of family income to the federal poverty threshold",
+    "source_table": "DEMO",
+    "data_type": "continuous",
+    "timing": "reported at baseline interview",
+    "causal_role": "socioeconomic baseline",
+    "coding": "continuous ratio, commonly top-coded by NHANES",
+    "medical_context": "Proxies material resources, insurance and care access, diet, adherence, and chronic disease risk; long-term illness may also reduce income.",
+    "eligible_for_c_set": true,
+    "eligible_for_s_precision": true,
+    "semantic_constraints": [
+      "Current same-visit biomarkers should not be treated as unambiguous direct causes of family income."
+    ]
+  },
+  "RIDEXMON": {
+    "nhanes_code": "RIDEXMON",
+    "label": "Six-month period of examination",
+    "source_table": "DEMO",
+    "data_type": "binary categorical",
+    "timing": "survey scheduling context",
+    "causal_role": "exogenous measurement context",
+    "coding": "1 November-April; 2 May-October",
+    "medical_context": "Can capture seasonal effects on activity, diet, physiology, and measurement; it is assigned by examination timing.",
+    "eligible_for_c_set": true,
+    "eligible_for_s_precision": true,
+    "semantic_constraints": [
+      "Individual health variables cannot cause the calendar period in which NHANES scheduled the examination."
+    ]
+  },
+  "BMXBMI": {
+    "nhanes_code": "BMXBMI",
+    "label": "Body mass index",
+    "source_table": "BMX",
+    "data_type": "continuous",
+    "timing": "concurrent MEC examination",
+    "causal_role": "current anthropometric state",
+    "coding": "kg/m^2, derived from measured weight and standing height",
+    "medical_context": "A deterministic function of weight and height and a marker of adiposity associated with hypertension, diabetes, lipids, and prescribing.",
+    "eligible_for_c_set": true,
+    "eligible_for_s_precision": true,
+    "semantic_constraints": [
+      "Weight and height determine BMI by formula; BMI should not be used as the direct cause of its own component measurements without explicit justification."
+    ]
+  },
+  "BMXWAIST": {
+    "nhanes_code": "BMXWAIST",
+    "label": "Waist circumference",
+    "source_table": "BMX",
+    "data_type": "continuous",
+    "timing": "concurrent MEC examination",
+    "causal_role": "current anthropometric state",
+    "coding": "centimeters",
+    "medical_context": "Marker of central adiposity and metabolic risk; may affect hypertension, diabetes, lipid levels, and treatment assignment through clinical risk.",
+    "eligible_for_c_set": true,
+    "eligible_for_s_precision": true,
+    "semantic_constraints": [
+      "A same-visit blood pressure or cholesterol measurement does not instantaneously cause waist circumference."
+    ]
+  },
+  "BMXWT": {
+    "nhanes_code": "BMXWT",
+    "label": "Measured body weight",
+    "source_table": "BMX",
+    "data_type": "continuous",
+    "timing": "concurrent MEC examination",
+    "causal_role": "current anthropometric state",
+    "coding": "kilograms",
+    "medical_context": "Reflects body size and adiposity and contributes directly to BMI; related to cardiometabolic risk and prescribing.",
+    "eligible_for_c_set": true,
+    "eligible_for_s_precision": true,
+    "semantic_constraints": [
+      "Weight and height mathematically determine BMI."
+    ]
+  },
+  "BMXHT": {
+    "nhanes_code": "BMXHT",
+    "label": "Measured standing height",
+    "source_table": "BMX",
+    "data_type": "continuous",
+    "timing": "predetermined before current treatment assessment",
+    "causal_role": "adult body-size attribute",
+    "coding": "centimeters",
+    "medical_context": "Adult height is largely predetermined and contributes to BMI scaling; age-related shrinkage is possible but current medication or outcome cannot plausibly determine it.",
+    "eligible_for_c_set": true,
+    "eligible_for_s_precision": true,
+    "semantic_constraints": [
+      "Current antihypertensive or cholesterol medication, current blood pressure, and current cholesterol cannot cause adult standing height."
+    ]
+  },
+  "BPXPLS": {
+    "nhanes_code": "BPXPLS",
+    "label": "Sixty-second pulse rate",
+    "source_table": "BPX",
+    "data_type": "continuous",
+    "timing": "concurrent MEC examination",
+    "causal_role": "current cardiovascular measurement",
+    "coding": "beats per minute",
+    "medical_context": "Reflects autonomic and cardiovascular state; can be affected by fitness, disease, and some medications, and can predict blood pressure outcomes.",
+    "eligible_for_c_set": true,
+    "eligible_for_s_precision": true,
+    "semantic_constraints": [
+      "Contemporaneous association with blood pressure does not by itself establish a direct causal direction."
+    ]
+  },
+  "LBXGH": {
+    "nhanes_code": "LBXGH",
+    "label": "Glycohemoglobin (HbA1c)",
+    "source_table": "GHB",
+    "data_type": "continuous",
+    "timing": "concurrent laboratory examination",
+    "causal_role": "current metabolic biomarker",
+    "coding": "percent",
+    "medical_context": "Reflects average glycemia over roughly the preceding two to three months and marks diabetes severity and cardiometabolic risk.",
+    "eligible_for_c_set": true,
+    "eligible_for_s_precision": true,
+    "semantic_constraints": [
+      "A same-day outcome measurement cannot cause the preceding-month glycemic history represented by HbA1c."
+    ]
+  },
+  "DIQ010": {
+    "nhanes_code": "DIQ010",
+    "label": "Doctor told participant they have diabetes",
+    "source_table": "DIQ",
+    "data_type": "binary categorical",
+    "timing": "historical diagnosis before examination",
+    "causal_role": "disease history",
+    "coding": "1 yes; 2 no; borderline responses handled separately by NHANES",
+    "medical_context": "Historical diabetes diagnosis can affect medication, care intensity, cardiovascular risk, and current metabolic outcomes.",
+    "eligible_for_c_set": true,
+    "eligible_for_s_precision": true,
+    "semantic_constraints": [
+      "Current examination biomarkers may reflect diabetes but do not retroactively cause the historical fact of a prior diagnosis."
+    ]
+  },
+  "DIQ050": {
+    "nhanes_code": "DIQ050",
+    "label": "Currently taking insulin",
+    "source_table": "DIQ",
+    "data_type": "binary categorical",
+    "timing": "current medication at interview",
+    "causal_role": "concurrent co-treatment and diabetes severity proxy",
+    "coding": "1 yes; 2 no among eligible respondents",
+    "medical_context": "Proxies diabetes treatment and severity; it may affect HbA1c and cardiovascular risk and may share prescribing determinants with the study treatment.",
+    "eligible_for_c_set": true,
+    "eligible_for_s_precision": true,
+    "semantic_constraints": [
+      "Treat as a co-treatment/severity marker, not as a disease diagnosis itself."
+    ]
+  },
+  "BPQ020": {
+    "nhanes_code": "BPQ020",
+    "label": "Ever told by a health professional that participant had hypertension",
+    "source_table": "BPQ",
+    "data_type": "binary categorical",
+    "timing": "historical diagnosis before examination",
+    "causal_role": "cohort-defining constant",
+    "coding": "1 yes; 2 no",
+    "medical_context": "All included participants have BPQ020=1, so this node contains no within-cohort information and should not enter graph learning or adjustment.",
+    "eligible_for_c_set": false,
+    "eligible_for_s_precision": false,
+    "semantic_constraints": [
+      "In the antihypertensive-SBP cohort this variable is fixed to yes and is not an informative graph node."
+    ]
+  },
+  "BPQ080": {
+    "nhanes_code": "BPQ080",
+    "label": "Ever told by a health professional that blood cholesterol was high",
+    "source_table": "BPQ",
+    "data_type": "binary categorical",
+    "timing": "historical diagnosis before examination",
+    "causal_role": "disease history or cohort definition",
+    "coding": "1 yes; 2 no",
+    "medical_context": "Prior high-cholesterol diagnosis influences lipid-lowering treatment and indicates cardiometabolic risk.",
+    "eligible_for_c_set": true,
+    "eligible_for_s_precision": true,
+    "semantic_constraints": [
+      "In the cholesterol-medication cohort this variable is fixed to yes and is excluded from candidate nodes."
+    ]
+  },
+  "MCQ160B": {
+    "nhanes_code": "MCQ160B",
+    "label": "Ever told participant had congestive heart failure",
+    "source_table": "MCQ",
+    "data_type": "binary categorical",
+    "timing": "historical diagnosis before examination",
+    "causal_role": "cardiovascular disease history",
+    "coding": "1 yes; 2 no",
+    "medical_context": "A major cardiovascular comorbidity that may affect prescribing, blood pressure, activity, and prognosis.",
+    "eligible_for_c_set": true,
+    "eligible_for_s_precision": true,
+    "semantic_constraints": [
+      "Current examination outcomes do not retroactively cause the recorded history of diagnosis."
+    ]
+  },
+  "MCQ160C": {
+    "nhanes_code": "MCQ160C",
+    "label": "Ever told participant had coronary heart disease",
+    "source_table": "MCQ",
+    "data_type": "binary categorical",
+    "timing": "historical diagnosis before examination",
+    "causal_role": "cardiovascular disease history",
+    "coding": "1 yes; 2 no",
+    "medical_context": "Indicates established atherosclerotic disease and can strongly affect preventive medication decisions and risk.",
+    "eligible_for_c_set": true,
+    "eligible_for_s_precision": true,
+    "semantic_constraints": [
+      "Current treatment use may be a response to this prior disease history, not its cause in the study time ordering."
+    ]
+  },
+  "MCQ160E": {
+    "nhanes_code": "MCQ160E",
+    "label": "Ever told participant had a heart attack",
+    "source_table": "MCQ",
+    "data_type": "binary categorical",
+    "timing": "historical diagnosis before examination",
+    "causal_role": "cardiovascular event history",
+    "coding": "1 yes; 2 no",
+    "medical_context": "Prior myocardial infarction strongly affects lipid-lowering and blood-pressure treatment decisions and future cardiovascular risk.",
+    "eligible_for_c_set": true,
+    "eligible_for_s_precision": true,
+    "semantic_constraints": [
+      "Current medication status in this cross-sectional study should not be treated as the cause of a prior heart attack."
+    ]
+  },
+  "MCQ160F": {
+    "nhanes_code": "MCQ160F",
+    "label": "Ever told participant had a stroke",
+    "source_table": "MCQ",
+    "data_type": "binary categorical",
+    "timing": "historical diagnosis before examination",
+    "causal_role": "cardiovascular event history",
+    "coding": "1 yes; 2 no",
+    "medical_context": "Prior stroke can affect antihypertensive and lipid-lowering treatment, activity, disability, and subsequent risk.",
+    "eligible_for_c_set": true,
+    "eligible_for_s_precision": true,
+    "semantic_constraints": [
+      "Current medication status should not be treated as the cause of a stroke that occurred before the survey."
+    ]
+  },
+  "MCQ220": {
+    "nhanes_code": "MCQ220",
+    "label": "Ever told participant had cancer or a malignancy",
+    "source_table": "MCQ",
+    "data_type": "binary categorical",
+    "timing": "historical diagnosis before examination",
+    "causal_role": "major disease history",
+    "coding": "1 yes; 2 no",
+    "medical_context": "Cancer history may influence body composition, care patterns, medication decisions, and current health but is not necessarily a direct cardiometabolic cause.",
+    "eligible_for_c_set": true,
+    "eligible_for_s_precision": true,
+    "semantic_constraints": [
+      "Prefer no direct edge when only nonspecific comorbidity association is plausible."
+    ]
+  },
+  "SMQ020": {
+    "nhanes_code": "SMQ020",
+    "label": "Smoked at least 100 cigarettes in lifetime",
+    "source_table": "SMQ",
+    "data_type": "binary categorical",
+    "timing": "lifetime behavior before examination",
+    "causal_role": "historical health behavior",
+    "coding": "1 yes; 2 no",
+    "medical_context": "A cumulative smoking-history marker associated with cardiovascular disease, treatment assignment, and outcomes.",
+    "eligible_for_c_set": true,
+    "eligible_for_s_precision": true,
+    "semantic_constraints": [
+      "Current blood pressure or cholesterol cannot cause whether the lifetime threshold had already been reached."
+    ]
+  },
+  "PAQ605": {
+    "nhanes_code": "PAQ605",
+    "label": "Vigorous-intensity activity at work",
+    "source_table": "PAQ",
+    "data_type": "binary categorical",
+    "timing": "typical current-week behavior reported at interview",
+    "causal_role": "current health behavior",
+    "coding": "1 yes; 2 no",
+    "medical_context": "Work activity may affect fitness and cardiometabolic risk, while disease and socioeconomic factors can affect ability to perform it.",
+    "eligible_for_c_set": true,
+    "eligible_for_s_precision": true,
+    "semantic_constraints": [
+      "Allow reverse causation from chronic illness or functional limitation; use UNRESOLVED if timing is not identifiable."
+    ]
+  },
+  "PAQ620": {
+    "nhanes_code": "PAQ620",
+    "label": "Number of days of vigorous-intensity work activity in a typical week",
+    "source_table": "PAQ",
+    "data_type": "count",
+    "timing": "typical current-week behavior reported at interview",
+    "causal_role": "current health behavior intensity",
+    "coding": "days per week among participants reporting vigorous work activity",
+    "medical_context": "Quantifies frequency conditional on participation in vigorous work activity and is structurally downstream of whether such activity is performed.",
+    "eligible_for_c_set": true,
+    "eligible_for_s_precision": true,
+    "semantic_constraints": [
+      "PAQ605 eligibility/participation logically precedes the conditional frequency PAQ620."
+    ]
+  },
+  "PAQ635": {
+    "nhanes_code": "PAQ635",
+    "label": "Walking or bicycling for transportation",
+    "source_table": "PAQ",
+    "data_type": "binary categorical",
+    "timing": "typical current-week behavior reported at interview",
+    "causal_role": "current health behavior",
+    "coding": "1 yes; 2 no",
+    "medical_context": "Active transport contributes to physical activity and is influenced by health, environment, occupation, and socioeconomic factors.",
+    "eligible_for_c_set": true,
+    "eligible_for_s_precision": true,
+    "semantic_constraints": [
+      "Do not infer a direct edge from association alone when built environment or health status may confound it."
+    ]
+  },
+  "PAQ650": {
+    "nhanes_code": "PAQ650",
+    "label": "Vigorous recreational activity",
+    "source_table": "PAQ",
+    "data_type": "binary categorical",
+    "timing": "typical current-week behavior reported at interview",
+    "causal_role": "current health behavior",
+    "coding": "1 yes; 2 no",
+    "medical_context": "May improve cardiometabolic health; chronic illness and functional capacity can also determine participation.",
+    "eligible_for_c_set": true,
+    "eligible_for_s_precision": true,
+    "semantic_constraints": [
+      "Bidirectional long-term relations with health are possible; distinguish current measurement timing from underlying disease history."
+    ]
+  },
+  "PAQ665": {
+    "nhanes_code": "PAQ665",
+    "label": "Moderate recreational activity",
+    "source_table": "PAQ",
+    "data_type": "binary categorical",
+    "timing": "typical current-week behavior reported at interview",
+    "causal_role": "current health behavior",
+    "coding": "1 yes; 2 no",
+    "medical_context": "May improve cardiometabolic health, but underlying health and access can determine participation.",
+    "eligible_for_c_set": true,
+    "eligible_for_s_precision": true,
+    "semantic_constraints": [
+      "Use UNRESOLVED when cross-sectional timing cannot separate behavior-to-health from health-to-behavior."
+    ]
+  },
+  "PAD680": {
+    "nhanes_code": "PAD680",
+    "label": "Minutes of sedentary activity on a typical day",
+    "source_table": "PAQ",
+    "data_type": "continuous",
+    "timing": "typical current-day behavior reported at interview",
+    "causal_role": "current health behavior",
+    "coding": "minutes per day",
+    "medical_context": "Sedentary time is related to cardiometabolic risk and can be influenced by occupation, disability, illness, and other activity patterns.",
+    "eligible_for_c_set": true,
+    "eligible_for_s_precision": true,
+    "semantic_constraints": [
+      "Vigorous work participation can reduce available sedentary time, but both can share occupational causes."
+    ]
+  },
+  "T": {
+    "nhanes_code": "T derived from BPQ050A",
+    "label": "Currently taking prescribed antihypertensive medicine",
+    "source_table": "BPQ",
+    "data_type": "binary treatment",
+    "timing": "current medication use initiated before the MEC blood-pressure measurement",
+    "causal_role": "study treatment",
+    "coding": "1 currently taking prescribed medicine; 0 not currently taking, among participants with BPQ020=1",
+    "medical_context": "Medication is prescribed in response to prior hypertension severity and cardiovascular risk and is intended to lower current systolic blood pressure.",
+    "eligible_for_c_set": false,
+    "eligible_for_s_precision": false,
+    "semantic_constraints": [
+      "For the target intervention, T may cause Y; current Y must not be oriented as the cause of already initiated T.",
+      "Historical disease severity may cause both T and Y and represents confounding by indication."
+    ]
+  },
+  "Y": {
+    "nhanes_code": "Y derived from BPXSY1-BPXSY4",
+    "label": "Mean systolic blood pressure",
+    "source_table": "BPX",
+    "data_type": "continuous outcome",
+    "timing": "MEC examination after current medication status was reported",
+    "causal_role": "study outcome",
+    "coding": "mean of available systolic readings in mmHg",
+    "medical_context": "Arterial pressure during cardiac contraction; lower values generally indicate better blood-pressure control in this cohort.",
+    "eligible_for_c_set": false,
+    "eligible_for_s_precision": false,
+    "semantic_constraints": [
+      "Y is the terminal outcome for local uplift discovery and cannot cause predetermined baseline attributes.",
+      "T -> Y is fixed by the intervention query."
+    ]
+  }
+}

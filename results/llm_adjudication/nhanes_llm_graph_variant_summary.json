@@ -1,0 +1,924 @@
+{
+  "antihypertensive_sbp": {
+    "aggressive": {
+      "graph_is_acyclic": true,
+      "edge_count_before": 37,
+      "edge_count_after": 25,
+      "edges_added": [
+        [
+          "RIDAGEYR",
+          "BMXHT"
+        ],
+        [
+          "RIDAGEYR",
+          "BMXWT"
+        ],
+        [
+          "RIDAGEYR",
+          "BPXPLS"
+        ],
+        [
+          "RIDAGEYR",
+          "LBXGH"
+        ],
+        [
+          "T",
+          "Y"
+        ]
+      ],
+      "edges_removed": [
+        [
+          "BMXHT",
+          "RIDAGEYR"
+        ],
+        [
+          "BMXHT",
+          "T"
+        ],
+        [
+          "BMXWT",
+          "RIDAGEYR"
+        ],
+        [
+          "BPQ080",
+          "DIQ010"
+        ],
+        [
+          "BPQ080",
+          "LBXGH"
+        ],
+        [
+          "BPQ080",
+          "MCQ160C"
+        ],
+        [
+          "BPQ080",
+          "MCQ160E"
+        ],
+        [
+          "BPQ080",
+          "RIDAGEYR"
+        ],
+        [
+          "BPXPLS",
+          "RIDAGEYR"
+        ],
+        [
+          "DIQ050",
+          "MCQ160B"
+        ],
+        [
+          "DIQ050",
+          "MCQ160C"
+        ],
+        [
+          "DIQ050",
+          "T"
+        ],
+        [
+          "LBXGH",
+          "RIDAGEYR"
+        ],
+        [
+          "MCQ220",
+          "RIDAGEYR"
+        ],
+        [
+          "PAQ605",
+          "RIAGENDR"
+        ],
+        [
+          "PAQ605",
+          "RIDAGEYR"
+        ],
+        [
+          "PAQ650",
+          "RIDAGEYR"
+        ]
+      ],
+      "sets_before": {
+        "C_Total": [
+          "BMXHT",
+          "BMXWAIST",
+          "BMXWT",
+          "BPQ080",
+          "BPXPLS",
+          "DIQ050",
+          "INDFMPIR",
+          "LBXGH",
+          "MCQ160F",
+          "MCQ220",
+          "PAD680",
+          "PAQ605",
+          "PAQ650",
+          "RIDAGEYR"
+        ],
+        "C_Proximal": [
+          "BMXHT",
+          "BMXWAIST",
+          "BPQ080",
+          "BPXPLS",
+          "DIQ050",
+          "INDFMPIR",
+          "LBXGH",
+          "PAQ605",
+          "RIDAGEYR"
+        ],
+        "C_Root": [
+          "BMXHT",
+          "BMXWT",
+          "BPQ080",
+          "BPXPLS",
+          "INDFMPIR",
+          "MCQ160F",
+          "MCQ220",
+          "PAD680"
+        ],
+        "S_Prec": [
+          "BMXWT"
+        ]
+      },
+      "sets_after": {
+        "C_Total": [
+          "BMXWAIST",
+          "BPXPLS",
+          "DIQ050",
+          "INDFMPIR",
+          "LBXGH",
+          "MCQ160F",
+          "RIDAGEYR"
+        ],
+        "C_Proximal": [
+          "BMXWAIST",
+          "BPXPLS",
+          "INDFMPIR",
+          "LBXGH",
+          "RIDAGEYR"
+        ],
+        "C_Root": [
+          "INDFMPIR",
+          "MCQ160F",
+          "RIDAGEYR"
+        ],
+        "S_Prec": [
+          "BMXHT",
+          "BMXWT"
+        ]
+      },
+      "action_counts": {
+        "removed_cycle_blocked_orientation": 1,
+        "oriented_by_semantic_consensus": 15,
+        "fixed_treatment_outcome": 1,
+        "removed_by_semantic_consensus": 12,
+        "retained_statistical": 8
+      },
+      "fusion_thresholds": {
+        "min_direction_confidence": 0.45,
+        "min_remove_confidence": 0.45,
+        "min_add_confidence": 0.6
+      }
+    },
+    "conservative": {
+      "graph_is_acyclic": true,
+      "edge_count_before": 37,
+      "edge_count_after": 29,
+      "edges_added": [
+        [
+          "RIDAGEYR",
+          "BMXHT"
+        ],
+        [
+          "RIDAGEYR",
+          "BMXWT"
+        ],
+        [
+          "RIDAGEYR",
+          "BPXPLS"
+        ],
+        [
+          "RIDAGEYR",
+          "LBXGH"
+        ],
+        [
+          "T",
+          "Y"
+        ]
+      ],
+      "edges_removed": [
+        [
+          "BMXHT",
+          "RIDAGEYR"
+        ],
+        [
+          "BMXHT",
+          "T"
+        ],
+        [
+          "BMXWT",
+          "RIDAGEYR"
+        ],
+        [
+          "BPQ080",
+          "RIDAGEYR"
+        ],
+        [
+          "BPXPLS",
+          "RIDAGEYR"
+        ],
+        [
+          "DIQ050",
+          "MCQ160B"
+        ],
+        [
+          "DIQ050",
+          "MCQ160C"
+        ],
+        [
+          "DIQ050",
+          "T"
+        ],
+        [
+          "LBXGH",
+          "RIDAGEYR"
+        ],
+        [
+          "MCQ220",
+          "RIDAGEYR"
+        ],
+        [
+          "PAQ605",
+          "RIAGENDR"
+        ],
+        [
+          "PAQ605",
+          "RIDAGEYR"
+        ],
+        [
+          "PAQ650",
+          "RIDAGEYR"
+        ]
+      ],
+      "sets_before": {
+        "C_Total": [
+          "BMXHT",
+          "BMXWAIST",
+          "BMXWT",
+          "BPQ080",
+          "BPXPLS",
+          "DIQ050",
+          "INDFMPIR",
+          "LBXGH",
+          "MCQ160F",
+          "MCQ220",
+          "PAD680",
+          "PAQ605",
+          "PAQ650",
+          "RIDAGEYR"
+        ],
+        "C_Proximal": [
+          "BMXHT",
+          "BMXWAIST",
+          "BPQ080",
+          "BPXPLS",
+          "DIQ050",
+          "INDFMPIR",
+          "LBXGH",
+          "PAQ605",
+          "RIDAGEYR"
+        ],
+        "C_Root": [
+          "BMXHT",
+          "BMXWT",
+          "BPQ080",
+          "BPXPLS",
+          "INDFMPIR",
+          "MCQ160F",
+          "MCQ220",
+          "PAD680"
+        ],
+        "S_Prec": [
+          "BMXWT"
+        ]
+      },
+      "sets_after": {
+        "C_Total": [
+          "BMXWAIST",
+          "BPQ080",
+          "BPXPLS",
+          "DIQ050",
+          "INDFMPIR",
+          "LBXGH",
+          "MCQ160F",
+          "RIDAGEYR"
+        ],
+        "C_Proximal": [
+          "BMXWAIST",
+          "BPQ080",
+          "BPXPLS",
+          "INDFMPIR",
+          "LBXGH",
+          "RIDAGEYR"
+        ],
+        "C_Root": [
+          "BPQ080",
+          "INDFMPIR",
+          "MCQ160F",
+          "RIDAGEYR"
+        ],
+        "S_Prec": [
+          "BMXHT",
+          "BMXWT"
+        ]
+      },
+      "action_counts": {
+        "removed_cycle_blocked_orientation": 1,
+        "oriented_by_semantic_consensus": 12,
+        "fixed_treatment_outcome": 1,
+        "removed_by_semantic_consensus": 4,
+        "retained_statistical": 19,
+        "removed_by_hard_task_order": 4
+      },
+      "fusion_thresholds": {
+        "min_direction_confidence": 0.6,
+        "min_remove_confidence": 0.75,
+        "min_add_confidence": 0.75
+      }
+    },
+    "hard_only": {
+      "graph_is_acyclic": true,
+      "edge_count_before": 37,
+      "edge_count_after": 29,
+      "edges_added": [
+        [
+          "T",
+          "Y"
+        ]
+      ],
+      "edges_removed": [
+        [
+          "BMXHT",
+          "RIDAGEYR"
+        ],
+        [
+          "BMXWT",
+          "RIDAGEYR"
+        ],
+        [
+          "BPQ080",
+          "RIDAGEYR"
+        ],
+        [
+          "BPXPLS",
+          "RIDAGEYR"
+        ],
+        [
+          "LBXGH",
+          "RIDAGEYR"
+        ],
+        [
+          "MCQ220",
+          "RIDAGEYR"
+        ],
+        [
+          "PAQ605",
+          "RIAGENDR"
+        ],
+        [
+          "PAQ605",
+          "RIDAGEYR"
+        ],
+        [
+          "PAQ650",
+          "RIDAGEYR"
+        ]
+      ],
+      "sets_before": {
+        "C_Total": [
+          "BMXHT",
+          "BMXWAIST",
+          "BMXWT",
+          "BPQ080",
+          "BPXPLS",
+          "DIQ050",
+          "INDFMPIR",
+          "LBXGH",
+          "MCQ160F",
+          "MCQ220",
+          "PAD680",
+          "PAQ605",
+          "PAQ650",
+          "RIDAGEYR"
+        ],
+        "C_Proximal": [
+          "BMXHT",
+          "BMXWAIST",
+          "BPQ080",
+          "BPXPLS",
+          "DIQ050",
+          "INDFMPIR",
+          "LBXGH",
+          "PAQ605",
+          "RIDAGEYR"
+        ],
+        "C_Root": [
+          "BMXHT",
+          "BMXWT",
+          "BPQ080",
+          "BPXPLS",
+          "INDFMPIR",
+          "MCQ160F",
+          "MCQ220",
+          "PAD680"
+        ],
+        "S_Prec": [
+          "BMXWT"
+        ]
+      },
+      "sets_after": {
+        "C_Total": [
+          "BMXHT",
+          "BMXWAIST",
+          "BPQ080",
+          "BPXPLS",
+          "DIQ050",
+          "INDFMPIR",
+          "LBXGH",
+          "MCQ160F",
+          "RIDAGEYR"
+        ],
+        "C_Proximal": [
+          "BMXHT",
+          "BMXWAIST",
+          "BPQ080",
+          "BPXPLS",
+          "DIQ050",
+          "INDFMPIR",
+          "LBXGH",
+          "RIDAGEYR"
+        ],
+        "C_Root": [
+          "BMXHT",
+          "BPQ080",
+          "BPXPLS",
+          "INDFMPIR",
+          "MCQ160F",
+          "RIDAGEYR"
+        ],
+        "S_Prec": [
+          "BMXWT"
+        ]
+      },
+      "action_counts": {
+        "retained_statistical": 36,
+        "fixed_treatment_outcome": 1,
+        "removed_by_hard_task_order": 9
+      },
+      "fusion_thresholds": {
+        "min_direction_confidence": 1.01,
+        "min_remove_confidence": 1.01,
+        "min_add_confidence": 1.01
+      }
+    }
+  },
+  "chol_med_tchol": {
+    "aggressive": {
+      "graph_is_acyclic": true,
+      "edge_count_before": 45,
+      "edge_count_after": 38,
+      "edges_added": [
+        [
+          "MCQ160C",
+          "T"
+        ],
+        [
+          "RIAGENDR",
+          "PAQ605"
+        ],
+        [
+          "RIAGENDR",
+          "SMQ020"
+        ],
+        [
+          "RIAGENDR",
+          "mean_dbp"
+        ],
+        [
+          "RIDAGEYR",
+          "BPQ020"
+        ],
+        [
+          "RIDAGEYR",
+          "BPXPLS"
+        ],
+        [
+          "RIDAGEYR",
+          "mean_dbp"
+        ]
+      ],
+      "edges_removed": [
+        [
+          "BMXHT",
+          "Y"
+        ],
+        [
+          "BPQ020",
+          "RIDAGEYR"
+        ],
+        [
+          "BPQ020",
+          "Y"
+        ],
+        [
+          "BPXPLS",
+          "RIDAGEYR"
+        ],
+        [
+          "BPXPLS",
+          "Y"
+        ],
+        [
+          "DMDMARTL",
+          "RIAGENDR"
+        ],
+        [
+          "LBXGH",
+          "Y"
+        ],
+        [
+          "MCQ160B",
+          "DIQ050"
+        ],
+        [
+          "MCQ160E",
+          "RIAGENDR"
+        ],
+        [
+          "PAQ605",
+          "RIAGENDR"
+        ],
+        [
+          "SMQ020",
+          "RIAGENDR"
+        ],
+        [
+          "mean_dbp",
+          "RIAGENDR"
+        ],
+        [
+          "mean_dbp",
+          "RIDAGEYR"
+        ],
+        [
+          "mean_dbp",
+          "Y"
+        ]
+      ],
+      "sets_before": {
+        "C_Total": [
+          "BMXWAIST",
+          "BPQ020",
+          "BPXPLS",
+          "DIQ050",
+          "LBXGH",
+          "MCQ160B",
+          "MCQ160F",
+          "RIDAGEYR",
+          "mean_dbp"
+        ],
+        "C_Proximal": [
+          "BMXWAIST",
+          "BPXPLS",
+          "DIQ050",
+          "LBXGH",
+          "RIDAGEYR",
+          "mean_dbp"
+        ],
+        "C_Root": [
+          "BPXPLS",
+          "MCQ160F"
+        ],
+        "S_Prec": [
+          "BMXHT",
+          "BMXWT",
+          "BPQ020",
+          "MCQ160E",
+          "RIAGENDR"
+        ]
+      },
+      "sets_after": {
+        "C_Total": [
+          "BMXWAIST",
+          "BPXPLS",
+          "DIQ050",
+          "LBXGH",
+          "MCQ160C",
+          "MCQ160F",
+          "RIAGENDR",
+          "RIDAGEYR"
+        ],
+        "C_Proximal": [
+          "BMXWAIST",
+          "BPXPLS",
+          "DIQ050",
+          "LBXGH",
+          "MCQ160C",
+          "RIAGENDR",
+          "RIDAGEYR"
+        ],
+        "C_Root": [
+          "MCQ160C",
+          "MCQ160F",
+          "RIAGENDR",
+          "RIDAGEYR"
+        ],
+        "S_Prec": [
+          "BMXWT",
+          "MCQ160E"
+        ]
+      },
+      "action_counts": {
+        "fixed_treatment_outcome": 1,
+        "oriented_by_semantic_consensus": 10,
+        "removed_by_semantic_consensus": 9,
+        "retained_statistical": 13
+      },
+      "fusion_thresholds": {
+        "min_direction_confidence": 0.45,
+        "min_remove_confidence": 0.45,
+        "min_add_confidence": 0.6
+      }
+    },
+    "conservative": {
+      "graph_is_acyclic": true,
+      "edge_count_before": 45,
+      "edge_count_after": 42,
+      "edges_added": [
+        [
+          "MCQ160C",
+          "T"
+        ],
+        [
+          "RIAGENDR",
+          "PAQ605"
+        ],
+        [
+          "RIAGENDR",
+          "SMQ020"
+        ],
+        [
+          "RIAGENDR",
+          "mean_dbp"
+        ],
+        [
+          "RIDAGEYR",
+          "BPQ020"
+        ],
+        [
+          "RIDAGEYR",
+          "BPXPLS"
+        ],
+        [
+          "RIDAGEYR",
+          "mean_dbp"
+        ]
+      ],
+      "edges_removed": [
+        [
+          "BMXHT",
+          "Y"
+        ],
+        [
+          "BPQ020",
+          "RIDAGEYR"
+        ],
+        [
+          "BPXPLS",
+          "RIDAGEYR"
+        ],
+        [
+          "BPXPLS",
+          "Y"
+        ],
+        [
+          "DMDMARTL",
+          "RIAGENDR"
+        ],
+        [
+          "MCQ160E",
+          "RIAGENDR"
+        ],
+        [
+          "PAQ605",
+          "RIAGENDR"
+        ],
+        [
+          "SMQ020",
+          "RIAGENDR"
+        ],
+        [
+          "mean_dbp",
+          "RIAGENDR"
+        ],
+        [
+          "mean_dbp",
+          "RIDAGEYR"
+        ]
+      ],
+      "sets_before": {
+        "C_Total": [
+          "BMXWAIST",
+          "BPQ020",
+          "BPXPLS",
+          "DIQ050",
+          "LBXGH",
+          "MCQ160B",
+          "MCQ160F",
+          "RIDAGEYR",
+          "mean_dbp"
+        ],
+        "C_Proximal": [
+          "BMXWAIST",
+          "BPXPLS",
+          "DIQ050",
+          "LBXGH",
+          "RIDAGEYR",
+          "mean_dbp"
+        ],
+        "C_Root": [
+          "BPXPLS",
+          "MCQ160F"
+        ],
+        "S_Prec": [
+          "BMXHT",
+          "BMXWT",
+          "BPQ020",
+          "MCQ160E",
+          "RIAGENDR"
+        ]
+      },
+      "sets_after": {
+        "C_Total": [
+          "BMXWAIST",
+          "BPQ020",
+          "BPXPLS",
+          "DIQ050",
+          "LBXGH",
+          "MCQ160B",
+          "MCQ160C",
+          "MCQ160F",
+          "RIAGENDR",
+          "RIDAGEYR",
+          "mean_dbp"
+        ],
+        "C_Proximal": [
+          "BMXWAIST",
+          "BPXPLS",
+          "DIQ050",
+          "LBXGH",
+          "MCQ160C",
+          "RIDAGEYR",
+          "mean_dbp"
+        ],
+        "C_Root": [
+          "MCQ160C",
+          "MCQ160F",
+          "RIAGENDR",
+          "RIDAGEYR"
+        ],
+        "S_Prec": [
+          "BMXWT",
+          "BPQ020",
+          "MCQ160E",
+          "RIAGENDR"
+        ]
+      },
+      "action_counts": {
+        "fixed_treatment_outcome": 1,
+        "oriented_by_semantic_consensus": 10,
+        "removed_by_semantic_consensus": 2,
+        "retained_statistical": 20,
+        "removed_by_hard_task_order": 2
+      },
+      "fusion_thresholds": {
+        "min_direction_confidence": 0.6,
+        "min_remove_confidence": 0.75,
+        "min_add_confidence": 0.75
+      }
+    },
+    "hard_only": {
+      "graph_is_acyclic": true,
+      "edge_count_before": 45,
+      "edge_count_after": 37,
+      "edges_added": [],
+      "edges_removed": [
+        [
+          "BPQ020",
+          "RIDAGEYR"
+        ],
+        [
+          "BPXPLS",
+          "RIDAGEYR"
+        ],
+        [
+          "DMDMARTL",
+          "RIAGENDR"
+        ],
+        [
+          "MCQ160E",
+          "RIAGENDR"
+        ],
+        [
+          "PAQ605",
+          "RIAGENDR"
+        ],
+        [
+          "SMQ020",
+          "RIAGENDR"
+        ],
+        [
+          "mean_dbp",
+          "RIAGENDR"
+        ],
+        [
+          "mean_dbp",
+          "RIDAGEYR"
+        ]
+      ],
+      "sets_before": {
+        "C_Total": [
+          "BMXWAIST",
+          "BPQ020",
+          "BPXPLS",
+          "DIQ050",
+          "LBXGH",
+          "MCQ160B",
+          "MCQ160F",
+          "RIDAGEYR",
+          "mean_dbp"
+        ],
+        "C_Proximal": [
+          "BMXWAIST",
+          "BPXPLS",
+          "DIQ050",
+          "LBXGH",
+          "RIDAGEYR",
+          "mean_dbp"
+        ],
+        "C_Root": [
+          "BPXPLS",
+          "MCQ160F"
+        ],
+        "S_Prec": [
+          "BMXHT",
+          "BMXWT",
+          "BPQ020",
+          "MCQ160E",
+          "RIAGENDR"
+        ]
+      },
+      "sets_after": {
+        "C_Total": [
+          "BMXWAIST",
+          "BPQ020",
+          "BPXPLS",
+          "DIQ050",
+          "LBXGH",
+          "MCQ160B",
+          "MCQ160F",
+          "RIDAGEYR",
+          "mean_dbp"
+        ],
+        "C_Proximal": [
+          "BMXWAIST",
+          "BPXPLS",
+          "DIQ050",
+          "LBXGH",
+          "RIDAGEYR",
+          "mean_dbp"
+        ],
+        "C_Root": [
+          "BPXPLS",
+          "MCQ160F",
+          "RIDAGEYR"
+        ],
+        "S_Prec": [
+          "BMXHT",
+          "BMXWT",
+          "BPQ020",
+          "MCQ160E",
+          "RIAGENDR"
+        ]
+      },
+      "action_counts": {
+        "fixed_treatment_outcome": 1,
+        "retained_statistical": 32,
+        "removed_by_hard_task_order": 8
+      },
+      "fusion_thresholds": {
+        "min_direction_confidence": 1.01,
+        "min_remove_confidence": 1.01,
+        "min_add_confidence": 1.01
+      }
+    }
+  }
+}

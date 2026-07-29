@@ -1,0 +1,9 @@
+Task,Fusion,Delta R-loss,Delta DR-Qini,Delta budget outcome
+Antihypertensive / SBP,Statistical,0.669 +/- 0.593,0.135 +/- 0.270,0.418 +/- 0.342
+Antihypertensive / SBP,Hard constraints,0.689 +/- 0.503,0.162 +/- 0.327,0.465 +/- 0.427
+Antihypertensive / SBP,LLM aggressive,0.920 +/- 0.725,0.114 +/- 0.213,0.191 +/- 0.468
+Antihypertensive / SBP,LLM conservative,0.610 +/- 0.722,0.082 +/- 0.234,0.239 +/- 0.428
+Cholesterol medication / TC,Statistical,95.056 +/- 61.760,0.541 +/- 0.523,-0.776 +/- 1.829
+Cholesterol medication / TC,Hard constraints,95.056 +/- 61.760,0.541 +/- 0.523,-0.776 +/- 1.829
+Cholesterol medication / TC,LLM aggressive,103.155 +/- 54.054,0.712 +/- 0.406,0.792 +/- 0.768
+Cholesterol medication / TC,LLM conservative,90.210 +/- 59.856,0.779 +/- 0.632,0.682 +/- 1.435

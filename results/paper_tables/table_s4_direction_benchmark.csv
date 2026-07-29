@@ -1,0 +1,3 @@
+Direction method,Accuracy mean +/- std,Min / max accuracy,Ambiguous rate,Decisions
+Pairwise ANM,0.585 +/- 0.132,0.444 / 0.741,0.044,135
+Task-adaptive direction voting,1.000 +/- 0.000,1.000 / 1.000,0.000,135

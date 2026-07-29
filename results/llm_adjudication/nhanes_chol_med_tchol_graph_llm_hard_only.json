@@ -1,0 +1,83 @@
+{
+  "BMXBMI": [
+    "BPQ020",
+    "RIAGENDR"
+  ],
+  "BMXHT": [
+    "RIAGENDR"
+  ],
+  "BMXWAIST": [
+    "BPXPLS",
+    "DIQ050"
+  ],
+  "BMXWT": [],
+  "BPQ020": [
+    "MCQ160F"
+  ],
+  "BPXPLS": [],
+  "DIQ010": [],
+  "DIQ050": [
+    "LBXGH",
+    "MCQ160B",
+    "MCQ160F"
+  ],
+  "DMDEDUC2": [],
+  "DMDMARTL": [],
+  "INDFMPIR": [
+    "MCQ160E",
+    "mean_dbp"
+  ],
+  "LBXGH": [
+    "BPXPLS"
+  ],
+  "MCQ160B": [
+    "BPQ020"
+  ],
+  "MCQ160C": [],
+  "MCQ160E": [
+    "BPQ020",
+    "BPXPLS",
+    "DIQ050",
+    "MCQ160B",
+    "MCQ160C"
+  ],
+  "MCQ160F": [],
+  "MCQ220": [],
+  "PAD680": [],
+  "PAQ605": [],
+  "PAQ620": [],
+  "PAQ635": [],
+  "PAQ650": [],
+  "PAQ665": [],
+  "RIAGENDR": [],
+  "RIDAGEYR": [],
+  "RIDEXMON": [],
+  "RIDRETH3": [],
+  "SMQ020": [],
+  "T": [
+    "BMXWAIST",
+    "BPXPLS",
+    "DIQ050",
+    "LBXGH",
+    "RIDAGEYR",
+    "mean_dbp"
+  ],
+  "Y": [
+    "BMXHT",
+    "BMXWAIST",
+    "BMXWT",
+    "BPQ020",
+    "BPXPLS",
+    "LBXGH",
+    "MCQ160E",
+    "RIAGENDR",
+    "RIDAGEYR",
+    "T",
+    "mean_dbp"
+  ],
+  "cycle_year": [],
+  "mean_dbp": [
+    "BPXPLS",
+    "DIQ050"
+  ]
+}

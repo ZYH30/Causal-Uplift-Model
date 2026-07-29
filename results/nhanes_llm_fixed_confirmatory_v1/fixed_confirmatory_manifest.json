@@ -1,0 +1,48 @@
+{
+  "protocol": "locked_before_seeds_2040_2059",
+  "specs": [
+    {
+      "task": "antihypertensive_sbp",
+      "model": "S-Learner",
+      "method": "OCU_CCIA_COnly",
+      "conf_type": "proximal",
+      "graph_variant": "Statistical+LLM-Conservative",
+      "graph": "results/llm_adjudication/nhanes_antihypertensive_sbp_graph_llm_conservative.json"
+    },
+    {
+      "task": "chol_med_tchol",
+      "model": "ClassTransform",
+      "method": "OCU_CCIA_COnly",
+      "conf_type": "proximal",
+      "graph_variant": "Statistical+LLM-Conservative",
+      "graph": "results/llm_adjudication/nhanes_chol_med_tchol_graph_llm_conservative.json"
+    }
+  ],
+  "seeds": [
+    2040,
+    2041,
+    2042,
+    2043,
+    2044,
+    2045,
+    2046,
+    2047,
+    2048,
+    2049,
+    2050,
+    2051,
+    2052,
+    2053,
+    2054,
+    2055,
+    2056,
+    2057,
+    2058,
+    2059
+  ],
+  "test_size": 0.4,
+  "evaluation_propensity": "e(C)",
+  "evaluation_outcome_nuisance": "m(C union S)",
+  "comparison": "fixed OCU_CCIA_COnly versus Naive_AllFeatures",
+  "bootstrap_resamples": 10000
+}
