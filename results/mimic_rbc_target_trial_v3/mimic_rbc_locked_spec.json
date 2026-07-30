@@ -1,0 +1,91 @@
+{
+  "selection_dataset": "MIMIC-IV anchor-year groups 2017-2019",
+  "graph_discovery_dataset": "MIMIC-IV anchor-year groups 2008-2016",
+  "locked_temporal_test": "MIMIC-IV anchor-year group 2020-2022",
+  "selection_rule": "maximize the number of positive paired gains and then minimize the equal-weight rank sum of CCIA_CPlusS gains over the same-learner AllVariables comparator for R-loss, DR-Qini, and observed-budget policy risk reduction",
+  "primary_learner": "S-Learner",
+  "primary_interface": "CCIA_CPlusS",
+  "primary_comparator": "AllVariables",
+  "selection_metrics": {
+    "R_Loss_Improvement": 8.355180518415661e-05,
+    "DR_Qini_Improvement": 0.009153425268592134,
+    "Policy_Risk_Reduction_Improvement": -0.0019336735531055582,
+    "CCIA_R_Loss": 0.14783355169140602,
+    "CCIA_DR_Qini": 0.009185510224563369,
+    "CCIA_Policy_Risk_Reduction": 0.016663065999194066,
+    "positive_gain_count": 2,
+    "rank_sum": 4.0
+  },
+  "all_validation_candidates": [
+    {
+      "Learner": "DR-Learner",
+      "R_Loss_Improvement": -0.00014725718653285647,
+      "DR_Qini_Improvement": -0.009470372789046232,
+      "Policy_Risk_Reduction_Improvement": -0.0030575474754170606,
+      "CCIA_R_Loss": 0.14841270399431433,
+      "CCIA_DR_Qini": 0.004714382179182224,
+      "CCIA_Policy_Risk_Reduction": 0.0031875712697733982,
+      "rank_r_loss_gain": 3.0,
+      "rank_qini_gain": 4.0,
+      "rank_policy_gain": 2.0,
+      "rank_sum": 9.0,
+      "positive_gain_count": 0
+    },
+    {
+      "Learner": "R-Learner",
+      "R_Loss_Improvement": 0.00010981158196177176,
+      "DR_Qini_Improvement": 0.0017751336151817071,
+      "Policy_Risk_Reduction_Improvement": -0.009406814741892727,
+      "CCIA_R_Loss": 0.1483375421188818,
+      "CCIA_DR_Qini": 0.0056003352984374255,
+      "CCIA_Policy_Risk_Reduction": -0.003842595083882072,
+      "rank_r_loss_gain": 1.0,
+      "rank_qini_gain": 2.0,
+      "rank_policy_gain": 4.0,
+      "rank_sum": 7.0,
+      "positive_gain_count": 2
+    },
+    {
+      "Learner": "S-Learner",
+      "R_Loss_Improvement": 8.355180518415661e-05,
+      "DR_Qini_Improvement": 0.009153425268592134,
+      "Policy_Risk_Reduction_Improvement": -0.0019336735531055582,
+      "CCIA_R_Loss": 0.14783355169140602,
+      "CCIA_DR_Qini": 0.009185510224563369,
+      "CCIA_Policy_Risk_Reduction": 0.016663065999194066,
+      "rank_r_loss_gain": 2.0,
+      "rank_qini_gain": 1.0,
+      "rank_policy_gain": 1.0,
+      "rank_sum": 4.0,
+      "positive_gain_count": 2
+    },
+    {
+      "Learner": "T-Learner",
+      "R_Loss_Improvement": -0.00027425802535960275,
+      "DR_Qini_Improvement": 0.0010962304162154182,
+      "Policy_Risk_Reduction_Improvement": -0.0038746659706128117,
+      "CCIA_R_Loss": 0.14814811381531742,
+      "CCIA_DR_Qini": 0.009867000819106235,
+      "CCIA_Policy_Risk_Reduction": 0.010315593648166782,
+      "rank_r_loss_gain": 4.0,
+      "rank_qini_gain": 3.0,
+      "rank_policy_gain": 3.0,
+      "rank_sum": 10.0,
+      "positive_gain_count": 1
+    }
+  ],
+  "secondary_learners": [
+    "DR-Learner",
+    "R-Learner",
+    "T-Learner",
+    "S-Learner"
+  ],
+  "locked_nuisance_rule": {
+    "propensity_covariates": "interface-specific C-set only",
+    "C_dimension_le_15": "L2 logistic regression with second-order interactions; propensity clipping [0.005, 0.995]",
+    "C_dimension_gt_15": "LightGBM depth 3; propensity clipping [0.01, 0.99]",
+    "outcome_covariates": "C union S",
+    "evaluation": "five-fold target-period cross-fitting"
+  },
+  "test_not_used_for_selection": true
+}

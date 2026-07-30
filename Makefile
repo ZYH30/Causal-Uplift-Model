@@ -1,8 +1,10 @@
 PYTHON ?= .venv/bin/python
 MPLCONFIGDIR ?= /tmp/matplotlib-ccia-ocu
+MIMIC_ROOT ?=
+MIMIC_ROOT_ARG = $(if $(MIMIC_ROOT),--mimic-root "$(MIMIC_ROOT)",)
 export MPLCONFIGDIR
 
-.PHONY: env test synthetic direction ccia-synthetic llm-dryrun llm-api llm-variants nhanes-confirmatory nhanes-survey figures
+.PHONY: env test synthetic direction ccia-synthetic mimic-db mimic mimic-interpretation llm-dryrun llm-api llm-variants nhanes-confirmatory nhanes-survey figures
 
 env:
 	python3 -m venv .venv
@@ -18,7 +20,16 @@ direction:
 	$(PYTHON) experiments/benchmark_direction_multiseed.py --n 6000 --seeds 2026,2027,2028,2029,2030 --methods pair_spearman_anm task_adaptive --max-context 3 --max-hsic-samples 1000 --lgb-estimators 80 --gain-estimators 50 --out-dir results/generated/direction
 
 ccia-synthetic:
-	$(PYTHON) experiments/run_ccia_synthetic.py --n 10000 --include-colliders --no-uplift-temporal-order --direction-strategy task_adaptive --max-neighbors 16 --max-corr-neighbors 10 --max-importance-neighbors 12 --max-condition-candidates 10 --max-condition-set-size 2 --max-search-depth 1 --ci-theta 0.05 --ccia-lgb-estimators 80 --out-dir results/generated/ccia-synthetic
+	$(PYTHON) -m experiments.run_ccia_synthetic_multiseed --seeds 2026,2027,2028,2029,2030 --multiseed-out-dir results/generated/ccia-synthetic --n 10000 --include-colliders --no-uplift-temporal-order --direction-strategy task_adaptive --max-neighbors 16 --max-corr-neighbors 10 --max-importance-neighbors 12 --max-condition-candidates 10 --max-condition-set-size 2 --max-search-depth 1 --ci-theta 0.05 --ccia-lgb-estimators 80 --uplift-models S-Learner ClassTransform
+
+mimic-db:
+	$(PYTHON) empirical_experiments/mimic_build_sqlite.py $(MIMIC_ROOT_ARG) --database data/mimic_iv_ccia.sqlite --skip-chartevents
+
+mimic:
+	$(PYTHON) empirical_experiments/mimic_rbc_target_trial.py --mode all $(MIMIC_ROOT_ARG) --database data/mimic_iv_ccia.sqlite --out-dir results/generated/mimic-rbc-v3
+
+mimic-interpretation:
+	$(PYTHON) empirical_experiments/mimic_rbc_interpretation.py $(MIMIC_ROOT_ARG) --database data/mimic_iv_ccia.sqlite --out-dir results/generated/mimic-rbc-v3 --bootstrap-draws 2000
 
 llm-dryrun:
 	$(PYTHON) experiments/run_nhanes_llm_dryrun.py

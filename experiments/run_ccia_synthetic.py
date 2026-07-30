@@ -17,7 +17,7 @@ PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
-from ccia.ccia_runner import merge_graphs, run_ccia, save_json
+from ccia.ccia_runner import merge_graphs, project_graph_to_dag, run_ccia, save_json
 from ccia.direction_methods import infer_var_types, post_treatment_score
 from ccia.graph_metrics import complete_graph, evaluate_graph_recovery
 from experiments.reproduce_synthetic import effect_metrics, fit_predict_stage2
@@ -644,6 +644,25 @@ def run(args):
         )
         merged["post_treatment_rescue_edges"] = post_treatment_rescue_edges
 
+    protected_edges = {(treat_col, target_col)}
+    for repair_group in (
+        treatment_rescue_edges,
+        rescue_edges,
+        precision_rescue_edges,
+        post_treatment_rescue_edges,
+    ):
+        protected_edges.update(
+            (edge["parent"], edge["child"])
+            for edge in repair_group
+        )
+    projection = project_graph_to_dag(
+        learned_graph,
+        nodes=observed_cols,
+        protected_edges=protected_edges,
+    )
+    learned_graph = projection["graph"]
+    merged["post_repair_cycle_rejections"] = projection["rejected_edges"]
+
     oracle_graph = complete_graph(true_graph, observed_cols)
     save_json(learned_graph, os.path.join(args.out_dir, "ccia_graph_union.json"))
     save_json(merged, os.path.join(args.out_dir, "ccia_graph_union_meta.json"))
@@ -698,7 +717,7 @@ def run(args):
     return metrics
 
 
-def parse_args():
+def build_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument("--n", type=int, default=10000)
     parser.add_argument("--seed", type=int, default=2026)
@@ -756,7 +775,11 @@ def parse_args():
     parser.add_argument("--uplift-max-depth", type=int, default=3)
     parser.add_argument("--uplift-n-trials", type=int, default=0)
     parser.add_argument("--verbose", action="store_true", default=False)
-    return parser.parse_args()
+    return parser
+
+
+def parse_args(argv=None):
+    return build_parser().parse_args(argv)
 
 
 if __name__ == "__main__":

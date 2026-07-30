@@ -1,0 +1,13 @@
+Comparator,Metric,Mean gain,95% CI,Wins / 20
+All variables,R-loss,0.000089,"[0.000060, 0.000119]",19
+All variables,DR-Qini,0.012137,"[0.007256, 0.017006]",18
+All variables,Policy-risk reduction,0.010776,"[0.006764, 0.015010]",18
+Expert clinical,R-loss,0.000085,"[0.000057, 0.000113]",19
+Expert clinical,DR-Qini,0.011758,"[0.007191, 0.016549]",18
+Expert clinical,Policy-risk reduction,0.010864,"[0.006479, 0.015879]",17
+Double selection,R-loss,0.000095,"[0.000067, 0.000125]",18
+Double selection,DR-Qini,0.007687,"[0.003697, 0.011913]",16
+Double selection,Policy-risk reduction,0.008474,"[0.004364, 0.012805]",16
+CCIA C-only,R-loss,0.000093,"[0.000039, 0.000148]",14
+CCIA C-only,DR-Qini,0.003759,"[0.000560, 0.006831]",15
+CCIA C-only,Policy-risk reduction,0.003568,"[-0.001160, 0.008106]",13

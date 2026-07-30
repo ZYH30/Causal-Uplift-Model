@@ -1,6 +1,0 @@
-Task,Model,Validation Selection,Test R-Loss Impr.,Test DR-Qini Impr.,Test Budget Outcome Impr.,Mean Test DR-Qini
-Antihypertensive medication -> SBP,S-Learner,OCU_CCIA_COnly (3/4); Naive_AllFeatures (1/4),0.431,0.186,0.449,0.824
-Antihypertensive medication -> SBP,ClassTransform,OCU_CCIA_COnly (3/4); Naive_AllFeatures (1/4),-0.774,0.176,-0.178,0.411
-Antihypertensive medication -> DBP,ClassTransform,Naive_AllFeatures (2/4); OCU_CCIA_COnly (2/4),-0.157,0.030,0.172,0.393
-Cholesterol medication -> Total cholesterol,ClassTransform,OCU_CCIA_CPlusS (2/4); Naive_AllFeatures (1/4); OCU_CCIA_COnly (1/4),62.813,0.626,0.214,0.591
-Cholesterol medication -> Total cholesterol,S-Learner,OCU_CCIA_CPlusS (3/4); Naive_AllFeatures (1/4),8.513,-0.079,0.296,0.841

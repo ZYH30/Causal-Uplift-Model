@@ -21,6 +21,7 @@ from typing import Any
 
 import numpy as np
 import pandas as pd
+import networkx as nx
 from lightgbm import LGBMClassifier, LGBMRegressor
 from scipy.stats import chi2_contingency, kruskal, mannwhitneyu, norm, spearmanr
 from sklearn.preprocessing import LabelEncoder
@@ -30,9 +31,9 @@ if CCIA_DIR not in sys.path:
     sys.path.insert(0, CCIA_DIR)
 
 try:
-    from .direction_methods import task_adaptive_direction
+    from .direction_methods import dependency_degrees, post_treatment_score, task_adaptive_direction
 except ImportError:  # pragma: no cover - supports direct execution from ccia/
-    from direction_methods import task_adaptive_direction
+    from direction_methods import dependency_degrees, post_treatment_score, task_adaptive_direction
 
 @dataclass
 class CCIARunConfig:
@@ -87,6 +88,61 @@ def complete_graph(graph: dict[str, list[str]], nodes: list[str] | set[str] | No
         all_nodes.update(parents)
     completed = {node: sorted(set(graph.get(node, [])) - {node}) for node in sorted(all_nodes)}
     return completed
+
+
+def project_graph_to_dag(
+    graph: dict[str, list[str]],
+    nodes: list[str] | set[str] | None = None,
+    edge_priorities: dict[tuple[str, str], tuple[float, ...]] | None = None,
+    protected_edges: set[tuple[str, str]] | None = None,
+) -> dict[str, Any]:
+    """Retain high-priority directions while rejecting edges that close a cycle."""
+
+    completed = complete_graph(graph, nodes)
+    edge_priorities = edge_priorities or {}
+    protected_edges = protected_edges or set()
+    edges = {
+        (parent, child)
+        for child, parents in completed.items()
+        for parent in parents
+        if parent != child
+    }
+    ordered_edges = sorted(
+        edges,
+        key=lambda edge: (
+            0 if edge in protected_edges else 1,
+            *edge_priorities.get(edge, (999.0, 0.0)),
+            edge[0],
+            edge[1],
+        ),
+    )
+
+    dag = nx.DiGraph()
+    dag.add_nodes_from(completed)
+    rejected = []
+    for parent, child in ordered_edges:
+        if nx.has_path(dag, child, parent):
+            rejected.append(
+                {
+                    "parent": parent,
+                    "child": child,
+                    "priority": list(edge_priorities.get((parent, child), (999.0, 0.0))),
+                    "protected": (parent, child) in protected_edges,
+                    "reason": "would_create_cycle",
+                }
+            )
+            continue
+        dag.add_edge(parent, child)
+
+    projected = {
+        node: sorted(dag.predecessors(node))
+        for node in sorted(dag.nodes)
+    }
+    return {
+        "graph": projected,
+        "rejected_edges": rejected,
+        "retained_edges": sorted([list(edge) for edge in dag.edges]),
+    }
 
 
 def merge_graphs(
@@ -155,10 +211,20 @@ def merge_graphs(
             if parent != child and (parent, child) not in removed
         )
 
+    projection = project_graph_to_dag(
+        cleaned,
+        nodes=nodes,
+        edge_priorities={
+            edge: (float(depth), -float(score))
+            for edge, (score, depth) in edge_scores.items()
+        },
+        protected_edges=prefer_edges,
+    )
     return {
-        "graph": complete_graph(cleaned, nodes),
+        "graph": projection["graph"],
         "conflicts": conflicts,
         "removed_edges": [list(edge) for edge in sorted(removed)],
+        "cycle_rejections": projection["rejected_edges"],
     }
 
 
@@ -178,6 +244,8 @@ class CCIARunner:
         self.correlation_matrix: pd.DataFrame | None = None
         self.importance_cache: dict[str, pd.Series] = {}
         self.residual_cache: dict[tuple[str, tuple[str, ...], str], np.ndarray] = {}
+        self.direction_degrees: dict[str, float] | None = None
+        self.post_treatment_cache: dict[str, dict[str, float]] = {}
         self.edge_decisions: list[dict[str, Any]] = []
         self.logs: list[str] = []
         self.start_time = time.time()
@@ -222,7 +290,48 @@ class CCIARunner:
         self.df = df
         self.var_types = var_types
         self.correlation_matrix = self.compute_type_aware_correlation(df, var_types)
+        if self.config.direction_strategy == "task_adaptive":
+            self.direction_degrees = dependency_degrees(df)
         return df
+
+    @staticmethod
+    def _known_baseline_post_score() -> dict[str, float]:
+        return {
+            "r2_t": 0.0,
+            "r2_y": 0.0,
+            "r2_ty": 0.0,
+            "gain_t_given_y": 0.0,
+            "gain_y_given_t": 0.0,
+            "is_post": False,
+        }
+
+    def _post_treatment_score(self, variable: str) -> dict[str, float]:
+        if variable in self.post_treatment_cache:
+            return self.post_treatment_cache[variable]
+        if self.df is None:
+            raise RuntimeError("Data must be prepared before direction scoring.")
+
+        treatment_order = self.variable_order.get("T")
+        variable_order = self.variable_order.get(variable)
+        if (
+            variable not in {"T", "Y"}
+            and treatment_order is not None
+            and variable_order is not None
+            and variable_order < treatment_order
+        ):
+            score = self._known_baseline_post_score()
+        else:
+            score = post_treatment_score(
+                self.df,
+                variable,
+                treatment="T",
+                outcome="Y",
+                var_types=self.var_types,
+                random_state=self.config.random_state,
+                n_estimators=self.config.lgb_estimators,
+            )
+        self.post_treatment_cache[variable] = score
+        return score
 
     def compute_type_aware_correlation(self, df: pd.DataFrame, var_types: dict[str, str]) -> pd.DataFrame:
         variables = list(df.columns)
@@ -289,13 +398,44 @@ class CCIARunner:
                     queue.append((parent, depth + 1))
 
         completed = complete_graph(graph, self.df.columns)
+        edge_priorities: dict[tuple[str, str], tuple[float, ...]] = {}
+        for decision in self.edge_decisions:
+            if not decision.get("accepted_edge"):
+                continue
+            parent = decision.get("edge_parent")
+            child = decision.get("edge_child")
+            if not parent or not child:
+                continue
+            edge = (parent, child)
+            priority = (
+                float(decision.get("node_depth", 999)),
+                -float(decision.get("orientation_confidence", 0.0) or 0.0),
+            )
+            if edge not in edge_priorities or priority < edge_priorities[edge]:
+                edge_priorities[edge] = priority
+
+        projection = project_graph_to_dag(
+            completed,
+            nodes=self.df.columns,
+            edge_priorities=edge_priorities,
+        )
+        retained_edges = {
+            tuple(edge)
+            for edge in projection["retained_edges"]
+        }
+        for decision in self.edge_decisions:
+            if decision.get("accepted_edge"):
+                edge = (decision.get("edge_parent"), decision.get("edge_child"))
+                decision["dag_retained"] = edge in retained_edges
+
         result = {
             "target": target,
-            "graph": completed,
+            "graph": projection["graph"],
             "descendants": descendants,
             "var_types": self.var_types,
             "correlation_matrix": self.correlation_matrix.to_dict(),
             "edge_decisions": self.edge_decisions,
+            "cycle_rejections": projection["rejected_edges"],
             "logs": self.logs,
             "config": asdict(self.config),
             "runtime_sec": time.time() - self.start_time,
@@ -643,6 +783,12 @@ class CCIARunner:
                 random_state=self.config.random_state,
                 max_samples=1500,
                 n_estimators=self.config.lgb_estimators,
+                precomputed_degrees=self.direction_degrees,
+                precomputed_post_scores={
+                    candidate: self._post_treatment_score(candidate),
+                    node: self._post_treatment_score(node),
+                },
+                data_is_standardized=True,
             )
             if result.relation == "x_to_y":
                 relation = "parent"

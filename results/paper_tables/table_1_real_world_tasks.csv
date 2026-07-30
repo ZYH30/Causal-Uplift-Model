@@ -1,5 +1,0 @@
-Role,Task,Conf. Type,N,Treated / Control,Raw Diff.,AIPW ATE [95% CI],ESS Ratio,Mean |SMD| Pre -> IPW
-Primary clinical case,Antihypertensive medication -> SBP,total,7711,5830 / 1881,1.798,"-3.633 [-5.132, -2.134]",0.776,0.215 -> 0.076
-Corroborating endpoint,Antihypertensive medication -> DBP,proximal,7676,5800 / 1876,-5.579,"-2.433 [-3.278, -1.587]",0.778,0.217 -> 0.075
-Secondary drug case,Cholesterol medication -> Total cholesterol,proximal,4521,3483 / 1038,-49.501,"-44.229 [-48.337, -40.121]",0.961,0.135 -> 0.097
-Supplementary behavior case,Vigorous activity -> Waist circumference,proximal,20300,4776 / 15524,-6.900,"-3.359 [-3.853, -2.865]",0.850,0.247 -> 0.096

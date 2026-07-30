@@ -1,5 +1,4 @@
-Role,Task,Variables,|C|,|S|,C-set,S-set,Runtime (s)
-Primary clinical case,Antihypertensive medication -> SBP,30,14,0,BMXHT;BMXWAIST;BMXWT;BPQ080;BPXPLS;DIQ050;INDFMPIR;LBXGH;MCQ160F;MCQ220;PAD680;PAQ605;PAQ650;RIDAGEYR,,38.5
-Corroborating endpoint,Antihypertensive medication -> DBP,30,9,6,BMXBMI;BMXHT;BMXWAIST;BPQ080;DIQ050;INDFMPIR;LBXGH;RIDAGEYR;RIDRETH3,BMXWT;BPXPLS;DIQ010;MCQ160B;MCQ160C;cycle_year,235.3
-Secondary drug case,Cholesterol medication -> Total cholesterol,30,6,5,BMXWAIST;BPXPLS;DIQ050;LBXGH;RIDAGEYR;mean_dbp,BMXHT;BMXWT;BPQ020;MCQ160E;RIAGENDR,98.8
-Supplementary behavior case,Vigorous activity -> Waist circumference,26,9,5,BMXHT;BPXPLS;DMDEDUC2;INDFMPIR;LBXGH;PAQ620;PAQ635;RIDAGEYR;RIDRETH3,BPQ020;BPQ080;DIQ010;PAD680;mean_dbp,652.8
+Task,Variables,|C|,|S|,C-set,S-set,Graph runtime (s)
+MIMIC-IV early RBC / 90-day mortality,79,3,5,lab_glucose_last_missing;lab_lactate_last;urine_output_6h,age;lab_bun_last;service_medical;unit_cardiac;unit_medical,172.7
+NHANES antihypertensive medication / SBP,29,6,2,BMXWAIST;BPQ080;BPXPLS;INDFMPIR;LBXGH;RIDAGEYR,BMXHT;BMXWT,6.3
+NHANES cholesterol medication / total cholesterol,30,7,4,BMXWAIST;BPXPLS;DIQ050;LBXGH;MCQ160C;RIDAGEYR;mean_dbp,BMXWT;BPQ020;MCQ160E;RIAGENDR,5.2

@@ -14,6 +14,11 @@ data/nhanes_raw/
 data/*.xpt
 data/*.csv
 data/*.parquet
+data/*.json
+data/*.sqlite
+data/*.sqlite-*
+data/*.db
+data/*.gz
 
 results/generated/
 results/llm_adjudication_dryrun/

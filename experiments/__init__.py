@@ -1,1 +1,1 @@
-"""Reproducible experiment entry points for Causal-Uplift-Lab."""
+"""Reproducible CCIA-OCU experiment entry points."""

@@ -35,7 +35,6 @@ def _train_booster(
         treatment,
         test_size=0.2,
         random_state=42,
-        stratify=treatment,
     )
     train_data = lgb.Dataset(x_train, label=y_train)
     valid_data = lgb.Dataset(x_valid, label=y_valid)
@@ -77,10 +76,10 @@ def fit_propensity(
 
     fixed = {
         "learning_rate": 0.05,
-        "max_depth": 8,
-        "num_leaves": 64,
-        "min_data_in_leaf": 128,
-        "min_data_in_bin": 128,
+        "max_depth": 30,
+        "num_leaves": 256,
+        "min_data_in_leaf": 256,
+        "min_data_in_bin": 256,
         "subsample": 0.8,
     }
     if n_trials > 0:

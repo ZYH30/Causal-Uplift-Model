@@ -1,8 +1,7 @@
 # Reproducibility Guide
 
-All commands run from the repository root. Compact result artifacts reported
-in the manuscript are committed under `results/`; new runs write to
-`results/generated/`.
+This guide reproduces the paper-facing OCU and CCIA experiments. Run all
+commands from the repository root.
 
 ## Environment
 
@@ -11,79 +10,138 @@ make env
 make test
 ```
 
-The released experiments use LightGBM for CCIA residual fitting. KAN is an
-optional backend and is not required for any reported number.
+The main statistical experiments use LightGBM. KAN is an optional nonlinear
+residual model and requires:
 
-## Synthetic Experiments
+```bash
+.venv/bin/pip install -r requirements-kan.txt
+```
+
+## Synthetic OCU
 
 ```bash
 make synthetic
+```
+
+Expected output:
+
+```text
+results/generated/synthetic/synthetic_reproduction_mae_r2.csv
+```
+
+The experiment uses `n=10000`, seed 2026, and reports CATE MAE, R2,
+Spearman correlation, and bias for five uplift learners.
+
+## Statistical CCIA
+
+Run the five-seed direction benchmark and five-seed complete graph-recovery
+and learned-graph transfer pipeline:
+
+```bash
 make direction
 make ccia-synthetic
 ```
 
-`make synthetic` evaluates CATE MAE, MSE, R2, Spearman correlation, and bias
-for S-, T-, X-, centered class-transformation, and uplift-forest learners.
+The graph experiment intentionally includes collider variables and disables
+uplift temporal ordering. It therefore evaluates the data-driven statistical
+direction mechanism rather than a pre-treatment filter. The final graph uses a
+priority-ordered DAG gate: endpoint-level and higher-confidence directions are
+admitted first, and every cycle-closing edge is rejected with provenance.
 
-The direction benchmark uses seeds 2026-2030 and evaluates true adjacent
-directions under the mixed-type nonlinear data-generating process.
+Expected aggregate outputs:
 
-The graph-recovery command includes the post-treatment colliders and does not
-supply pre-treatment ordering. It evaluates directed/skeleton precision,
-recall and F1, structural Hamming distance, endpoint ancestor and parent
-recovery, causal-role recovery, and downstream oracle-versus-learned-graph
-CATE performance.
+```text
+results/generated/ccia-synthetic/ccia_multiseed_per_seed.csv
+results/generated/ccia-synthetic/ccia_multiseed_summary.csv
+```
+
+## MIMIC-IV Target-Trial Study
+
+MIMIC-IV v3.1 must be obtained independently through PhysioNet credentialing
+and its data-use agreement. Source CSV files and patient-level extracts are
+never included in the repository.
+
+Build the filtered SQLite database used by the paper:
+
+```bash
+make mimic-db MIMIC_ROOT=/path/to/mimiciv/3.1
+```
+
+The paper environment uses `--skip-chartevents` because the local
+`chartevents.csv.gz` failed the official MIMIC-IV SHA256 and gzip-completeness
+checks. Users with a complete manifest-matching file may omit that flag. The
+final analysis uses complete laboratory, input, output, service, procedure,
+admission, and patient sources.
+
+Reproduce cohort construction, statistical CCIA, validation-only learner
+selection, temporal evaluation, and 20 repeated splits:
+
+```bash
+make mimic MIMIC_ROOT=/path/to/mimiciv/3.1
+```
+
+Reproduce patient-bootstrap uncertainty, benefit phenotypes, the hemoglobin
+mechanism endpoint, policy-budget curves, late-transfusion sensitivity, and
+the conservative `C_total` propensity sensitivity:
+
+```bash
+make mimic-interpretation MIMIC_ROOT=/path/to/mimiciv/3.1
+```
+
+The generated output directory is:
+
+```text
+results/generated/mimic-rbc-v3/
+```
+
+The analysis never exports row-level MIMIC-IV data. Release archives contain
+only aggregate CSV/JSON results and source-integrity manifests.
 
 ## NHANES Data
 
-The empirical scripts fetch 2011-2018 public NHANES XPT tables from CDC into
-`data/nhanes_raw/`. The two locked tasks are:
+The scripts download public NHANES XPT files from CDC into
+`data/nhanes_raw/`. Raw data are excluded from version control. The two paper
+tasks use the 2011-2018 cycles.
 
-1. Current prescribed antihypertensive medication to mean systolic blood
-   pressure among adults reporting diagnosed hypertension.
-2. Current prescribed cholesterol-lowering medication to total cholesterol
-   among adults reporting diagnosed high cholesterol.
+## LLM Semantic Audit
 
-Raw data and participant-level analysis frames are excluded from version
-control.
-
-## Semantic Adjudication
-
-Always run the no-cost audit first:
+Always run the no-cost dry-run first:
 
 ```bash
 make llm-dryrun
 ```
 
-This materializes the impact-ranked edge queue, counterbalanced messages, call
-count, and upper token budget without reading credentials or using a network.
-
-Archived decisions can be fused without API calls:
+It creates the edge queue and token budget without reading API keys. Rebuilding
+the graph variants from an archived decision file is also free:
 
 ```bash
 make llm-variants
 ```
 
-Fresh calls require both `Kimi_Key` and `deepseek_Key` in `.env`, plus the
-explicit execution gate:
+Fresh semantic adjudication is a paid network operation. Place `Kimi_Key` and
+`deepseek_Key` in the workspace-level `.env`, review the budget, and explicitly
+unlock the target:
 
 ```bash
 ALLOW_PAID_API=1 make llm-api
 ```
 
-## Locked Real-World Confirmation
+The paper run used 39 HTTP responses and 192,664 total tokens. API keys are
+never written to request, response, ledger, or result files.
+
+## Locked NHANES Confirmation
 
 ```bash
 make nhanes-confirmatory
 make nhanes-survey
 ```
 
-The confirmatory protocol fixes graph fusion, graph-proximal C-set, base
-learner, OCU variant, and seeds before running seeds 2040-2059. Evaluation
-propensity models use `e(C)` only. Outcome nuisance models use `m_t(C union S)`.
+The primary confirmatory protocol fixes the conservative LLM graph, proximal
+C-set, OCU C-only variant, base learner, and seeds 2040-2059. Propensity
+nuisance models use only `C`; outcome nuisance models use `C union S`.
 
-The survey sensitivity uses `WTMEC2YR / 4` for four two-year cycles and Taylor
-linearization over cycle-specific masked strata and primary sampling units.
+The survey sensitivity uses `WTMEC2YR/4` for four two-year cycles and Taylor
+linearization with cycle-specific masked strata and PSU variables.
 
 ## Figures
 
@@ -91,17 +149,24 @@ linearization over cycle-specific masked strata and primary sampling units.
 make figures
 ```
 
-The figure script reads only committed immutable artifacts and writes vector
-PDF plus high-resolution PNG files. It does not fit a model or invoke an API.
+This target regenerates PDF and PNG figures from committed aggregate result
+files. It does not refit models or rerun paid APIs.
 
-## Artifact Provenance
+The public code repository does not include the submission manuscript.
 
-- `results/synthetic/`: synthetic CATE estimates.
-- `results/direction_benchmark_multiseed_all_v1/`: five-seed orientation audit.
-- `results/ccia_synthetic_n10000_task_adaptive_allvars_v5_treatment_rescue/`:
-  graph and downstream evidence.
-- `results/llm_adjudication/`: aggregate votes, usage summary, and deterministic
-  graph variants.
-- `results/nhanes_llm_fixed_confirmatory_v1/`: locked 20-split confirmation.
-- `results/nhanes_survey_aipw_sensitivity_v1/`: complex-survey sensitivity.
-- `results/paper_tables/`: manuscript-facing CSV tables.
+## Result Provenance
+
+- `results/llm_adjudication/`: raw normalized votes, decision archive, API usage,
+  and deterministic graph variants.
+- `results/nhanes_llm_fixed_confirmatory_v1/`: 20 locked train-test splits.
+- `results/nhanes_survey_aipw_sensitivity_v1/`: complex-survey AIPW sensitivity.
+- `results/mimic_rbc_target_trial_v3/`: locked longitudinal RBC study,
+  repeated-split comparisons, clinical interpretation, and sensitivities.
+- `results/ccia_synthetic_multiseed_dag_gated_v2/`: five-sample graph
+  recovery and learned-versus-oracle OCU transfer.
+- `results/paper_tables/`: manuscript-facing aggregate tables.
+- `figures/`: manuscript-facing figures regenerated from committed artifacts.
+
+`results/generated/` is ignored because intermediate files can be large. The
+repository includes the compact final CSV/JSON artifacts required by
+`tests/test_experiment_integrity.py`.

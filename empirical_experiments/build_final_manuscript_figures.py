@@ -13,6 +13,7 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from matplotlib.colors import LinearSegmentedColormap
 from matplotlib.patches import Patch
 
 
@@ -39,6 +40,8 @@ TASKS = {
         "color": COLORS["coral"],
     },
 }
+
+MIMIC_RESULTS = RESULTS / "mimic_rbc_target_trial_v3"
 
 
 def configure_style() -> None:
@@ -90,17 +93,10 @@ def build_synthetic_evidence(output_dir: Path) -> None:
         / "direction_benchmark_multiseed_all_v1"
         / "direction_method_summary_by_seed.csv"
     )
-    graph = json.loads(
-        (
-            RESULTS
-            / "ccia_synthetic_n10000_task_adaptive_allvars_v5_treatment_rescue"
-            / "ccia_graph_metrics.json"
-        ).read_text(encoding="utf-8")
-    )
-    downstream = pd.read_csv(
+    graph = pd.read_csv(
         RESULTS
-        / "ccia_synthetic_n10000_task_adaptive_allvars_v5_treatment_rescue"
-        / "ccia_downstream_uplift.csv"
+        / "ccia_synthetic_multiseed_dag_gated_v2"
+        / "ccia_multiseed_per_seed.csv"
     )
 
     fig, axes = plt.subplots(
@@ -143,22 +139,33 @@ def build_synthetic_evidence(output_dir: Path) -> None:
     # B: graph and causal-role recovery.
     ax = axes[1]
     f1_rows = [
-        ("Directed graph", graph["directed"]["f1"]),
-        (r"$\mathrm{Pa}(T)$", graph["local"]["Parents_T"]["f1"]),
-        (r"$\mathrm{Pa}(Y)$", graph["local"]["Parents_Y"]["f1"]),
-        (r"$C_{\mathrm{P}}$", graph["ocu_sets"]["C_Proximal"]["f1"]),
-        (r"$S_{\mathrm{prec}}$", graph["ocu_sets"]["S_Prec"]["f1"]),
+        ("Directed graph", "directed_f1"),
+        (r"$\mathrm{Pa}(T)$", "Parents_T_f1"),
+        (r"$\mathrm{Pa}(Y)$", "Parents_Y_f1"),
+        (r"$C_{\mathrm{P}}$", "C_Proximal_f1"),
+        (r"$S_{\mathrm{prec}}$", "S_Prec_f1"),
     ]
     y = np.arange(len(f1_rows))[::-1]
-    values = np.array([value for _, value in f1_rows])
-    ax.hlines(y, 0.75, values, color=COLORS["light_gray"], lw=2)
-    ax.scatter(values, y, s=45, color=COLORS["navy"], zorder=3)
-    for x_value, y_value in zip(values, y):
-        ax.text(x_value - 0.012, y_value + 0.27, f"{x_value:.3f}", ha="right", fontsize=7.8)
+    for y_value, (_, column) in zip(y, f1_rows):
+        values = graph[column].to_numpy()
+        jitter = rng.uniform(-0.10, 0.10, size=len(values))
+        ax.scatter(
+            values,
+            np.full(len(values), y_value) + jitter,
+            s=22,
+            color=COLORS["navy"],
+            alpha=0.62,
+            edgecolor="white",
+            linewidth=0.4,
+            zorder=3,
+        )
+        mean = float(np.mean(values))
+        ax.plot([mean, mean], [y_value - 0.18, y_value + 0.18], color=COLORS["teal"], lw=2.4)
+        ax.text(mean - 0.009, y_value + 0.25, f"{mean:.3f}", ha="right", fontsize=7.8)
     ax.set_yticks(y, [name for name, _ in f1_rows])
     ax.set_xlim(0.73, 1.025)
     ax.set_xlabel("F1 score")
-    ax.set_title("Task-relevant graph recovery")
+    ax.set_title("Task-relevant recovery over seeds")
     ax.grid(axis="x", color=COLORS["light_gray"], lw=0.55)
     panel_label(ax, "B")
 
@@ -167,38 +174,428 @@ def build_synthetic_evidence(output_dir: Path) -> None:
     models = ["S-Learner", "ClassTransform"]
     y = np.arange(len(models))[::-1]
     for y_value, model in zip(y, models):
-        subset = downstream[downstream["Model"] == model].set_index("Setting")
-        oracle = float(subset.loc["OCU_Oracle", "MAE"])
-        learned = float(subset.loc["OCU_CCIA", "MAE"])
-        ax.plot([oracle, learned], [y_value, y_value], color=COLORS["light_gray"], lw=3)
+        prefix = model.replace("-", "_")
+        oracle = graph[f"{prefix}_OCU_Oracle_MAE"].to_numpy()
+        learned = graph[f"{prefix}_OCU_CCIA_MAE"].to_numpy()
+        y_jitter = np.linspace(-0.13, 0.13, len(graph))
+        for oracle_value, learned_value, offset in zip(oracle, learned, y_jitter):
+            ax.plot(
+                [oracle_value, learned_value],
+                [y_value + offset, y_value + offset],
+                color=COLORS["light_gray"],
+                lw=1.2,
+                zorder=1,
+            )
+            ax.scatter(oracle_value, y_value + offset, s=18, color=COLORS["navy"], alpha=0.55)
+            ax.scatter(
+                learned_value,
+                y_value + offset,
+                s=20,
+                marker="D",
+                color=COLORS["teal"],
+                alpha=0.58,
+            )
+        oracle_mean = float(np.mean(oracle))
+        learned_mean = float(np.mean(learned))
         ax.scatter(
-            oracle,
+            oracle_mean,
             y_value,
-            s=48,
+            s=58,
             color=COLORS["navy"],
             label="Oracle graph" if model == models[0] else None,
             zorder=3,
         )
         ax.scatter(
-            learned,
+            learned_mean,
             y_value,
-            s=54,
+            s=62,
             marker="D",
             color=COLORS["teal"],
             label="CCIA graph" if model == models[0] else None,
             zorder=3,
         )
-        ax.text(oracle, y_value + 0.19, f"{oracle:.3f}", ha="center", fontsize=7.6)
-        ax.text(learned, y_value - 0.27, f"{learned:.3f}", ha="center", fontsize=7.6)
     ax.set_yticks(y, models)
-    ax.set_xlim(0.15, 0.46)
+    ax.set_xlim(0.15, 0.58)
+    ax.set_xticks([0.2, 0.3, 0.4, 0.5])
     ax.set_xlabel("CATE MAE (lower is better)")
-    ax.set_title("Oracle-to-learned graph transfer")
+    ax.set_title("Oracle versus learned graph")
     ax.grid(axis="x", color=COLORS["light_gray"], lw=0.55)
     ax.legend(frameon=False, loc="lower right")
     panel_label(ax, "C")
 
     save_figure(fig, output_dir, "figure_2_synthetic_evidence_chain")
+
+
+def build_mimic_target_trial_evidence(output_dir: Path) -> None:
+    era = pd.read_csv(MIMIC_RESULTS / "mimic_rbc_era_summary.csv")
+    validation_balance = pd.read_csv(
+        MIMIC_RESULTS / "mimic_rbc_development_balance.csv"
+    )
+    temporal_balance = pd.read_csv(
+        MIMIC_RESULTS / "mimic_rbc_temporal_test_balance.csv"
+    )
+    repeated = pd.read_csv(
+        MIMIC_RESULTS / "mimic_rbc_random_robustness_summary.csv"
+    ).set_index("Metric")
+    temporal = pd.read_csv(
+        MIMIC_RESULTS / "mimic_rbc_temporal_paired_bootstrap_summary.csv"
+    ).set_index("Metric")
+
+    fig = plt.figure(figsize=(11.2, 6.25), constrained_layout=True)
+    grid = fig.add_gridspec(
+        2,
+        3,
+        height_ratios=[1.05, 0.95],
+        width_ratios=[1.30, 1.02, 1.02],
+    )
+
+    # A: clinical target-trial design and cohort flow.
+    ax = fig.add_subplot(grid[0, 0])
+    ax.set_xlim(-0.15, 4.35)
+    ax.set_ylim(-0.10, 1.10)
+    ax.axhline(0.47, color=COLORS["black"], lw=1.1)
+    ax.axvspan(0, 1, ymin=0.32, ymax=0.60, color=COLORS["light_gray"], alpha=0.75)
+    ax.axvspan(1, 2, ymin=0.32, ymax=0.60, color=COLORS["gold"], alpha=0.55)
+    ax.axvspan(2, 3, ymin=0.32, ymax=0.60, color=COLORS["teal"], alpha=0.18)
+    ax.scatter([1, 2, 3, 4], [0.47] * 4, s=34, color=COLORS["navy"], zorder=3)
+    ax.text(0.50, 0.78, "Baseline\nlookback", ha="center", va="center", fontsize=7.7)
+    ax.text(1.50, 0.78, "RBC initiation\ngrace period", ha="center", va="center", fontsize=7.7)
+    ax.text(2.50, 0.78, "Post-landmark\nHb response", ha="center", va="center", fontsize=7.7)
+    ax.text(4.00, 0.78, "90-day\nmortality", ha="center", va="center", fontsize=7.7)
+    ax.text(1, 0.25, "Hb 7--9 g/dL\ntrigger", ha="center", va="top", fontsize=7.4)
+    ax.text(2, 0.25, "Treatment\nlandmark", ha="center", va="top", fontsize=7.4)
+    ax.text(
+        -0.05,
+        1.04,
+        "18,742 triggers  -  2,432 prior RBC  -  742 not at landmark",
+        ha="left",
+        va="top",
+        fontsize=7.5,
+        color=COLORS["gray"],
+    )
+    ax.text(
+        -0.05,
+        -0.02,
+        r"Final $n=15{,}568$: 3,017 early RBC; 3,312 deaths",
+        ha="left",
+        va="bottom",
+        fontsize=7.8,
+        fontweight="bold",
+    )
+    ax.set_xticks([0, 1, 2, 3, 4], ["-24 h", "0", "6 h", "24 h", "90 d"])
+    ax.set_yticks([])
+    ax.set_title("Longitudinal transfusion target trial")
+    ax.text(
+        1.0,
+        -0.16,
+        "Timeline shown schematically",
+        transform=ax.transAxes,
+        ha="right",
+        fontsize=6.9,
+        color=COLORS["gray"],
+    )
+    for spine in ax.spines.values():
+        spine.set_visible(False)
+    panel_label(ax, "A")
+
+    # B: discovery, model selection, and once-opened temporal test.
+    ax = fig.add_subplot(grid[0, 1])
+    periods = [
+        ("Discover graph", "2008--2016", 10179, 0.2295, COLORS["navy"]),
+        ("Select learner", "2017--2019", 3127, 0.1708, COLORS["gold"]),
+        ("Locked test", "2020--2022", 2262, 0.0650, COLORS["teal"]),
+    ]
+    y = np.arange(3)[::-1]
+    for y_value, (stage, years, n_value, rate, color) in zip(y, periods):
+        ax.barh(y_value, 0.62, height=0.50, color=color, alpha=0.90)
+        ax.text(
+            0.03,
+            y_value,
+            f"{stage}\n{years}",
+            color="white",
+            va="center",
+            ha="left",
+            fontsize=7.5,
+            fontweight="bold",
+        )
+        ax.text(
+            0.66,
+            y_value,
+            f"$n={n_value:,}$\nRBC {100 * rate:.1f}%",
+            va="center",
+            fontsize=7.4,
+        )
+    ax.set_xlim(0, 1.03)
+    ax.set_yticks([])
+    ax.set_xticks([])
+    ax.set_title("Prospective temporal lock")
+    ax.text(
+        0.01,
+        -0.04,
+        "The 2020--2022 cohort was opened once after learner selection.",
+        transform=ax.transAxes,
+        fontsize=7.2,
+        color=COLORS["gray"],
+    )
+    for spine in ax.spines.values():
+        spine.set_visible(False)
+    panel_label(ax, "B")
+
+    # C: balance and overlap in the validation and temporal-test cohorts.
+    ax = fig.add_subplot(grid[0, 2])
+    balance_sets = [
+        (
+            "Validation",
+            validation_balance,
+            0.943,
+            COLORS["gold"],
+        ),
+        (
+            "Temporal test",
+            temporal_balance,
+            0.982,
+            COLORS["teal"],
+        ),
+    ]
+    y = np.array([1.0, 0.0])
+    for y_value, (label, frame, ess, color) in zip(y, balance_sets):
+        pre = float(frame["smd_pre"].abs().mean())
+        post = float(frame["smd_ipw"].abs().mean())
+        ax.plot([post, pre], [y_value, y_value], color=COLORS["light_gray"], lw=3)
+        ax.scatter(pre, y_value, s=48, color=COLORS["gray"], zorder=3)
+        ax.scatter(post, y_value, s=55, marker="D", color=color, zorder=3)
+        ax.text(post + 0.010, y_value + 0.19, f"ESS/n={ess:.3f}", fontsize=7.5)
+    ax.axvline(0.10, color=COLORS["gray"], lw=0.8, ls="--")
+    ax.set_yticks(y, [item[0] for item in balance_sets])
+    ax.set_ylim(-0.35, 1.35)
+    ax.set_xlim(0, 0.39)
+    ax.set_xlabel(r"Mean $|\mathrm{SMD}|$ in $C$")
+    ax.set_title("Adjustment diagnostics")
+    ax.grid(axis="x", color=COLORS["light_gray"], lw=0.55)
+    ax.scatter([], [], s=45, color=COLORS["gray"], label="Before")
+    ax.scatter([], [], s=52, marker="D", color=COLORS["teal"], label="After")
+    ax.legend(frameon=False, loc="lower right")
+    panel_label(ax, "C")
+
+    metric_specs = [
+        (
+            "R_Loss_Improvement",
+            r"R-loss gain ($\times10^{-4}$)",
+            10000.0,
+            "D",
+        ),
+        (
+            "DR_Qini_Improvement",
+            "DR-Qini gain",
+            1.0,
+            "E",
+        ),
+        (
+            "Policy_Risk_Reduction_Improvement",
+            "Policy-risk gain (percentage points)",
+            100.0,
+            "F",
+        ),
+    ]
+    for col, (metric, title, scale, label) in enumerate(metric_specs):
+        ax = fig.add_subplot(grid[1, col])
+        rep = repeated.loc[metric]
+        tmp = temporal.loc[metric]
+        points = [
+            (
+                float(rep["Mean"]) * scale,
+                float(rep["CI_Low"]) * scale,
+                float(rep["CI_High"]) * scale,
+                COLORS["navy"],
+            ),
+            (
+                float(tmp["Point_Estimate"]) * scale,
+                float(tmp["CI_Low"]) * scale,
+                float(tmp["CI_High"]) * scale,
+                COLORS["teal"],
+            ),
+        ]
+        for y_value, (point, low, high, color) in zip([1, 0], points):
+            ax.errorbar(
+                point,
+                y_value,
+                xerr=[[point - low], [high - point]],
+                fmt="D",
+                markersize=5,
+                color=color,
+                ecolor=color,
+                capsize=3,
+                lw=1.35,
+                zorder=3,
+            )
+            ax.text(
+                point,
+                y_value + 0.20,
+                f"{point:.3f}" if scale == 1 else f"{point:.2f}",
+                ha="center",
+                fontsize=7.4,
+            )
+        ax.axvline(0, color=COLORS["gray"], lw=0.8, ls="--")
+        ax.set_yticks([1, 0], ["20 repeated splits", "Locked temporal test"])
+        if col > 0:
+            ax.set_yticklabels([])
+        ax.set_title(title)
+        ax.set_xlabel("Positive values favor CCIA C+S")
+        ax.grid(axis="x", color=COLORS["light_gray"], lw=0.55)
+        panel_label(ax, label)
+
+    save_figure(fig, output_dir, "figure_3_mimic_target_trial_evidence")
+
+
+def build_mimic_clinical_interpretation(output_dir: Path) -> None:
+    profiles = pd.read_csv(
+        MIMIC_RESULTS / "mimic_rbc_temporal_benefit_profiles.csv"
+    )
+    hb = pd.read_csv(MIMIC_RESULTS / "mimic_rbc_temporal_hb_mechanism.csv")
+    budget = pd.read_csv(
+        MIMIC_RESULTS / "mimic_rbc_temporal_policy_budget_curve.csv"
+    )
+
+    fig, axes = plt.subplots(2, 2, figsize=(10.8, 6.35), constrained_layout=True)
+    quartiles = np.arange(1, 5)
+
+    # A: calibration of predicted mortality benefit.
+    ax = axes[0, 0]
+    observed = profiles["dr_observed_benefit_mean"].to_numpy(dtype=float) * 100
+    low = profiles["dr_observed_benefit_ci_low"].to_numpy(dtype=float) * 100
+    high = profiles["dr_observed_benefit_ci_high"].to_numpy(dtype=float) * 100
+    predicted = profiles["predicted_benefit_mean"].to_numpy(dtype=float) * 100
+    ax.errorbar(
+        quartiles,
+        observed,
+        yerr=[observed - low, high - observed],
+        fmt="D-",
+        color=COLORS["teal"],
+        ecolor=COLORS["teal"],
+        capsize=3,
+        lw=1.5,
+        markersize=5,
+        label="DR-estimated benefit",
+    )
+    ax.plot(
+        quartiles,
+        predicted,
+        "o--",
+        color=COLORS["navy"],
+        lw=1.3,
+        markersize=4.5,
+        label="Predicted benefit",
+    )
+    ax.axhline(0, color=COLORS["gray"], lw=0.8, ls="--")
+    ax.set_xticks(quartiles, [f"Q{i}" for i in quartiles])
+    ax.set_ylabel("Mortality risk reduction (percentage points)")
+    ax.set_title("Benefit stratification in the temporal test")
+    ax.grid(axis="y", color=COLORS["light_gray"], lw=0.55)
+    ax.legend(frameon=False, loc="upper left")
+    panel_label(ax, "A")
+
+    # B: clinical phenotype behind the benefit ranking.
+    ax = axes[0, 1]
+    phenotype = pd.DataFrame(
+        {
+            "Age": profiles["age_mean"],
+            "BUN": profiles["lab_bun_last_mean"],
+            "Urine output": profiles["urine_output_6h_mean"],
+            "Mortality": profiles["observed_mortality_90d"],
+        }
+    )
+    standardized = (phenotype - phenotype.mean()) / phenotype.std(ddof=0)
+    clinical_map = LinearSegmentedColormap.from_list(
+        "clinical_diverging",
+        [COLORS["navy"], "#F4F5F3", COLORS["coral"]],
+    )
+    image = ax.imshow(
+        standardized.to_numpy().T,
+        aspect="auto",
+        cmap=clinical_map,
+        vmin=-1.55,
+        vmax=1.55,
+    )
+    ax.set_xticks(np.arange(4), [f"Q{i}" for i in quartiles])
+    ax.set_yticks(np.arange(4), phenotype.columns)
+    ax.set_title("Clinical phenotype across benefit quartiles")
+    labels = [
+        [f"{value:.1f}" for value in phenotype["Age"]],
+        [f"{value:.1f}" for value in phenotype["BUN"]],
+        [f"{value:.0f}" for value in phenotype["Urine output"]],
+        [f"{100 * value:.1f}%" for value in phenotype["Mortality"]],
+    ]
+    for row in range(4):
+        for col in range(4):
+            text_color = "white" if abs(standardized.iloc[col, row]) > 1.05 else COLORS["black"]
+            ax.text(col, row, labels[row][col], ha="center", va="center", color=text_color, fontsize=7.4)
+    colorbar = fig.colorbar(image, ax=ax, fraction=0.046, pad=0.03)
+    colorbar.set_label("Within-feature standardized mean", fontsize=7.4)
+    colorbar.ax.tick_params(labelsize=7)
+    panel_label(ax, "B")
+
+    # C: hemoglobin mechanism endpoint.
+    ax = axes[1, 0]
+    hb_quartiles = hb[hb["group"].str.startswith("benefit_quartile")].copy()
+    point = hb_quartiles["aipw_hb_change_difference"].to_numpy(dtype=float)
+    low = hb_quartiles["ci_low"].to_numpy(dtype=float)
+    high = hb_quartiles["ci_high"].to_numpy(dtype=float)
+    overall = float(hb.loc[hb["group"] == "overall", "aipw_hb_change_difference"].iloc[0])
+    ax.errorbar(
+        quartiles,
+        point,
+        yerr=[point - low, high - point],
+        fmt="D",
+        color=COLORS["coral"],
+        ecolor=COLORS["coral"],
+        capsize=3,
+        markersize=5,
+        lw=1.4,
+    )
+    ax.axhline(overall, color=COLORS["navy"], lw=1.2, ls="--", label=f"Overall: {overall:.2f} g/dL")
+    ax.axhline(0, color=COLORS["gray"], lw=0.75)
+    ax.set_xticks(quartiles, [f"Q{i}" for i in quartiles])
+    ax.set_ylabel("Adjusted hemoglobin increase (g/dL)")
+    ax.set_title("Physiologic response supports the ranking")
+    ax.grid(axis="y", color=COLORS["light_gray"], lw=0.55)
+    ax.legend(frameon=False, loc="upper left")
+    panel_label(ax, "C")
+
+    # D: policy value over clinically relevant treatment budgets.
+    ax = axes[1, 1]
+    for interface, label, color, marker in [
+        ("CCIA_CPlusS", "CCIA C+S", COLORS["teal"], "D"),
+        ("AllVariables", "All variables", COLORS["gray"], "o"),
+    ]:
+        subset = budget[budget["Interface"] == interface].sort_values("Budget")
+        ax.plot(
+            100 * subset["Budget"],
+            100 * subset["Risk_Reduction"],
+            marker=marker,
+            markersize=4.5,
+            lw=1.5,
+            color=color,
+            label=label,
+        )
+    observed_budget = 100 * float(
+        budget.loc[budget["Observed_Budget"], "Budget"].iloc[0]
+    )
+    ax.axvline(
+        observed_budget,
+        color=COLORS["gold"],
+        lw=1.0,
+        ls="--",
+        label=f"Observed budget: {observed_budget:.1f}%",
+    )
+    ax.axhline(0, color=COLORS["gray"], lw=0.75)
+    ax.set_xlabel("Treatment budget (% of patients)")
+    ax.set_ylabel("Estimated risk reduction vs random (percentage points)")
+    ax.set_title("Allocation value across treatment capacity")
+    ax.grid(color=COLORS["light_gray"], lw=0.55)
+    ax.legend(frameon=False, loc="best")
+    panel_label(ax, "D")
+
+    save_figure(fig, output_dir, "figure_4_mimic_clinical_interpretation")
 
 
 def build_locked_confirmation(output_dir: Path) -> None:
@@ -500,7 +897,7 @@ def build_neurosymbolic_audit(output_dir: Path) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--output-dir", default="paper/figures")
+    parser.add_argument("--output-dir", default="figures")
     args = parser.parse_args()
 
     output_dir = Path(args.output_dir)
@@ -509,8 +906,8 @@ def main() -> None:
 
     configure_style()
     build_synthetic_evidence(output_dir)
-    build_clinical_diagnostics(output_dir)
-    build_locked_confirmation(output_dir)
+    build_mimic_target_trial_evidence(output_dir)
+    build_mimic_clinical_interpretation(output_dir)
     build_neurosymbolic_audit(output_dir)
     print(f"Wrote final manuscript figures to {output_dir}")
 

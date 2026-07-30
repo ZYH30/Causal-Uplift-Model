@@ -1,0 +1,193 @@
+{
+  "trigger_hour": [
+    "baseline_hb_min",
+    "prior_insulin",
+    "trigger_value",
+    "urine_output_6h"
+  ],
+  "trigger_value": [],
+  "age": [
+    "hx_ischemic_heart",
+    "insurance_medicaid",
+    "insurance_medicare",
+    "insurance_private",
+    "race_white",
+    "urine_output_6h"
+  ],
+  "sex_male": [],
+  "race_white": [],
+  "race_black": [],
+  "race_hispanic": [],
+  "race_asian": [],
+  "insurance_medicare": [],
+  "insurance_medicaid": [],
+  "insurance_private": [],
+  "unit_cardiac": [
+    "age",
+    "service_medical",
+    "unit_medical",
+    "unit_neuro",
+    "unit_surgical"
+  ],
+  "unit_medical": [
+    "service_medical"
+  ],
+  "unit_surgical": [],
+  "unit_neuro": [],
+  "admission_emergency": [],
+  "admission_from_ed": [],
+  "admission_transfer": [],
+  "era_index": [],
+  "prior_admission_count": [],
+  "days_since_last_admission": [],
+  "hx_sepsis": [],
+  "hx_heart_failure": [
+    "age",
+    "lab_bun_last"
+  ],
+  "hx_renal": [],
+  "hx_liver": [],
+  "hx_malignancy": [],
+  "hx_diabetes": [],
+  "hx_anemia": [],
+  "hx_bleeding": [],
+  "hx_ischemic_heart": [],
+  "hx_chronic_lung": [],
+  "lab_bicarbonate_last": [
+    "lab_lactate_last"
+  ],
+  "lab_bun_last": [
+    "age",
+    "lab_bicarbonate_last",
+    "lab_creatinine_last",
+    "lab_potassium_last"
+  ],
+  "lab_creatinine_last": [],
+  "lab_glucose_last": [],
+  "lab_hematocrit_last": [
+    "baseline_hb_min",
+    "trigger_value"
+  ],
+  "lab_inr_last": [
+    "lab_lactate_last"
+  ],
+  "lab_lactate_last": [
+    "lab_glucose_last"
+  ],
+  "lab_platelets_last": [
+    "lab_lactate_last"
+  ],
+  "lab_potassium_last": [],
+  "lab_pt_last": [],
+  "lab_ptt_last": [],
+  "lab_sodium_last": [],
+  "lab_wbc_last": [
+    "lab_lactate_last"
+  ],
+  "baseline_lab_count": [
+    "lab_lactate_last",
+    "trigger_hour",
+    "trigger_value"
+  ],
+  "baseline_hb_count": [],
+  "baseline_hb_min": [
+    "sex_male",
+    "trigger_value"
+  ],
+  "prior_crystalloid": [
+    "baseline_hb_min",
+    "trigger_hour",
+    "urine_observed_6h"
+  ],
+  "prior_furosemide": [],
+  "prior_insulin": [],
+  "prior_vasopressor": [
+    "lab_lactate_last"
+  ],
+  "urine_output_6h": [],
+  "service_medical": [
+    "service_neuro",
+    "service_surgical"
+  ],
+  "service_cardiac": [
+    "service_medical",
+    "unit_cardiac",
+    "urine_observed_6h"
+  ],
+  "service_surgical": [],
+  "service_neuro": [],
+  "service_trauma": [],
+  "pretrigger_invasive_respiratory_support": [
+    "lab_lactate_last"
+  ],
+  "pretrigger_noninvasive_ventilation": [],
+  "pretrigger_dialysis": [],
+  "pretrigger_invasive_line": [],
+  "pretrigger_operating_room": [],
+  "pretrigger_mechanical_support": [],
+  "pretrigger_procedure_count": [
+    "baseline_hb_min",
+    "trigger_hour",
+    "urine_observed_6h"
+  ],
+  "urine_observed_6h": [
+    "baseline_hb_min",
+    "trigger_hour",
+    "urine_output_6h"
+  ],
+  "lab_albumin_last_missing": [],
+  "lab_bicarbonate_last_missing": [
+    "lab_glucose_last_missing",
+    "service_medical"
+  ],
+  "lab_bun_last_missing": [
+    "lab_glucose_last_missing"
+  ],
+  "lab_creatinine_last_missing": [
+    "lab_glucose_last_missing"
+  ],
+  "lab_glucose_last_missing": [
+    "lab_bun_last",
+    "lab_glucose_last",
+    "lab_wbc_last_missing",
+    "unit_cardiac",
+    "unit_medical"
+  ],
+  "lab_hematocrit_last_missing": [],
+  "lab_inr_last_missing": [],
+  "lab_lactate_last_missing": [
+    "lab_lactate_last"
+  ],
+  "lab_platelets_last_missing": [
+    "lab_glucose_last_missing"
+  ],
+  "lab_potassium_last_missing": [
+    "lab_glucose_last_missing"
+  ],
+  "lab_pt_last_missing": [],
+  "lab_ptt_last_missing": [],
+  "lab_sodium_last_missing": [
+    "lab_glucose_last_missing",
+    "trigger_hour",
+    "urine_observed_6h"
+  ],
+  "lab_wbc_last_missing": [],
+  "T": [
+    "baseline_hb_min",
+    "lab_glucose_last_missing",
+    "lab_lactate_last",
+    "trigger_hour",
+    "trigger_value",
+    "urine_observed_6h"
+  ],
+  "Y": [
+    "T",
+    "age",
+    "lab_bun_last",
+    "lab_glucose_last_missing",
+    "lab_lactate_last",
+    "service_medical",
+    "unit_cardiac",
+    "unit_medical"
+  ]
+}

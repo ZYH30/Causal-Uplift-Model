@@ -1,0 +1,14 @@
+{
+  "locked_result_reproduced": true,
+  "bootstrap_draws": 2000,
+  "row_level_data_exported": false,
+  "analyses": [
+    "paired patient bootstrap",
+    "benefit quartile clinical profiles",
+    "policy budget curve",
+    "pairwise repeated-split comparator summary",
+    "missingness-adjusted hemoglobin mechanism endpoint",
+    "late-transfusion contamination sensitivity",
+    "conservative total-common-cause propensity sensitivity"
+  ]
+}

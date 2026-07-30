@@ -413,12 +413,37 @@ def task_adaptive_direction(
     random_state: int = 2026,
     max_samples: int = 1500,
     n_estimators: int = 80,
+    precomputed_degrees: dict[str, float] | None = None,
+    precomputed_post_scores: dict[str, dict[str, float]] | None = None,
+    data_is_standardized: bool = False,
 ) -> DirectionResult:
     var_types = var_types or infer_var_types(df)
-    df = standardize_frame(df, var_types)
-    degrees = dependency_degrees(df)
-    post_x = post_treatment_score(df, x, treatment, outcome, var_types, random_state, n_estimators)
-    post_y = post_treatment_score(df, y, treatment, outcome, var_types, random_state, n_estimators)
+    if not data_is_standardized:
+        df = standardize_frame(df, var_types)
+    degrees = precomputed_degrees or dependency_degrees(df)
+    post_scores = precomputed_post_scores or {}
+    post_x = post_scores.get(x)
+    if post_x is None:
+        post_x = post_treatment_score(
+            df,
+            x,
+            treatment,
+            outcome,
+            var_types,
+            random_state,
+            n_estimators,
+        )
+    post_y = post_scores.get(y)
+    if post_y is None:
+        post_y = post_treatment_score(
+            df,
+            y,
+            treatment,
+            outcome,
+            var_types,
+            random_state,
+            n_estimators,
+        )
 
     base = anm_direction(
         df,

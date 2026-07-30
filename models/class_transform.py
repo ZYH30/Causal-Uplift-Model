@@ -34,7 +34,7 @@ class ClassTransformEstimator(BaseUpliftEstimator):
             if propensity_estimator is not None
             else XGBClassifier(
                 n_estimators=100,
-                max_depth=5,
+                max_depth=10,
                 learning_rate=0.05,
                 eval_metric="logloss",
                 verbosity=0,

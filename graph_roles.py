@@ -137,17 +137,90 @@ def find_c_root(graph: Graph, c_total: set[str]) -> set[str]:
     }
 
 
-def find_proximal_set(graph: Graph, c_total: set[str], treatment: str) -> set[str]:
-    """Find the smallest C-set that screens distal common causes from treatment."""
+def _valid_proximal_set(
+    graph: Graph,
+    c_total: set[str],
+    treatment: str,
+    candidate: set[str],
+) -> bool:
+    distal = c_total - candidate
+    return all(
+        d_separated(graph, treatment, node, candidate)
+        for node in distal
+    )
+
+
+def _greedy_minimize_proximal_set(
+    graph: Graph,
+    c_total: set[str],
+    treatment: str,
+    initial: set[str],
+) -> set[str]:
+    candidate = set(initial)
+    changed = True
+    while changed:
+        changed = False
+        for variable in sorted(candidate):
+            reduced = candidate - {variable}
+            if _valid_proximal_set(
+                graph,
+                c_total,
+                treatment,
+                reduced,
+            ):
+                candidate = reduced
+                changed = True
+    return candidate
+
+
+def find_proximal_set(
+    graph: Graph,
+    c_total: set[str],
+    treatment: str,
+    exact_search_max_size: int = 18,
+) -> set[str]:
+    """Find a d-separation-valid graph-proximal adjustment set.
+
+    Exact minimum-cardinality search is retained for small local graphs. For
+    larger common-ancestor sets, the method first tests treatment parents and
+    then greedily removes redundant variables while preserving the screening
+    criterion. This avoids exponential search without returning an unverified
+    adjustment set.
+    """
 
     ordered = sorted(c_total)
-    for size in range(len(ordered) + 1):
-        for subset in combinations(ordered, size):
-            selected = set(subset)
-            distal = c_total - selected
-            if all(d_separated(graph, treatment, node, selected) for node in distal):
-                return selected
-    return set(c_total)
+    if len(ordered) <= exact_search_max_size:
+        for size in range(len(ordered) + 1):
+            for subset in combinations(ordered, size):
+                selected = set(subset)
+                if _valid_proximal_set(
+                    graph,
+                    c_total,
+                    treatment,
+                    selected,
+                ):
+                    return selected
+        return set(c_total)
+
+    treatment_parents = get_parents(graph, treatment) & c_total
+    if _valid_proximal_set(
+        graph,
+        c_total,
+        treatment,
+        treatment_parents,
+    ):
+        return _greedy_minimize_proximal_set(
+            graph,
+            c_total,
+            treatment,
+            treatment_parents,
+        )
+    return _greedy_minimize_proximal_set(
+        graph,
+        c_total,
+        treatment,
+        c_total,
+    )
 
 
 def find_confounder_sets(

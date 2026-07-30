@@ -15,6 +15,63 @@ REQUIRED_RESULTS = RESULTS / "nhanes_llm_fixed_confirmatory_v1/fixed_confirmator
 
 @unittest.skipUnless(REQUIRED_RESULTS.exists(), "paper result artifacts are not present")
 class ExperimentIntegrityTests(unittest.TestCase):
+    def test_multiseed_graph_recovery_matches_locked_protocol(self):
+        rows = pd.read_csv(
+            RESULTS
+            / "ccia_synthetic_multiseed_dag_gated_v2"
+            / "ccia_multiseed_per_seed.csv"
+        )
+        self.assertEqual(set(rows["seed"]), set(range(2026, 2031)))
+        self.assertEqual(len(rows), 5)
+        self.assertTrue(rows["pred_T_to_Y_path"].astype(bool).all())
+        self.assertTrue((rows["C_Proximal_recall"] == 1.0).all())
+        self.assertTrue((rows["S_Prec_recall"] == 1.0).all())
+        self.assertAlmostEqual(rows["directed_f1"].mean(), 0.8549448064, places=8)
+
+    def test_mimic_aggregate_results_are_complete_and_deidentified(self):
+        result_dir = RESULTS / "mimic_rbc_target_trial_v3"
+        manifest = json.loads(
+            (result_dir / "mimic_rbc_cohort_manifest.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertEqual(manifest["flow"]["landmark_eligible"], 15568)
+        self.assertEqual(manifest["feature_count"], 79)
+        self.assertEqual(manifest["database_file"], "mimic_iv_ccia.sqlite")
+
+        forbidden_columns = {"subject_id", "hadm_id", "stay_id"}
+        for path in result_dir.glob("*.csv"):
+            columns = set(pd.read_csv(path, nrows=0).columns)
+            self.assertFalse(
+                columns & forbidden_columns,
+                f"Patient identifiers found in {path.name}",
+            )
+
+    def test_mimic_repeated_split_and_total_set_sensitivities(self):
+        result_dir = RESULTS / "mimic_rbc_target_trial_v3"
+        repeated = pd.read_csv(
+            result_dir / "mimic_rbc_random_robustness_summary.csv"
+        )
+        self.assertEqual(set(repeated["Metric"]), {
+            "R_Loss_Improvement",
+            "DR_Qini_Improvement",
+            "Policy_Risk_Reduction_Improvement",
+        })
+        self.assertTrue((repeated["CI_Low"] > 0).all())
+
+        sensitivity = pd.read_csv(
+            result_dir / "mimic_rbc_temporal_c_total_sensitivity.csv"
+        ).iloc[0]
+        self.assertLess(
+            sensitivity["mean_abs_smd_ipw"],
+            sensitivity["mean_abs_smd_pre"],
+        )
+        self.assertGreater(sensitivity["ess_ratio"], 0.90)
+        self.assertGreater(
+            sensitivity["Policy_Risk_Reduction_Improvement"],
+            0,
+        )
+
     def test_locked_confirmation_has_all_prespecified_seeds(self):
         rows = pd.read_csv(
             RESULTS / "nhanes_llm_fixed_confirmatory_v1/fixed_confirmatory_per_seed.csv"

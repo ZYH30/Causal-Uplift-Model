@@ -1,6 +1,6 @@
 {
   "task": "chol_med_tchol",
-  "source_graph": "/root/projects/causalDiscoveryAndBoostingAndLift/Causal-Uplift-Lab/results/nhanes_chol_med_tchol_v1_dr_metrics/nhanes_chol_med_tchol_ccia_graph.json",
+  "source_graph": "results/nhanes_chol_med_tchol_v1_dr_metrics/nhanes_chol_med_tchol_ccia_graph.json",
   "actions": [
     {
       "task": "chol_med_tchol",
