@@ -10,3 +10,4 @@ optuna==4.5.0
 python-dotenv==1.1.0
 httpx==0.28.1
 joblib==1.5.2
+causal-learn==0.1.4.8

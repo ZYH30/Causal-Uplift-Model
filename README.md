@@ -36,10 +36,13 @@ The propensity model uses only `C`. Outcome and treatment-effect models may use
 |---|---|
 | Synthetic CATE, `n=10,000` | OCU reduces mean CATE MAE by 9.1% across five uplift learners. |
 | Mixed-type direction, five seeds | Task-adaptive direction accuracy is `1.000` over 135 decisions versus `0.585` for pairwise ANM. |
-| Local graph recovery, five seeds | Directed F1 is `0.855 +/- 0.060`; proximal-set recall is `1.000` in every sample. |
-| Learned-graph transfer | Learned graphs retain 100.0% and 97.2% of the oracle-to-naive MAE gain for S-learning and class transformation. |
+| Systematic graph recovery | Four mechanisms, four sample sizes, ten seeds, five graph learners, and 800 completed graph runs. |
+| Nonlinear and noisy-missing settings | At `n=10,000`, CCIA exceeds GES in directed F1 by `0.064` and `0.073`; GES is stronger in the linear and weak-edge settings. |
+| Learned-role transfer | CCIA roles retain 99.5--100.3% of the oracle CATE-MAE improvement over the all-recorded collider stress test. |
+| Component ablation | Endpoint repair increases proximal-set F1 from `0.444` to `0.888`; the DAG projection is retained as a safety guard. |
 | MIMIC-IV RBC target trial | `N=15,568`; graph discovery, learner selection, and temporal testing use non-overlapping eras. |
-| MIMIC-IV repeated splits | Mean R-loss, DR-Qini, and policy-risk gains over the same all-variable learner have intervals excluding zero. |
+| MIMIC-IV safety audit | A discovery-only gate yields seven assignment variables and one precision variable; temporal mean absolute SMD is `0.057` and ESS ratio is `0.905`. |
+| MIMIC-IV repeated splits | R-loss improves in 19/20 splits, with mean gain `0.90e-4` and 95% interval `[0.59e-4, 1.19e-4]`; ranking and policy remain secondary. |
 | NHANES medication studies | Locked R-loss gains occur in both tasks; the cholesterol task also has a significant DR-Qini gain. |
 
 Real-data AIPW, DR-Qini, and policy values are estimands under measured
@@ -69,6 +72,8 @@ separate dependencies:
 make synthetic
 make direction
 make ccia-synthetic
+make systematic
+make ccia-ablation
 make nhanes-confirmatory
 make nhanes-survey
 make figures
@@ -81,6 +86,7 @@ its data-use agreement:
 make mimic-db MIMIC_ROOT=/path/to/mimiciv/3.1
 make mimic MIMIC_ROOT=/path/to/mimiciv/3.1
 make mimic-interpretation MIMIC_ROOT=/path/to/mimiciv/3.1
+make mimic-audit
 ```
 
 See [`docs/REPRODUCIBILITY.md`](docs/REPRODUCIBILITY.md) for the target-trial
@@ -119,8 +125,8 @@ The API client never writes keys to requests, responses, ledgers, or results.
 - `ccia/`: local discovery, direction methods, graph metrics, and semantic
   fusion.
 - `models/`: S-, T-, X-, class-transformation, and uplift-forest learners.
-- `experiments/`: synthetic graph recovery, CATE, direction, and semantic-audit
-  entry points.
+- `experiments/`: systematic graph recovery, component ablation, CATE,
+  direction, and semantic-audit entry points.
 - `empirical_experiments/`: MIMIC-IV and NHANES target-study pipelines.
 - `results/`: compact immutable aggregate artifacts reported in the paper.
 - `figures/`: publication figures regenerated from committed artifacts.

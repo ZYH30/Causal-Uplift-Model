@@ -4,7 +4,7 @@ MIMIC_ROOT ?=
 MIMIC_ROOT_ARG = $(if $(MIMIC_ROOT),--mimic-root "$(MIMIC_ROOT)",)
 export MPLCONFIGDIR
 
-.PHONY: env test synthetic direction ccia-synthetic mimic-db mimic mimic-interpretation llm-dryrun llm-api llm-variants nhanes-confirmatory nhanes-survey figures
+.PHONY: env test synthetic direction ccia-synthetic systematic ccia-ablation mimic-db mimic mimic-interpretation mimic-audit llm-dryrun llm-api llm-variants nhanes-confirmatory nhanes-survey figures
 
 env:
 	python3 -m venv .venv
@@ -22,6 +22,12 @@ direction:
 ccia-synthetic:
 	$(PYTHON) -m experiments.run_ccia_synthetic_multiseed --seeds 2026,2027,2028,2029,2030 --multiseed-out-dir results/generated/ccia-synthetic --n 10000 --include-colliders --no-uplift-temporal-order --direction-strategy task_adaptive --max-neighbors 16 --max-corr-neighbors 10 --max-importance-neighbors 12 --max-condition-candidates 10 --max-condition-set-size 2 --max-search-depth 1 --ci-theta 0.05 --ccia-lgb-estimators 80 --uplift-models S-Learner ClassTransform
 
+systematic:
+	$(PYTHON) experiments/run_systematic_simulation.py --workers 4 --out-dir results/generated/systematic
+
+ccia-ablation:
+	$(PYTHON) experiments/run_ccia_component_ablation.py --workers 4 --out-dir results/generated/ccia-ablation
+
 mimic-db:
 	$(PYTHON) empirical_experiments/mimic_build_sqlite.py $(MIMIC_ROOT_ARG) --database data/mimic_iv_ccia.sqlite --skip-chartevents
 
@@ -30,6 +36,9 @@ mimic:
 
 mimic-interpretation:
 	$(PYTHON) empirical_experiments/mimic_rbc_interpretation.py $(MIMIC_ROOT_ARG) --database data/mimic_iv_ccia.sqlite --out-dir results/generated/mimic-rbc-v3 --bootstrap-draws 2000
+
+mimic-audit:
+	$(PYTHON) empirical_experiments/mimic_rbc_robustness_audit.py --database data/mimic_iv_ccia.sqlite --source-results-dir results/generated/mimic-rbc-v3 --out-dir results/generated/mimic-rbc-audit --bootstrap-draws 5000 --multiple-imputations 5 --robustness-repeats 20
 
 llm-dryrun:
 	$(PYTHON) experiments/run_nhanes_llm_dryrun.py

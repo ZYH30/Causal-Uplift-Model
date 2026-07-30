@@ -1,0 +1,40 @@
+{
+  "scenarios": [
+    "nonlinear_reference",
+    "linear_additive",
+    "weak_edges",
+    "noisy_missing"
+  ],
+  "sample_sizes": [
+    500,
+    1000,
+    5000,
+    10000
+  ],
+  "seeds": [
+    2026,
+    2027,
+    2028,
+    2029,
+    2030,
+    2031,
+    2032,
+    2033,
+    2034,
+    2035
+  ],
+  "methods": [
+    "CCIA",
+    "PC",
+    "FCI",
+    "GES",
+    "DirectLiNGAM"
+  ],
+  "workers": 4,
+  "causal_learn_version": "0.1.4.8",
+  "llm_mode": "off",
+  "pre_treatment_whitelist": false,
+  "partial_graph_role_projection": "definite directed edges only",
+  "direct_lingam_threshold": 0.05,
+  "policy_budget": 0.3
+}

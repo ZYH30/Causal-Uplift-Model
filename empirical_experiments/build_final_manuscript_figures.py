@@ -42,6 +42,9 @@ TASKS = {
 }
 
 MIMIC_RESULTS = RESULTS / "mimic_rbc_target_trial_v3"
+MIMIC_AUDIT = RESULTS / "mimic_rbc_target_trial_v5_product_audit"
+SYSTEMATIC_RESULTS = RESULTS / "systematic_simulation_v1"
+ABLATION_RESULTS = RESULTS / "ccia_component_ablation_v1"
 
 
 def configure_style() -> None:
@@ -70,7 +73,7 @@ def panel_label(ax: plt.Axes, label: str) -> None:
     ax.text(
         -0.12,
         1.08,
-        label,
+        label.lower(),
         transform=ax.transAxes,
         fontsize=10,
         fontweight="bold",
@@ -88,158 +91,237 @@ def save_figure(fig: plt.Figure, output_dir: Path, stem: str) -> None:
 
 
 def build_synthetic_evidence(output_dir: Path) -> None:
-    direction = pd.read_csv(
-        RESULTS
-        / "direction_benchmark_multiseed_all_v1"
-        / "direction_method_summary_by_seed.csv"
-    )
-    graph = pd.read_csv(
-        RESULTS
-        / "ccia_synthetic_multiseed_dag_gated_v2"
-        / "ccia_multiseed_per_seed.csv"
+    graph = pd.read_csv(SYSTEMATIC_RESULTS / "systematic_graph_summary.csv")
+    cate = pd.read_csv(SYSTEMATIC_RESULTS / "systematic_cate_summary.csv")
+    ablation = pd.read_csv(
+        ABLATION_RESULTS / "ccia_component_ablation_summary.csv"
     )
 
-    fig, axes = plt.subplots(
-        1,
-        3,
-        figsize=(11.2, 3.05),
-        gridspec_kw={"width_ratios": [0.90, 1.05, 1.18]},
-        constrained_layout=True,
+    fig, axes = plt.subplots(2, 2, figsize=(11.2, 6.45), constrained_layout=True)
+    method_order = ["CCIA", "GES", "PC", "FCI", "DirectLiNGAM"]
+    method_labels = {
+        "CCIA": "CCIA",
+        "GES": "GES",
+        "PC": "PC",
+        "FCI": "FCI",
+        "DirectLiNGAM": "DirectLiNGAM",
+    }
+    method_colors = {
+        "CCIA": COLORS["teal"],
+        "GES": COLORS["coral"],
+        "PC": COLORS["navy"],
+        "FCI": COLORS["gold"],
+        "DirectLiNGAM": COLORS["gray"],
+    }
+    method_markers = {
+        "CCIA": "D",
+        "GES": "o",
+        "PC": "s",
+        "FCI": "^",
+        "DirectLiNGAM": "v",
+    }
+
+    def plot_graph_curve(
+        ax: plt.Axes,
+        scenario: str,
+        metric: str,
+        title: str,
+        ylabel: str,
+    ) -> None:
+        subset = graph[
+            (graph["Scenario"] == scenario) & (graph["Metric"] == metric)
+        ]
+        for method in method_order:
+            rows = subset[subset["Method"] == method].sort_values("N")
+            if rows.empty:
+                continue
+            error = rows["SD"].to_numpy(dtype=float) / np.sqrt(
+                rows["Runs"].to_numpy(dtype=float)
+            )
+            ax.errorbar(
+                rows["N"],
+                rows["Mean"],
+                yerr=error,
+                marker=method_markers[method],
+                markersize=4.5,
+                capsize=2.2,
+                lw=1.45,
+                color=method_colors[method],
+                label=method_labels[method],
+            )
+        ax.set_xscale("log")
+        ax.set_xticks([500, 1000, 5000, 10000], ["500", "1k", "5k", "10k"])
+        ax.set_ylim(-0.03, 1.04)
+        ax.set_xlabel("Sample size")
+        ax.set_ylabel(ylabel)
+        ax.set_title(title)
+        ax.grid(color=COLORS["light_gray"], lw=0.55)
+
+    ax = axes[0, 0]
+    plot_graph_curve(
+        ax,
+        "nonlinear_reference",
+        "Directed_F1",
+        "Directed recovery under nonlinear mechanisms",
+        "Directed F1",
     )
+    ax.legend(frameon=False, ncol=2, loc="lower right")
+    panel_label(ax, "a")
 
-    # A: direction accuracy over seeds.
-    ax = axes[0]
-    method_order = ["pair_spearman_anm", "task_adaptive"]
-    labels = ["Pairwise ANM", "Task-adaptive"]
-    colors = [COLORS["gray"], COLORS["teal"]]
-    rng = np.random.default_rng(417)
-    for x, (method, label, color) in enumerate(zip(method_order, labels, colors)):
-        values = direction.loc[direction["method"] == method, "accuracy"].to_numpy()
-        jitter = rng.uniform(-0.07, 0.07, size=len(values))
-        ax.scatter(
-            np.full(len(values), x) + jitter,
-            values,
-            s=25,
-            color=color,
-            alpha=0.72,
-            edgecolor="white",
-            linewidth=0.45,
-            zorder=3,
-        )
-        mean = float(np.mean(values))
-        ax.plot([x - 0.17, x + 0.17], [mean, mean], color=COLORS["black"], lw=2.2)
-        ax.text(x, mean + 0.035, f"{mean:.3f}", ha="center", va="bottom", fontsize=8)
-    ax.set_xticks(range(len(labels)), labels)
-    ax.set_ylim(0.36, 1.075)
-    ax.set_ylabel("Direction accuracy")
-    ax.set_title("Mixed-type edge orientation")
-    ax.grid(axis="y", color=COLORS["light_gray"], lw=0.55)
-    panel_label(ax, "A")
+    ax = axes[0, 1]
+    plot_graph_curve(
+        ax,
+        "noisy_missing",
+        "C_Proximal_F1",
+        "Assignment-role recovery with measurement noise",
+        r"Assignment-proximal $C$ F1",
+    )
+    panel_label(ax, "b")
 
-    # B: graph and causal-role recovery.
-    ax = axes[1]
-    f1_rows = [
-        ("Directed graph", "directed_f1"),
-        (r"$\mathrm{Pa}(T)$", "Parents_T_f1"),
-        (r"$\mathrm{Pa}(Y)$", "Parents_Y_f1"),
-        (r"$C_{\mathrm{P}}$", "C_Proximal_f1"),
-        (r"$S_{\mathrm{prec}}$", "S_Prec_f1"),
+    ax = axes[1, 0]
+    scenario_order = [
+        "nonlinear_reference",
+        "linear_additive",
+        "weak_edges",
+        "noisy_missing",
     ]
-    y = np.arange(len(f1_rows))[::-1]
-    for y_value, (_, column) in zip(y, f1_rows):
-        values = graph[column].to_numpy()
-        jitter = rng.uniform(-0.10, 0.10, size=len(values))
-        ax.scatter(
-            values,
-            np.full(len(values), y_value) + jitter,
-            s=22,
-            color=COLORS["navy"],
-            alpha=0.62,
-            edgecolor="white",
-            linewidth=0.4,
-            zorder=3,
+    scenario_labels = ["Nonlinear", "Linear", "Weak edges", "Noisy/missing"]
+    interface_order = [
+        "OracleRoles",
+        "CCIARoles",
+        "GESRoles",
+        "AllTruePretreatment",
+        "AllRecorded",
+    ]
+    interface_labels = {
+        "OracleRoles": "Oracle roles",
+        "CCIARoles": "CCIA roles",
+        "GESRoles": "GES roles",
+        "AllTruePretreatment": "All true baseline",
+        "AllRecorded": "All recorded",
+    }
+    interface_colors = {
+        "OracleRoles": COLORS["navy"],
+        "CCIARoles": COLORS["teal"],
+        "GESRoles": COLORS["coral"],
+        "AllTruePretreatment": COLORS["gold"],
+        "AllRecorded": COLORS["gray"],
+    }
+    interface_markers = {
+        "OracleRoles": "o",
+        "CCIARoles": "D",
+        "GESRoles": "s",
+        "AllTruePretreatment": "^",
+        "AllRecorded": "X",
+    }
+    n10k = cate[
+        (cate["N"] == 10000) & (cate["Metric"] == "CATE_MAE")
+    ].set_index(["Scenario", "Interface"])
+    x = np.arange(len(scenario_order), dtype=float)
+    offsets = np.linspace(-0.20, 0.20, len(interface_order))
+    for offset, interface in zip(offsets, interface_order):
+        means = [
+            float(n10k.loc[(scenario, interface), "Mean"])
+            for scenario in scenario_order
+        ]
+        ses = [
+            float(n10k.loc[(scenario, interface), "SD"])
+            / np.sqrt(float(n10k.loc[(scenario, interface), "Runs"]))
+            for scenario in scenario_order
+        ]
+        ax.errorbar(
+            x + offset,
+            means,
+            yerr=ses,
+            fmt=interface_markers[interface],
+            markersize=5,
+            capsize=2,
+            color=interface_colors[interface],
+            label=interface_labels[interface],
         )
-        mean = float(np.mean(values))
-        ax.plot([mean, mean], [y_value - 0.18, y_value + 0.18], color=COLORS["teal"], lw=2.4)
-        ax.text(mean - 0.009, y_value + 0.25, f"{mean:.3f}", ha="right", fontsize=7.8)
-    ax.set_yticks(y, [name for name, _ in f1_rows])
-    ax.set_xlim(0.73, 1.025)
-    ax.set_xlabel("F1 score")
-    ax.set_title("Task-relevant recovery over seeds")
-    ax.grid(axis="x", color=COLORS["light_gray"], lw=0.55)
-    panel_label(ax, "B")
+    ax.set_yscale("log")
+    ax.set_xticks(x, scenario_labels)
+    ax.set_ylim(0.25, 3.1)
+    ax.set_yticks([0.3, 0.5, 1.0, 2.0, 3.0], ["0.3", "0.5", "1", "2", "3"])
+    ax.set_ylabel("CATE MAE at $n=10{,}000$ (log scale)")
+    ax.set_title("Local roles preserve oracle downstream accuracy")
+    ax.grid(axis="y", color=COLORS["light_gray"], lw=0.55)
+    ax.legend(frameon=False, ncol=2, loc="upper left")
+    panel_label(ax, "c")
 
-    # C: downstream oracle-versus-learned graph gap.
-    ax = axes[2]
-    models = ["S-Learner", "ClassTransform"]
-    y = np.arange(len(models))[::-1]
-    for y_value, model in zip(y, models):
-        prefix = model.replace("-", "_")
-        oracle = graph[f"{prefix}_OCU_Oracle_MAE"].to_numpy()
-        learned = graph[f"{prefix}_OCU_CCIA_MAE"].to_numpy()
-        y_jitter = np.linspace(-0.13, 0.13, len(graph))
-        for oracle_value, learned_value, offset in zip(oracle, learned, y_jitter):
-            ax.plot(
-                [oracle_value, learned_value],
-                [y_value + offset, y_value + offset],
-                color=COLORS["light_gray"],
-                lw=1.2,
-                zorder=1,
-            )
-            ax.scatter(oracle_value, y_value + offset, s=18, color=COLORS["navy"], alpha=0.55)
-            ax.scatter(
-                learned_value,
-                y_value + offset,
-                s=20,
-                marker="D",
-                color=COLORS["teal"],
-                alpha=0.58,
-            )
-        oracle_mean = float(np.mean(oracle))
-        learned_mean = float(np.mean(learned))
+    ax = axes[1, 1]
+    variant_order = [
+        "Complete_CCIA",
+        "PairwiseANM_FullRepair",
+        "TaskAdaptive_NoRepair",
+        "TaskAdaptive_NoDAGGate",
+    ]
+    variant_labels = [
+        "Complete CCIA",
+        "Pairwise ANM + repair",
+        "Task-adaptive, no repair",
+        "Task-adaptive, no DAG gate",
+    ]
+    y = np.arange(len(variant_order))[::-1]
+    for y_value, variant in zip(y, variant_order):
+        rows = ablation[ablation["Variant"] == variant].set_index("Metric")
+        directed = float(rows.loc["Directed_F1", "Mean"])
+        proximal = float(rows.loc["C_Proximal_F1", "Mean"])
+        ax.plot(
+            [directed, proximal],
+            [y_value, y_value],
+            color=COLORS["light_gray"],
+            lw=2.8,
+            zorder=1,
+        )
         ax.scatter(
-            oracle_mean,
+            directed,
             y_value,
-            s=58,
+            s=43,
+            marker="o",
             color=COLORS["navy"],
-            label="Oracle graph" if model == models[0] else None,
             zorder=3,
         )
         ax.scatter(
-            learned_mean,
+            proximal,
             y_value,
-            s=62,
+            s=46,
             marker="D",
             color=COLORS["teal"],
-            label="CCIA graph" if model == models[0] else None,
             zorder=3,
         )
-    ax.set_yticks(y, models)
-    ax.set_xlim(0.15, 0.58)
-    ax.set_xticks([0.2, 0.3, 0.4, 0.5])
-    ax.set_xlabel("CATE MAE (lower is better)")
-    ax.set_title("Oracle versus learned graph")
+    ax.set_yticks(y, variant_labels)
+    ax.set_xlim(0.35, 1.03)
+    ax.set_xlabel("F1 score")
+    ax.set_title("Direction and repair components are complementary")
     ax.grid(axis="x", color=COLORS["light_gray"], lw=0.55)
+    ax.scatter([], [], s=43, color=COLORS["navy"], label="Directed graph")
+    ax.scatter(
+        [],
+        [],
+        s=46,
+        marker="D",
+        color=COLORS["teal"],
+        label=r"Assignment-proximal $C$",
+    )
     ax.legend(frameon=False, loc="lower right")
-    panel_label(ax, "C")
+    panel_label(ax, "d")
 
     save_figure(fig, output_dir, "figure_2_synthetic_evidence_chain")
 
 
 def build_mimic_target_trial_evidence(output_dir: Path) -> None:
     era = pd.read_csv(MIMIC_RESULTS / "mimic_rbc_era_summary.csv")
-    validation_balance = pd.read_csv(
-        MIMIC_RESULTS / "mimic_rbc_development_balance.csv"
-    )
-    temporal_balance = pd.read_csv(
-        MIMIC_RESULTS / "mimic_rbc_temporal_test_balance.csv"
+    full_balance = pd.read_csv(
+        MIMIC_AUDIT / "mimic_rbc_full_surface_balance_summary.csv"
     )
     repeated = pd.read_csv(
-        MIMIC_RESULTS / "mimic_rbc_random_robustness_summary.csv"
+        MIMIC_AUDIT / "mimic_rbc_safety_validated_repeated_summary.csv"
     ).set_index("Metric")
     temporal = pd.read_csv(
-        MIMIC_RESULTS / "mimic_rbc_temporal_paired_bootstrap_summary.csv"
-    ).set_index("Metric")
+        MIMIC_AUDIT / "mimic_rbc_independent_evaluator_audit.csv"
+    )
+    temporal = temporal.loc[temporal["evaluator"] == "SafetyPromotedRole"].iloc[0]
 
     fig = plt.figure(figsize=(11.2, 6.25), constrained_layout=True)
     grid = fig.add_gridspec(
@@ -258,12 +340,12 @@ def build_mimic_target_trial_evidence(output_dir: Path) -> None:
     ax.axvspan(1, 2, ymin=0.32, ymax=0.60, color=COLORS["gold"], alpha=0.55)
     ax.axvspan(2, 3, ymin=0.32, ymax=0.60, color=COLORS["teal"], alpha=0.18)
     ax.scatter([1, 2, 3, 4], [0.47] * 4, s=34, color=COLORS["navy"], zorder=3)
-    ax.text(0.50, 0.78, "Baseline\nlookback", ha="center", va="center", fontsize=7.7)
-    ax.text(1.50, 0.78, "RBC initiation\ngrace period", ha="center", va="center", fontsize=7.7)
-    ax.text(2.50, 0.78, "Post-landmark\nHb response", ha="center", va="center", fontsize=7.7)
-    ax.text(4.00, 0.78, "90-day\nmortality", ha="center", va="center", fontsize=7.7)
-    ax.text(1, 0.25, "Hb 7--9 g/dL\ntrigger", ha="center", va="top", fontsize=7.4)
-    ax.text(2, 0.25, "Treatment\nlandmark", ha="center", va="top", fontsize=7.4)
+    ax.text(0.43, 0.78, "Baseline\nlookback", ha="center", va="center", fontsize=7.0)
+    ax.text(1.52, 0.78, "RBC start\ngrace period", ha="center", va="center", fontsize=7.0)
+    ax.text(2.60, 0.78, "Post-landmark\nHb response", ha="center", va="center", fontsize=7.0)
+    ax.text(4.00, 0.78, "90-day\nmortality", ha="center", va="center", fontsize=7.0)
+    ax.text(0.92, 0.25, "Hb 7--9 g/dL\ntrigger", ha="center", va="top", fontsize=6.9)
+    ax.text(2.08, 0.25, "Treatment\nlandmark", ha="center", va="top", fontsize=6.9)
     ax.text(
         -0.05,
         1.04,
@@ -298,12 +380,12 @@ def build_mimic_target_trial_evidence(output_dir: Path) -> None:
         spine.set_visible(False)
     panel_label(ax, "A")
 
-    # B: discovery, model selection, and once-opened temporal test.
+    # B: discovery, model selection, and temporally held-out evaluation.
     ax = fig.add_subplot(grid[0, 1])
     periods = [
         ("Discover graph", "2008--2016", 10179, 0.2295, COLORS["navy"]),
         ("Select learner", "2017--2019", 3127, 0.1708, COLORS["gold"]),
-        ("Locked test", "2020--2022", 2262, 0.0650, COLORS["teal"]),
+        ("Temporal test", "2020--2022", 2262, 0.0650, COLORS["teal"]),
     ]
     y = np.arange(3)[::-1]
     for y_value, (stage, years, n_value, rate, color) in zip(y, periods):
@@ -328,11 +410,11 @@ def build_mimic_target_trial_evidence(output_dir: Path) -> None:
     ax.set_xlim(0, 1.03)
     ax.set_yticks([])
     ax.set_xticks([])
-    ax.set_title("Prospective temporal lock")
+    ax.set_title("Retrospective temporal holdout")
     ax.text(
         0.01,
         -0.04,
-        "The 2020--2022 cohort was opened once after learner selection.",
+        "Non-overlapping eras separate discovery, selection, and evaluation.",
         transform=ax.transAxes,
         fontsize=7.2,
         color=COLORS["gray"],
@@ -341,36 +423,59 @@ def build_mimic_target_trial_evidence(output_dir: Path) -> None:
         spine.set_visible(False)
     panel_label(ax, "B")
 
-    # C: balance and overlap in the validation and temporal-test cohorts.
+    # C: balance of the safety-validated roles in the temporal cohort.
     ax = fig.add_subplot(grid[0, 2])
+    balance_lookup = full_balance.set_index(["surface", "audit_scope"])
     balance_sets = [
         (
-            "Validation",
-            validation_balance,
-            0.943,
-            COLORS["gold"],
+            r"Assignment set $C$ (7)",
+            float(
+                balance_lookup.loc[
+                    ("SafetyValidated_C", "SafetyC"), "mean_abs_smd_pre"
+                ]
+            ),
+            float(
+                balance_lookup.loc[
+                    ("SafetyValidated_C", "SafetyC"), "mean_abs_smd_weighted"
+                ]
+            ),
+            COLORS["teal"],
         ),
         (
-            "Temporal test",
-            temporal_balance,
-            0.982,
-            COLORS["teal"],
+            r"Retained $S$ (1)",
+            float(
+                balance_lookup.loc[
+                    ("SafetyValidated_C", "SafetyS"), "mean_abs_smd_pre"
+                ]
+            ),
+            float(
+                balance_lookup.loc[
+                    ("SafetyValidated_C", "SafetyS"), "mean_abs_smd_weighted"
+                ]
+            ),
+            COLORS["gold"],
         ),
     ]
     y = np.array([1.0, 0.0])
-    for y_value, (label, frame, ess, color) in zip(y, balance_sets):
-        pre = float(frame["smd_pre"].abs().mean())
-        post = float(frame["smd_ipw"].abs().mean())
+    for y_value, (label, pre, post, color) in zip(y, balance_sets):
         ax.plot([post, pre], [y_value, y_value], color=COLORS["light_gray"], lw=3)
         ax.scatter(pre, y_value, s=48, color=COLORS["gray"], zorder=3)
         ax.scatter(post, y_value, s=55, marker="D", color=color, zorder=3)
-        ax.text(post + 0.010, y_value + 0.19, f"ESS/n={ess:.3f}", fontsize=7.5)
+    ax.text(
+        0.98,
+        0.94,
+        "ESS/n=0.905",
+        transform=ax.transAxes,
+        ha="right",
+        va="top",
+        fontsize=7.5,
+    )
     ax.axvline(0.10, color=COLORS["gray"], lw=0.8, ls="--")
     ax.set_yticks(y, [item[0] for item in balance_sets])
     ax.set_ylim(-0.35, 1.35)
-    ax.set_xlim(0, 0.39)
-    ax.set_xlabel(r"Mean $|\mathrm{SMD}|$ in $C$")
-    ax.set_title("Adjustment diagnostics")
+    ax.set_xlim(0, 0.47)
+    ax.set_xlabel(r"Mean $|\mathrm{SMD}|$")
+    ax.set_title("Role safety and overlap")
     ax.grid(axis="x", color=COLORS["light_gray"], lw=0.55)
     ax.scatter([], [], s=45, color=COLORS["gray"], label="Before")
     ax.scatter([], [], s=52, marker="D", color=COLORS["teal"], label="After")
@@ -392,7 +497,7 @@ def build_mimic_target_trial_evidence(output_dir: Path) -> None:
         ),
         (
             "Policy_Risk_Reduction_Improvement",
-            "Policy-risk gain (percentage points)",
+            "Policy-risk gain (pp)",
             100.0,
             "F",
         ),
@@ -400,7 +505,6 @@ def build_mimic_target_trial_evidence(output_dir: Path) -> None:
     for col, (metric, title, scale, label) in enumerate(metric_specs):
         ax = fig.add_subplot(grid[1, col])
         rep = repeated.loc[metric]
-        tmp = temporal.loc[metric]
         points = [
             (
                 float(rep["Mean"]) * scale,
@@ -409,9 +513,9 @@ def build_mimic_target_trial_evidence(output_dir: Path) -> None:
                 COLORS["navy"],
             ),
             (
-                float(tmp["Point_Estimate"]) * scale,
-                float(tmp["CI_Low"]) * scale,
-                float(tmp["CI_High"]) * scale,
+                float(temporal[metric]) * scale,
+                float(temporal[f"{metric}_ci_low"]) * scale,
+                float(temporal[f"{metric}_ci_high"]) * scale,
                 COLORS["teal"],
             ),
         ]
@@ -436,7 +540,7 @@ def build_mimic_target_trial_evidence(output_dir: Path) -> None:
                 fontsize=7.4,
             )
         ax.axvline(0, color=COLORS["gray"], lw=0.8, ls="--")
-        ax.set_yticks([1, 0], ["20 repeated splits", "Locked temporal test"])
+        ax.set_yticks([1, 0], ["20 repeated splits", "Temporal holdout"])
         if col > 0:
             ax.set_yticklabels([])
         ax.set_title(title)
@@ -897,7 +1001,7 @@ def build_neurosymbolic_audit(output_dir: Path) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--output-dir", default="figures")
+    parser.add_argument("--output-dir", default="paper/figures")
     args = parser.parse_args()
 
     output_dir = Path(args.output_dir)
@@ -908,6 +1012,8 @@ def main() -> None:
     build_synthetic_evidence(output_dir)
     build_mimic_target_trial_evidence(output_dir)
     build_mimic_clinical_interpretation(output_dir)
+    build_clinical_diagnostics(output_dir)
+    build_locked_confirmation(output_dir)
     build_neurosymbolic_audit(output_dir)
     print(f"Wrote final manuscript figures to {output_dir}")
 

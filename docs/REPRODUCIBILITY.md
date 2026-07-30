@@ -55,6 +55,21 @@ results/generated/ccia-synthetic/ccia_multiseed_per_seed.csv
 results/generated/ccia-synthetic/ccia_multiseed_summary.csv
 ```
 
+Run the paper's systematic graph, role, and downstream-effect benchmark plus
+the ten-seed component ablation:
+
+```bash
+make systematic
+make ccia-ablation
+```
+
+The systematic benchmark evaluates four structural mechanisms, four sample
+sizes, ten seeds, and CCIA, PC, FCI, GES, and DirectLiNGAM on the same 23
+observed variables. No method receives a pre-treatment whitelist, and both
+post-treatment colliders remain in the observed surface. Outputs are written
+to `results/generated/systematic/` and
+`results/generated/ccia-ablation/`.
+
 ## MIMIC-IV Target-Trial Study
 
 MIMIC-IV v3.1 must be obtained independently through PhysioNet credentialing
@@ -86,6 +101,14 @@ the conservative `C_total` propensity sensitivity:
 
 ```bash
 make mimic-interpretation MIMIC_ROOT=/path/to/mimiciv/3.1
+```
+
+Run the discovery-only treatment-neutrality gate, full-surface balance audit,
+independent evaluator, glucose-missingness analyses, stable-proxy subgroup,
+and 20 repeated post-discovery splits:
+
+```bash
+make mimic-audit
 ```
 
 The generated output directory is:
@@ -162,8 +185,14 @@ The public code repository does not include the submission manuscript.
 - `results/nhanes_survey_aipw_sensitivity_v1/`: complex-survey AIPW sensitivity.
 - `results/mimic_rbc_target_trial_v3/`: locked longitudinal RBC study,
   repeated-split comparisons, clinical interpretation, and sensitivities.
+- `results/mimic_rbc_target_trial_v5_product_audit/`: safety-validated roles,
+  independent evaluation, full-surface balance, missingness audits, and stable
+  proxy sensitivities.
 - `results/ccia_synthetic_multiseed_dag_gated_v2/`: five-sample graph
   recovery and learned-versus-oracle OCU transfer.
+- `results/systematic_simulation_v1/`: four-mechanism, four-size, ten-seed
+  graph and downstream-effect benchmark.
+- `results/ccia_component_ablation_v1/`: ten-seed CCIA component ablation.
 - `results/paper_tables/`: manuscript-facing aggregate tables.
 - `figures/`: manuscript-facing figures regenerated from committed artifacts.
 

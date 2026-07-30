@@ -1,0 +1,31 @@
+{
+  "analysis": "development-defined robustness audit",
+  "role_validation_period": "2008-2016 graph-discovery period",
+  "bootstrap_draws": 5000,
+  "multiple_imputations": 5,
+  "source_results_dir": "mimic_rbc_target_trial_v3",
+  "safety_promoted_c_set": [
+    "age",
+    "lab_glucose_last_missing",
+    "lab_lactate_last",
+    "service_medical",
+    "unit_cardiac",
+    "unit_medical",
+    "urine_output_6h"
+  ],
+  "safety_retained_s_set": [
+    "lab_bun_last"
+  ],
+  "row_level_data_exported": false,
+  "chartevents_used": false,
+  "outputs": [
+    "full_surface_balance_summary",
+    "full_surface_balance_detail",
+    "treatment_neutrality_safety_gate",
+    "independent_evaluator_audit",
+    "glucose_missingness_audit",
+    "glucose_multiple_imputation",
+    "stable_proxy_subgroups",
+    "safety_validated_repeated_splits"
+  ]
+}

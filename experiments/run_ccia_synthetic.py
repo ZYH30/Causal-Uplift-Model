@@ -191,30 +191,28 @@ def rescue_outcome_edges_from_treatment_parents(
     treat_col,
     target_col,
     args,
+    post_scores=None,
+    outcome_importance=None,
 ):
-    post_scores = detect_post_treatment_variables(
-        df_train,
-        observed_cols,
-        treat_col,
-        target_col,
-        args,
-    )
+    if post_scores is None:
+        post_scores = detect_post_treatment_variables(
+            df_train,
+            observed_cols,
+            treat_col,
+            target_col,
+            args,
+        )
     post_variables = {name for name, score in post_scores.items() if score["is_post"]}
-    feature_cols = [c for c in observed_cols if c != target_col and c not in post_variables]
-    model = LGBMRegressor(
-        n_estimators=args.rescue_lgb_estimators,
-        learning_rate=0.05,
-        max_depth=args.ccia_lgb_max_depth,
-        num_leaves=args.ccia_lgb_num_leaves,
-        min_child_samples=args.ccia_lgb_min_child_samples,
-        subsample=0.8,
-        colsample_bytree=0.9,
-        random_state=args.seed,
-        n_jobs=1,
-        verbose=-1,
-    )
-    model.fit(df_train[feature_cols], df_train[target_col])
-    importance = pd.Series(model.feature_importances_, index=feature_cols, dtype=float)
+    if outcome_importance is None:
+        outcome_importance, _ = outcome_importance_without_post_treatment(
+            df_train,
+            observed_cols,
+            treat_col,
+            target_col,
+            args,
+            post_scores=post_scores,
+        )
+    importance = outcome_importance
     max_importance = float(importance.max()) if len(importance) else 0.0
     rescue_edges = []
     if max_importance <= 0:
@@ -280,14 +278,22 @@ def detect_post_treatment_variables(df_train, observed_cols, treat_col, target_c
     return scores
 
 
-def outcome_importance_without_post_treatment(df_train, observed_cols, treat_col, target_col, args):
-    post_scores = detect_post_treatment_variables(
-        df_train,
-        observed_cols,
-        treat_col,
-        target_col,
-        args,
-    )
+def outcome_importance_without_post_treatment(
+    df_train,
+    observed_cols,
+    treat_col,
+    target_col,
+    args,
+    post_scores=None,
+):
+    if post_scores is None:
+        post_scores = detect_post_treatment_variables(
+            df_train,
+            observed_cols,
+            treat_col,
+            target_col,
+            args,
+        )
     post_variables = {name for name, score in post_scores.items() if score["is_post"]}
     feature_cols = [c for c in observed_cols if c != target_col and c not in post_variables]
     model = LGBMRegressor(
@@ -307,14 +313,22 @@ def outcome_importance_without_post_treatment(df_train, observed_cols, treat_col
     return importance.sort_values(ascending=False), post_scores
 
 
-def treatment_importance_without_post_outcome(df_train, observed_cols, treat_col, target_col, args):
-    post_scores = detect_post_treatment_variables(
-        df_train,
-        observed_cols,
-        treat_col,
-        target_col,
-        args,
-    )
+def treatment_importance_without_post_outcome(
+    df_train,
+    observed_cols,
+    treat_col,
+    target_col,
+    args,
+    post_scores=None,
+):
+    if post_scores is None:
+        post_scores = detect_post_treatment_variables(
+            df_train,
+            observed_cols,
+            treat_col,
+            target_col,
+            args,
+        )
     post_variables = {name for name, score in post_scores.items() if score["is_post"]}
     feature_cols = [c for c in observed_cols if c not in {treat_col, target_col} and c not in post_variables]
     model = LGBMClassifier(
@@ -391,16 +405,25 @@ def prune_deeper_edges_by_shallow_nonadjacency(learned_graph, graph_results, arg
     return {node: sorted(parents) for node, parents in pruned_graph.items()}, pruned_edges
 
 
-def rescue_post_treatment_children(df_train, learned_graph, observed_cols, treat_col, target_col, args):
+def rescue_post_treatment_children(
+    df_train,
+    learned_graph,
+    observed_cols,
+    treat_col,
+    target_col,
+    args,
+    post_scores=None,
+):
     """Add T/Y -> variable edges for statistically detected post-treatment variables."""
 
-    post_scores = detect_post_treatment_variables(
-        df_train,
-        observed_cols,
-        treat_col,
-        target_col,
-        args,
-    )
+    if post_scores is None:
+        post_scores = detect_post_treatment_variables(
+            df_train,
+            observed_cols,
+            treat_col,
+            target_col,
+            args,
+        )
     rescued_edges = []
     learned_graph = {node: set(parents) for node, parents in learned_graph.items()}
     for variable, score in post_scores.items():
@@ -422,16 +445,28 @@ def rescue_post_treatment_children(df_train, learned_graph, observed_cols, treat
     return {node: sorted(parents) for node, parents in learned_graph.items()}, rescued_edges
 
 
-def rescue_precision_outcome_edges(df_train, learned_graph, observed_cols, treat_col, target_col, args):
+def rescue_precision_outcome_edges(
+    df_train,
+    learned_graph,
+    observed_cols,
+    treat_col,
+    target_col,
+    args,
+    post_scores=None,
+    outcome_importance=None,
+):
     """Add precision-variable parents of Y using outcome importance and low treatment association."""
 
-    importance, post_scores = outcome_importance_without_post_treatment(
-        df_train,
-        observed_cols,
-        treat_col,
-        target_col,
-        args,
-    )
+    if outcome_importance is None:
+        outcome_importance, post_scores = outcome_importance_without_post_treatment(
+            df_train,
+            observed_cols,
+            treat_col,
+            target_col,
+            args,
+            post_scores=post_scores,
+        )
+    importance = outcome_importance
     max_importance = float(importance.max()) if len(importance) else 0.0
     if max_importance <= 0:
         return learned_graph, []
@@ -475,16 +510,28 @@ def rescue_precision_outcome_edges(df_train, learned_graph, observed_cols, treat
     return {node: sorted(parents) for node, parents in learned_graph.items()}, rescue_edges
 
 
-def rescue_treatment_parent_edges(df_train, learned_graph, observed_cols, treat_col, target_col, args):
+def rescue_treatment_parent_edges(
+    df_train,
+    learned_graph,
+    observed_cols,
+    treat_col,
+    target_col,
+    args,
+    post_scores=None,
+    treatment_importance=None,
+):
     """Add treatment parents using propensity importance after excluding post-outcome leakage."""
 
-    importance, post_scores = treatment_importance_without_post_outcome(
-        df_train,
-        observed_cols,
-        treat_col,
-        target_col,
-        args,
-    )
+    if treatment_importance is None:
+        treatment_importance, post_scores = treatment_importance_without_post_outcome(
+            df_train,
+            observed_cols,
+            treat_col,
+            target_col,
+            args,
+            post_scores=post_scores,
+        )
+    importance = treatment_importance
     max_importance = float(importance.max()) if len(importance) else 0.0
     if max_importance <= 0:
         return learned_graph, []
@@ -599,6 +646,29 @@ def run(args):
         merged["pruned_edges"] = pruned_edges
 
     treatment_rescue_edges = []
+    post_scores = detect_post_treatment_variables(
+        df_train,
+        observed_cols,
+        treat_col,
+        target_col,
+        args,
+    )
+    outcome_importance, _ = outcome_importance_without_post_treatment(
+        df_train,
+        observed_cols,
+        treat_col,
+        target_col,
+        args,
+        post_scores=post_scores,
+    )
+    treatment_importance, _ = treatment_importance_without_post_outcome(
+        df_train,
+        observed_cols,
+        treat_col,
+        target_col,
+        args,
+        post_scores=post_scores,
+    )
     if args.rescue_treatment_parent_edges:
         learned_graph, treatment_rescue_edges = rescue_treatment_parent_edges(
             df_train=df_train,
@@ -607,6 +677,8 @@ def run(args):
             treat_col=treat_col,
             target_col=target_col,
             args=args,
+            post_scores=post_scores,
+            treatment_importance=treatment_importance,
         )
         merged["treatment_rescue_edges"] = treatment_rescue_edges
 
@@ -619,6 +691,8 @@ def run(args):
             treat_col=treat_col,
             target_col=target_col,
             args=args,
+            post_scores=post_scores,
+            outcome_importance=outcome_importance,
         )
         merged["rescue_edges"] = rescue_edges
     precision_rescue_edges = []
@@ -630,6 +704,8 @@ def run(args):
             treat_col=treat_col,
             target_col=target_col,
             args=args,
+            post_scores=post_scores,
+            outcome_importance=outcome_importance,
         )
         merged["precision_rescue_edges"] = precision_rescue_edges
     post_treatment_rescue_edges = []
@@ -641,6 +717,7 @@ def run(args):
             treat_col=treat_col,
             target_col=target_col,
             args=args,
+            post_scores=post_scores,
         )
         merged["post_treatment_rescue_edges"] = post_treatment_rescue_edges
 
