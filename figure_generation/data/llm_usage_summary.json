@@ -1,0 +1,426 @@
+{
+  "http_responses": 39,
+  "valid_calls": 38,
+  "total_prompt_tokens": 150716,
+  "total_completion_tokens": 41948,
+  "total_tokens": 192664,
+  "by_provider": {
+    "deepseek": {
+      "calls": 15,
+      "prompt_tokens": 60273,
+      "completion_tokens": 29514,
+      "total_tokens": 89787
+    },
+    "kimi": {
+      "calls": 24,
+      "prompt_tokens": 90443,
+      "completion_tokens": 12434,
+      "total_tokens": 102877
+    }
+  },
+  "calls": [
+    {
+      "call_id": "round1_deepseek_antihypertensive_sbp_b01",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "validation_status": "valid",
+      "prompt_tokens": 4336,
+      "completion_tokens": 1305,
+      "total_tokens": 5641,
+      "prompt_cache_hit_tokens": 0,
+      "prompt_cache_miss_tokens": 4336
+    },
+    {
+      "call_id": "round1_deepseek_antihypertensive_sbp_b02",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "validation_status": "valid",
+      "prompt_tokens": 4088,
+      "completion_tokens": 2551,
+      "total_tokens": 6639,
+      "prompt_cache_hit_tokens": 0,
+      "prompt_cache_miss_tokens": 4088
+    },
+    {
+      "call_id": "round1_deepseek_antihypertensive_sbp_b03",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "validation_status": "valid",
+      "prompt_tokens": 4447,
+      "completion_tokens": 2235,
+      "total_tokens": 6682,
+      "prompt_cache_hit_tokens": 1152,
+      "prompt_cache_miss_tokens": 3295
+    },
+    {
+      "call_id": "round1_deepseek_antihypertensive_sbp_b04",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "validation_status": "valid",
+      "prompt_tokens": 4162,
+      "completion_tokens": 1866,
+      "total_tokens": 6028,
+      "prompt_cache_hit_tokens": 1152,
+      "prompt_cache_miss_tokens": 3010
+    },
+    {
+      "call_id": "round1_deepseek_antihypertensive_sbp_b05",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "validation_status": "valid",
+      "prompt_tokens": 4500,
+      "completion_tokens": 2575,
+      "total_tokens": 7075,
+      "prompt_cache_hit_tokens": 1152,
+      "prompt_cache_miss_tokens": 3348
+    },
+    {
+      "call_id": "round1_deepseek_antihypertensive_sbp_b06",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "validation_status": "valid",
+      "prompt_tokens": 4106,
+      "completion_tokens": 2437,
+      "total_tokens": 6543,
+      "prompt_cache_hit_tokens": 1152,
+      "prompt_cache_miss_tokens": 2954
+    },
+    {
+      "call_id": "round1_deepseek_antihypertensive_sbp_b07",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "validation_status": "valid",
+      "prompt_tokens": 4163,
+      "completion_tokens": 2002,
+      "total_tokens": 6165,
+      "prompt_cache_hit_tokens": 1152,
+      "prompt_cache_miss_tokens": 3011
+    },
+    {
+      "call_id": "round1_deepseek_antihypertensive_sbp_b08",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "validation_status": "valid",
+      "prompt_tokens": 2418,
+      "completion_tokens": 550,
+      "total_tokens": 2968,
+      "prompt_cache_hit_tokens": 1152,
+      "prompt_cache_miss_tokens": 1266
+    },
+    {
+      "call_id": "round1_deepseek_chol_med_tchol_b01",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "validation_status": "valid",
+      "prompt_tokens": 4146,
+      "completion_tokens": 2987,
+      "total_tokens": 7133,
+      "prompt_cache_hit_tokens": 0,
+      "prompt_cache_miss_tokens": 4146
+    },
+    {
+      "call_id": "round1_deepseek_chol_med_tchol_b02",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "validation_status": "valid",
+      "prompt_tokens": 4214,
+      "completion_tokens": 2598,
+      "total_tokens": 6812,
+      "prompt_cache_hit_tokens": 0,
+      "prompt_cache_miss_tokens": 4214
+    },
+    {
+      "call_id": "round1_deepseek_chol_med_tchol_b03",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "validation_status": "valid",
+      "prompt_tokens": 4161,
+      "completion_tokens": 2357,
+      "total_tokens": 6518,
+      "prompt_cache_hit_tokens": 1152,
+      "prompt_cache_miss_tokens": 3009
+    },
+    {
+      "call_id": "round1_deepseek_chol_med_tchol_b04",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "validation_status": "valid",
+      "prompt_tokens": 4158,
+      "completion_tokens": 1272,
+      "total_tokens": 5430,
+      "prompt_cache_hit_tokens": 1152,
+      "prompt_cache_miss_tokens": 3006
+    },
+    {
+      "call_id": "round1_deepseek_chol_med_tchol_b05",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "validation_status": "valid",
+      "prompt_tokens": 4355,
+      "completion_tokens": 1777,
+      "total_tokens": 6132,
+      "prompt_cache_hit_tokens": 1152,
+      "prompt_cache_miss_tokens": 3203
+    },
+    {
+      "call_id": "round1_deepseek_chol_med_tchol_b06",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "validation_status": "valid",
+      "prompt_tokens": 4084,
+      "completion_tokens": 1402,
+      "total_tokens": 5486,
+      "prompt_cache_hit_tokens": 1152,
+      "prompt_cache_miss_tokens": 2932
+    },
+    {
+      "call_id": "round1_deepseek_chol_med_tchol_b07",
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "validation_status": "valid",
+      "prompt_tokens": 2935,
+      "completion_tokens": 1600,
+      "total_tokens": 4535,
+      "prompt_cache_hit_tokens": 1152,
+      "prompt_cache_miss_tokens": 1783
+    },
+    {
+      "call_id": "round1_kimi_antihypertensive_sbp_b01",
+      "provider": "kimi",
+      "model": "kimi-k2.6",
+      "validation_status": "invalid",
+      "prompt_tokens": 4039,
+      "completion_tokens": 2150,
+      "total_tokens": 6189
+    },
+    {
+      "call_id": "round1_kimi_antihypertensive_sbp_b01",
+      "provider": "kimi",
+      "model": "kimi-k2.6",
+      "validation_status": "valid",
+      "prompt_tokens": 4056,
+      "completion_tokens": 430,
+      "total_tokens": 4486,
+      "cached_tokens": 2048
+    },
+    {
+      "call_id": "round1_kimi_antihypertensive_sbp_b02",
+      "provider": "kimi",
+      "model": "kimi-k2.6",
+      "validation_status": "valid",
+      "prompt_tokens": 3880,
+      "completion_tokens": 410,
+      "total_tokens": 4290,
+      "cached_tokens": 1024
+    },
+    {
+      "call_id": "round1_kimi_antihypertensive_sbp_b03",
+      "provider": "kimi",
+      "model": "kimi-k2.6",
+      "validation_status": "valid",
+      "prompt_tokens": 4164,
+      "completion_tokens": 579,
+      "total_tokens": 4743,
+      "cached_tokens": 1024
+    },
+    {
+      "call_id": "round1_kimi_antihypertensive_sbp_b04",
+      "provider": "kimi",
+      "model": "kimi-k2.6",
+      "validation_status": "valid",
+      "prompt_tokens": 3924,
+      "completion_tokens": 510,
+      "total_tokens": 4434,
+      "cached_tokens": 1024
+    },
+    {
+      "call_id": "round1_kimi_antihypertensive_sbp_b05",
+      "provider": "kimi",
+      "model": "kimi-k2.6",
+      "validation_status": "valid",
+      "prompt_tokens": 4206,
+      "completion_tokens": 451,
+      "total_tokens": 4657,
+      "cached_tokens": 1024
+    },
+    {
+      "call_id": "round1_kimi_antihypertensive_sbp_b06",
+      "provider": "kimi",
+      "model": "kimi-k2.6",
+      "validation_status": "valid",
+      "prompt_tokens": 3892,
+      "completion_tokens": 540,
+      "total_tokens": 4432,
+      "cached_tokens": 1024
+    },
+    {
+      "call_id": "round1_kimi_antihypertensive_sbp_b07",
+      "provider": "kimi",
+      "model": "kimi-k2.6",
+      "validation_status": "valid",
+      "prompt_tokens": 3926,
+      "completion_tokens": 493,
+      "total_tokens": 4419,
+      "cached_tokens": 1024
+    },
+    {
+      "call_id": "round1_kimi_antihypertensive_sbp_b08",
+      "provider": "kimi",
+      "model": "kimi-k2.6",
+      "validation_status": "valid",
+      "prompt_tokens": 2315,
+      "completion_tokens": 217,
+      "total_tokens": 2532,
+      "cached_tokens": 1024
+    },
+    {
+      "call_id": "round1_kimi_chol_med_tchol_b01",
+      "provider": "kimi",
+      "model": "kimi-k2.6",
+      "validation_status": "valid",
+      "prompt_tokens": 3897,
+      "completion_tokens": 441,
+      "total_tokens": 4338
+    },
+    {
+      "call_id": "round1_kimi_chol_med_tchol_b02",
+      "provider": "kimi",
+      "model": "kimi-k2.6",
+      "validation_status": "valid",
+      "prompt_tokens": 3993,
+      "completion_tokens": 444,
+      "total_tokens": 4437,
+      "cached_tokens": 1024
+    },
+    {
+      "call_id": "round1_kimi_chol_med_tchol_b03",
+      "provider": "kimi",
+      "model": "kimi-k2.6",
+      "validation_status": "valid",
+      "prompt_tokens": 3937,
+      "completion_tokens": 476,
+      "total_tokens": 4413,
+      "cached_tokens": 1024
+    },
+    {
+      "call_id": "round1_kimi_chol_med_tchol_b04",
+      "provider": "kimi",
+      "model": "kimi-k2.6",
+      "validation_status": "valid",
+      "prompt_tokens": 3917,
+      "completion_tokens": 402,
+      "total_tokens": 4319,
+      "cached_tokens": 1024
+    },
+    {
+      "call_id": "round1_kimi_chol_med_tchol_b05",
+      "provider": "kimi",
+      "model": "kimi-k2.6",
+      "validation_status": "valid",
+      "prompt_tokens": 4116,
+      "completion_tokens": 409,
+      "total_tokens": 4525,
+      "cached_tokens": 1024
+    },
+    {
+      "call_id": "round1_kimi_chol_med_tchol_b06",
+      "provider": "kimi",
+      "model": "kimi-k2.6",
+      "validation_status": "valid",
+      "prompt_tokens": 3877,
+      "completion_tokens": 533,
+      "total_tokens": 4410,
+      "cached_tokens": 1024
+    },
+    {
+      "call_id": "round1_kimi_chol_med_tchol_b07",
+      "provider": "kimi",
+      "model": "kimi-k2.6",
+      "validation_status": "valid",
+      "prompt_tokens": 2811,
+      "completion_tokens": 284,
+      "total_tokens": 3095,
+      "cached_tokens": 1024
+    },
+    {
+      "call_id": "tiebreak_kimi_antihypertensive_sbp_b01",
+      "provider": "kimi",
+      "model": "kimi-k2.6",
+      "validation_status": "valid",
+      "prompt_tokens": 4039,
+      "completion_tokens": 417,
+      "total_tokens": 4456,
+      "cached_tokens": 1024
+    },
+    {
+      "call_id": "tiebreak_kimi_antihypertensive_sbp_b02",
+      "provider": "kimi",
+      "model": "kimi-k2.6",
+      "validation_status": "valid",
+      "prompt_tokens": 3924,
+      "completion_tokens": 544,
+      "total_tokens": 4468,
+      "cached_tokens": 1024
+    },
+    {
+      "call_id": "tiebreak_kimi_antihypertensive_sbp_b03",
+      "provider": "kimi",
+      "model": "kimi-k2.6",
+      "validation_status": "valid",
+      "prompt_tokens": 3896,
+      "completion_tokens": 439,
+      "total_tokens": 4335,
+      "cached_tokens": 1024
+    },
+    {
+      "call_id": "tiebreak_kimi_antihypertensive_sbp_b04",
+      "provider": "kimi",
+      "model": "kimi-k2.6",
+      "validation_status": "valid",
+      "prompt_tokens": 3433,
+      "completion_tokens": 429,
+      "total_tokens": 3862,
+      "cached_tokens": 1024
+    },
+    {
+      "call_id": "tiebreak_kimi_chol_med_tchol_b01",
+      "provider": "kimi",
+      "model": "kimi-k2.6",
+      "validation_status": "valid",
+      "prompt_tokens": 4023,
+      "completion_tokens": 599,
+      "total_tokens": 4622,
+      "cached_tokens": 1024
+    },
+    {
+      "call_id": "tiebreak_kimi_chol_med_tchol_b02",
+      "provider": "kimi",
+      "model": "kimi-k2.6",
+      "validation_status": "valid",
+      "prompt_tokens": 3883,
+      "completion_tokens": 539,
+      "total_tokens": 4422,
+      "cached_tokens": 1024
+    },
+    {
+      "call_id": "tiebreak_kimi_chol_med_tchol_b03",
+      "provider": "kimi",
+      "model": "kimi-k2.6",
+      "validation_status": "valid",
+      "prompt_tokens": 3934,
+      "completion_tokens": 502,
+      "total_tokens": 4436,
+      "cached_tokens": 1024
+    },
+    {
+      "call_id": "tiebreak_kimi_chol_med_tchol_b04",
+      "provider": "kimi",
+      "model": "kimi-k2.6",
+      "validation_status": "valid",
+      "prompt_tokens": 2361,
+      "completion_tokens": 196,
+      "total_tokens": 2557,
+      "cached_tokens": 1024
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 # Reproducibility Guide
 
-This guide reproduces the paper-facing OCU and CCIA experiments. Run all
-commands from the repository root.
+Run commands from the repository root. Committed result files are aggregate,
+non-identifying artifacts; `results/generated/` is reserved for local reruns.
 
 ## Environment
 
@@ -10,161 +10,137 @@ make env
 make test
 ```
 
-The main statistical experiments use LightGBM. KAN is an optional nonlinear
-residual model and requires:
+The main experiments use LightGBM. KAN is an optional residual backend:
 
 ```bash
 .venv/bin/pip install -r requirements-kan.txt
 ```
 
-## Synthetic OCU
+## Synthetic Experiments
 
 ```bash
 make synthetic
-```
-
-Expected output:
-
-```text
-results/generated/synthetic/synthetic_reproduction_mae_r2.csv
-```
-
-The experiment uses `n=10000`, seed 2026, and reports CATE MAE, R2,
-Spearman correlation, and bias for five uplift learners.
-
-## Statistical CCIA
-
-Run the five-seed direction benchmark and five-seed complete graph-recovery
-and learned-graph transfer pipeline:
-
-```bash
 make direction
-make ccia-synthetic
-```
-
-The graph experiment intentionally includes collider variables and disables
-uplift temporal ordering. It therefore evaluates the data-driven statistical
-direction mechanism rather than a pre-treatment filter. The final graph uses a
-priority-ordered DAG gate: endpoint-level and higher-confidence directions are
-admitted first, and every cycle-closing edge is rejected with provenance.
-
-Expected aggregate outputs:
-
-```text
-results/generated/ccia-synthetic/ccia_multiseed_per_seed.csv
-results/generated/ccia-synthetic/ccia_multiseed_summary.csv
-```
-
-Run the paper's systematic graph, role, and downstream-effect benchmark plus
-the ten-seed component ablation:
-
-```bash
+make tlcd-synthetic
 make systematic
-make ccia-ablation
+make tlcd-ablation
 ```
 
-The systematic benchmark evaluates four structural mechanisms, four sample
-sizes, ten seeds, and CCIA, PC, FCI, GES, and DirectLiNGAM on the same 23
-observed variables. No method receives a pre-treatment whitelist, and both
-post-treatment colliders remain in the observed surface. Outputs are written
-to `results/generated/systematic/` and
-`results/generated/ccia-ablation/`.
+The systematic study crosses four structural mechanisms, four sample sizes,
+ten seeds, and five graph learners on the same 23 observed variables. The
+surface includes post-treatment colliders and does not provide a pretreatment
+whitelist. TLCD component ablations use ten seeds. The default standalone
+synthetic CATE run uses `n=10,000`.
 
-## MIMIC-IV Target-Trial Study
+## MIMIC-IV RBC Study
 
-MIMIC-IV v3.1 must be obtained independently through PhysioNet credentialing
-and its data-use agreement. Source CSV files and patient-level extracts are
-never included in the repository.
+### Data access
 
-Build the filtered SQLite database used by the paper:
+1. Obtain MIMIC-IV v3.1 access through PhysioNet and accept its data-use
+   agreement.
+2. Download the structured `hosp/` and `icu/` CSV files.
+3. Authorize Application Default Credentials for a Google Cloud project that
+   can query `physionet-data.mimiciv_3_1_icu.chartevents`.
+4. Set `MIMIC_ROOT` to the directory containing `hosp/` and `icu/`, and pass
+   the authorized billing project as `GCP_PROJECT`.
+
+The pipeline stores structured tables in a filtered local SQLite database.
+`chartevents` is queried separately through BigQuery after uploading only the
+study stay IDs and trigger times to a temporary table in the user's project.
+The temporary table expires within 24 hours and is deleted after extraction.
+
+### Target-trial protocol
+
+- Population: adults at their first ICU stay with a first hemoglobin value of
+  7--9 g/dL during ICU hours 0--24.
+- Exclusions: RBC transfusion before the trigger, or death/ICU discharge before
+  the six-hour landmark.
+- Strategies: initiate RBC transfusion within six hours of the trigger versus
+  do not initiate by six hours.
+- Time zero: the six-hour landmark.
+- Outcome: 90-day all-cause mortality.
+- Bedside window: the half-open interval `[trigger - 24 h, trigger)`; urine
+  output uses the preceding six hours.
+- Common support: exclude prior malignancy because the 2020--2022 cohort has no
+  treated patient in that baseline stratum.
+
+The resulting common-support cohort contains 13,990 stays: 9,018 in discovery
+(2008--2016), 2,865 in validation (2017--2019), and 2,107 in temporal evaluation
+(2020--2022).
+
+### Pipeline
+
+Build the structured SQLite database without loading the large local
+`chartevents` table:
 
 ```bash
 make mimic-db MIMIC_ROOT=/path/to/mimiciv/3.1
 ```
 
-The paper environment uses `--skip-chartevents` because the local
-`chartevents.csv.gz` failed the official MIMIC-IV SHA256 and gzip-completeness
-checks. Users with a complete manifest-matching file may omit that flag. The
-final analysis uses complete laboratory, input, output, service, procedure,
-admission, and patient sources.
-
-Reproduce cohort construction, statistical CCIA, validation-only learner
-selection, temporal evaluation, and 20 repeated splits:
+Extract time-safe chart aggregates through BigQuery:
 
 ```bash
-make mimic MIMIC_ROOT=/path/to/mimiciv/3.1
+make mimic-chart-data GCP_PROJECT=your-authorized-gcp-project
 ```
 
-Reproduce patient-bootstrap uncertainty, benefit phenotypes, the hemoglobin
-mechanism endpoint, policy-budget curves, late-transfusion sensitivity, and
-the conservative `C_total` propensity sensitivity:
+Compare the three prespecified bedside panels in the validation era, learn the
+80-variable TLCD graph for the selected panel, and validate the `C`/`S` roles:
 
 ```bash
-make mimic-interpretation MIMIC_ROOT=/path/to/mimiciv/3.1
+make mimic-chart-discovery MIMIC_ROOT=/path/to/mimiciv/3.1
 ```
 
-Run the discovery-only treatment-neutrality gate, full-surface balance audit,
-independent evaluator, glucose-missingness analyses, stable-proxy subgroup,
-and 20 repeated post-discovery splits:
+Lock the propensity and heterogeneous-effect learners using validation data,
+then run the 20 post-discovery splits and non-overlapping temporal analysis:
 
 ```bash
-make mimic-audit
+make mimic-chart-analysis MIMIC_ROOT=/path/to/mimiciv/3.1
 ```
 
-The generated output directory is:
+Generated files are written to `results/generated/mimic-rbc-chart/`. The
+compact paper-facing archive is `results/mimic_rbc_chart_augmented/` and
+contains:
 
-```text
-results/generated/mimic-rbc-v3/
-```
+- the parameterized BigQuery extraction and integrity manifest;
+- the 80-variable manifest, selected TLCD graph, and role sets;
+- common-support, propensity, and learner locks;
+- split-level and aggregate R-loss, DR-Qini, and policy comparisons;
+- temporal balance, bootstrap summaries, benefit strata, hemoglobin response,
+  bedside profiles, and treatment-budget curves.
 
-The analysis never exports row-level MIMIC-IV data. Release archives contain
-only aggregate CSV/JSON results and source-integrity manifests.
+No committed CSV or JSON contains `subject_id`, `hadm_id`, or `stay_id`.
 
-## NHANES Data
-
-The scripts download public NHANES XPT files from CDC into
-`data/nhanes_raw/`. Raw data are excluded from version control. The two paper
-tasks use the 2011-2018 cycles.
-
-## LLM Semantic Audit
-
-Always run the no-cost dry-run first:
-
-```bash
-make llm-dryrun
-```
-
-It creates the edge queue and token budget without reading API keys. Rebuilding
-the graph variants from an archived decision file is also free:
-
-```bash
-make llm-variants
-```
-
-Fresh semantic adjudication is a paid network operation. Place `Kimi_Key` and
-`deepseek_Key` in the workspace-level `.env`, review the budget, and explicitly
-unlock the target:
-
-```bash
-ALLOW_PAID_API=1 make llm-api
-```
-
-The paper run used 39 HTTP responses and 192,664 total tokens. API keys are
-never written to request, response, ledger, or result files.
-
-## Locked NHANES Confirmation
+## NHANES Studies
 
 ```bash
 make nhanes-confirmatory
 make nhanes-survey
 ```
 
-The primary confirmatory protocol fixes the conservative LLM graph, proximal
-C-set, OCU C-only variant, base learner, and seeds 2040-2059. Propensity
-nuisance models use only `C`; outcome nuisance models use `C union S`.
+The scripts download public 2011--2018 NHANES XPT files into the ignored
+`data/nhanes_raw/` cache. The confirmatory protocol fixes graph variants,
+roles, learners, and seeds 2040--2059. Survey sensitivity uses
+`WTMEC2YR / 4` and Taylor linearization with cycle-specific strata and PSU
+identifiers.
 
-The survey sensitivity uses `WTMEC2YR/4` for four two-year cycles and Taylor
-linearization with cycle-specific masked strata and PSU variables.
+## Semantic Review
+
+Always prepare the edge queue and token budget first:
+
+```bash
+make llm-dryrun
+make llm-variants
+```
+
+Fresh calls require untracked credentials and an explicit paid-call gate:
+
+```bash
+ALLOW_PAID_API=1 make llm-api
+```
+
+The archived run contains 39 HTTP responses, 38 valid calls, and 192,664 total
+tokens. Deterministic graph fusion can be reproduced from the archived decision
+file without contacting an API.
 
 ## Figures
 
@@ -172,30 +148,6 @@ linearization with cycle-specific masked strata and PSU variables.
 make figures
 ```
 
-This target regenerates PDF and PNG figures from committed aggregate result
-files. It does not refit models or rerun paid APIs.
-
-The public code repository does not include the submission manuscript.
-
-## Result Provenance
-
-- `results/llm_adjudication/`: raw normalized votes, decision archive, API usage,
-  and deterministic graph variants.
-- `results/nhanes_llm_fixed_confirmatory_v1/`: 20 locked train-test splits.
-- `results/nhanes_survey_aipw_sensitivity_v1/`: complex-survey AIPW sensitivity.
-- `results/mimic_rbc_target_trial_v3/`: locked longitudinal RBC study,
-  repeated-split comparisons, clinical interpretation, and sensitivities.
-- `results/mimic_rbc_target_trial_v5_product_audit/`: safety-validated roles,
-  independent evaluation, full-surface balance, missingness audits, and stable
-  proxy sensitivities.
-- `results/ccia_synthetic_multiseed_dag_gated_v2/`: five-sample graph
-  recovery and learned-versus-oracle OCU transfer.
-- `results/systematic_simulation_v1/`: four-mechanism, four-size, ten-seed
-  graph and downstream-effect benchmark.
-- `results/ccia_component_ablation_v1/`: ten-seed CCIA component ablation.
-- `results/paper_tables/`: manuscript-facing aggregate tables.
-- `figures/`: manuscript-facing figures regenerated from committed artifacts.
-
-`results/generated/` is ignored because intermediate files can be large. The
-repository includes the compact final CSV/JSON artifacts required by
-`tests/test_experiment_integrity.py`.
+This rebuilds MIMIC figure inputs from committed aggregate results and renders
+Figures 2--5 as PDF, SVG, and 600-dpi PNG. It does not refit models, access
+patient-level data, or invoke paid APIs.

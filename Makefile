@@ -1,10 +1,16 @@
 PYTHON ?= .venv/bin/python
-MPLCONFIGDIR ?= /tmp/matplotlib-ccia-ocu
+MPLCONFIGDIR ?= /tmp/matplotlib-tlcd-rite
 MIMIC_ROOT ?=
+GCP_PROJECT ?=
+MIMIC_DB ?= data/mimic_iv_tlcd.sqlite
+MIMIC_OUT ?= results/generated/mimic-rbc-chart
 MIMIC_ROOT_ARG = $(if $(MIMIC_ROOT),--mimic-root "$(MIMIC_ROOT)",)
 export MPLCONFIGDIR
 
-.PHONY: env test synthetic direction ccia-synthetic systematic ccia-ablation mimic-db mimic mimic-interpretation mimic-audit llm-dryrun llm-api llm-variants nhanes-confirmatory nhanes-survey figures
+.PHONY: env test synthetic direction tlcd-synthetic systematic tlcd-ablation \
+	mimic-db mimic-chart-data mimic-chart-discovery mimic-chart-analysis \
+	mimic-chart llm-dryrun llm-api llm-variants nhanes-confirmatory \
+	nhanes-survey figures
 
 env:
 	python3 -m venv .venv
@@ -19,26 +25,29 @@ synthetic:
 direction:
 	$(PYTHON) experiments/benchmark_direction_multiseed.py --n 6000 --seeds 2026,2027,2028,2029,2030 --methods pair_spearman_anm task_adaptive --max-context 3 --max-hsic-samples 1000 --lgb-estimators 80 --gain-estimators 50 --out-dir results/generated/direction
 
-ccia-synthetic:
-	$(PYTHON) -m experiments.run_ccia_synthetic_multiseed --seeds 2026,2027,2028,2029,2030 --multiseed-out-dir results/generated/ccia-synthetic --n 10000 --include-colliders --no-uplift-temporal-order --direction-strategy task_adaptive --max-neighbors 16 --max-corr-neighbors 10 --max-importance-neighbors 12 --max-condition-candidates 10 --max-condition-set-size 2 --max-search-depth 1 --ci-theta 0.05 --ccia-lgb-estimators 80 --uplift-models S-Learner ClassTransform
+tlcd-synthetic:
+	$(PYTHON) -m experiments.run_tlcd_synthetic_multiseed --seeds 2026,2027,2028,2029,2030 --multiseed-out-dir results/generated/tlcd-synthetic --n 10000 --include-colliders --no-uplift-temporal-order --direction-strategy task_adaptive --max-neighbors 16 --max-corr-neighbors 10 --max-importance-neighbors 12 --max-condition-candidates 10 --max-condition-set-size 2 --max-search-depth 1 --ci-theta 0.05 --tlcd-lgb-estimators 80 --uplift-models S-Learner ClassTransform
 
 systematic:
 	$(PYTHON) experiments/run_systematic_simulation.py --workers 4 --out-dir results/generated/systematic
 
-ccia-ablation:
-	$(PYTHON) experiments/run_ccia_component_ablation.py --workers 4 --out-dir results/generated/ccia-ablation
+tlcd-ablation:
+	$(PYTHON) experiments/run_tlcd_component_ablation.py --workers 4 --out-dir results/generated/tlcd-ablation
 
 mimic-db:
-	$(PYTHON) empirical_experiments/mimic_build_sqlite.py $(MIMIC_ROOT_ARG) --database data/mimic_iv_ccia.sqlite --skip-chartevents
+	$(PYTHON) empirical_experiments/mimic_build_sqlite.py $(MIMIC_ROOT_ARG) --database $(MIMIC_DB) --skip-chartevents
 
-mimic:
-	$(PYTHON) empirical_experiments/mimic_rbc_target_trial.py --mode all $(MIMIC_ROOT_ARG) --database data/mimic_iv_ccia.sqlite --out-dir results/generated/mimic-rbc-v3
+mimic-chart-data:
+	@test -n "$(GCP_PROJECT)" || (echo "Set GCP_PROJECT to a project authorized for MIMIC-IV BigQuery." && exit 1)
+	$(PYTHON) empirical_experiments/mimic_chartevents_data.py --database $(MIMIC_DB) --out-dir $(MIMIC_OUT) --project $(GCP_PROJECT)
 
-mimic-interpretation:
-	$(PYTHON) empirical_experiments/mimic_rbc_interpretation.py $(MIMIC_ROOT_ARG) --database data/mimic_iv_ccia.sqlite --out-dir results/generated/mimic-rbc-v3 --bootstrap-draws 2000
+mimic-chart-discovery:
+	$(PYTHON) empirical_experiments/mimic_rbc_chart_panel.py --mode develop $(MIMIC_ROOT_ARG) --database $(MIMIC_DB) --out-dir $(MIMIC_OUT)
 
-mimic-audit:
-	$(PYTHON) empirical_experiments/mimic_rbc_robustness_audit.py --database data/mimic_iv_ccia.sqlite --source-results-dir results/generated/mimic-rbc-v3 --out-dir results/generated/mimic-rbc-audit --bootstrap-draws 5000 --multiple-imputations 5 --robustness-repeats 20
+mimic-chart-analysis:
+	$(PYTHON) empirical_experiments/mimic_rbc_final_analysis.py --mode all $(MIMIC_ROOT_ARG) --database $(MIMIC_DB) --out-dir $(MIMIC_OUT)
+
+mimic-chart: mimic-db mimic-chart-data mimic-chart-discovery mimic-chart-analysis
 
 llm-dryrun:
 	$(PYTHON) experiments/run_nhanes_llm_dryrun.py
@@ -57,4 +66,5 @@ nhanes-survey:
 	$(PYTHON) empirical_experiments/nhanes_survey_aipw_sensitivity.py --cache-dir data/nhanes_raw --out-dir results/generated/nhanes-survey
 
 figures:
-	$(PYTHON) empirical_experiments/build_final_manuscript_figures.py --output-dir figures
+	$(PYTHON) figure_generation/scripts/prepare_mimic_figure_data.py
+	$(PYTHON) figure_generation/scripts/plot_all_figures.py --output-dir figures

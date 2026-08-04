@@ -1,4 +1,4 @@
-"""Deterministic LightGBM propensity fitting used by the OCU first stage."""
+"""Deterministic LightGBM propensity fitting used by the RITE first stage."""
 
 from __future__ import annotations
 

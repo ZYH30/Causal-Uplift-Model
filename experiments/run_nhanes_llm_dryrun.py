@@ -14,7 +14,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from ccia.llm_causal.semantic_adjudication import (
+from tlcd.llm_causal.semantic_adjudication import (
     build_edge_queue,
     build_messages,
     estimate_call_plan,
@@ -27,7 +27,7 @@ from ccia.llm_causal.semantic_adjudication import (
 )
 
 
-RESOURCE_DIR = PROJECT_ROOT / "ccia" / "llm_causal" / "nhanes"
+RESOURCE_DIR = PROJECT_ROOT / "tlcd" / "llm_causal" / "nhanes"
 DEFAULT_TASKS = ["antihypertensive_sbp", "chol_med_tchol"]
 
 

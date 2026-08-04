@@ -1,1 +1,1 @@
-"""Reproducible CCIA-OCU experiment entry points."""
+"""Reproducible TLCD-RITE experiment entry points."""

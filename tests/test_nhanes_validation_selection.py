@@ -16,13 +16,13 @@ class ValidationSelectionTests(unittest.TestCase):
                     "PolicyOutcome_ObservedBudget": 20.0,
                 },
                 {
-                    "Method": "OCU_CCIA_COnly",
+                    "Method": "RITE_COnly",
                     "R_Loss": 8.0,
                     "DR_Qini": 0.30,
                     "PolicyOutcome_ObservedBudget": 20.1,
                 },
                 {
-                    "Method": "OCU_CCIA_CPlusS",
+                    "Method": "RITE_CPlusS",
                     "R_Loss": 11.0,
                     "DR_Qini": 0.05,
                     "PolicyOutcome_ObservedBudget": 19.9,
@@ -32,12 +32,12 @@ class ValidationSelectionTests(unittest.TestCase):
 
     def test_composite_rank_balances_all_metrics(self):
         selected = select_validation_candidate(self.rows, "composite_rank")
-        self.assertEqual(selected["Method"], "OCU_CCIA_COnly")
+        self.assertEqual(selected["Method"], "RITE_COnly")
         self.assertEqual(selected["Composite_Rank_Sum"], 5.0)
 
     def test_legacy_rule_is_available_for_reproduction(self):
         selected = select_validation_candidate(self.rows, "lexicographic_policy")
-        self.assertEqual(selected["Method"], "OCU_CCIA_CPlusS")
+        self.assertEqual(selected["Method"], "RITE_CPlusS")
 
     def test_unknown_rule_fails(self):
         with self.assertRaises(ValueError):

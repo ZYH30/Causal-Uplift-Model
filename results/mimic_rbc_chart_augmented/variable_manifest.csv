@@ -1,0 +1,81 @@
+variable,clinical_description,domain,representation,discovery_missing_percent,final_interface_role
+trigger_hour,Hour of the qualifying hemoglobin trigger within the ICU stay,Index event,Continuous,0.0,C
+trigger_value,Hemoglobin value at the qualifying treatment trigger,Index event,Continuous,0.0,C
+age,Age at ICU admission,Demographics,Continuous,0.0,S
+sex_male,Male sex indicator,Demographics,Binary,0.0,
+race_white,White race indicator,Demographics,Binary,0.0,
+race_black,Black race indicator,Demographics,Binary,0.0,
+race_hispanic,Hispanic ethnicity indicator,Demographics,Binary,0.0,
+race_asian,Asian race indicator,Demographics,Binary,0.0,
+insurance_medicare,Medicare insurance indicator,Demographics,Binary,0.0,
+insurance_medicaid,Medicaid insurance indicator,Demographics,Binary,0.0,
+insurance_private,Private insurance indicator,Demographics,Binary,0.0,
+unit_cardiac,Cardiac ICU indicator,Care setting and utilization,Binary,0.0,C
+unit_medical,Medical ICU indicator,Care setting and utilization,Binary,0.0,S
+unit_surgical,Surgical ICU indicator,Care setting and utilization,Binary,0.0,
+unit_neuro,Neurologic ICU indicator,Care setting and utilization,Binary,0.0,
+admission_emergency,Emergency admission indicator,Care setting and utilization,Binary,0.0,
+admission_from_ed,Admission from the emergency department,Care setting and utilization,Binary,0.0,
+admission_transfer,Transfer admission indicator,Care setting and utilization,Binary,0.0,
+era_index,Calendar-era index,Care setting and utilization,Ordinal,0.0,
+prior_admission_count,Number of prior completed hospital admissions,Care setting and utilization,Count,0.0,
+days_since_last_admission,Days since the most recent prior admission,Care setting and utilization,Continuous,52.9,
+hx_sepsis,History of sepsis,Prior medical history,Binary,0.0,
+hx_heart_failure,History of heart failure,Prior medical history,Binary,0.0,
+hx_renal,History of renal disease,Prior medical history,Binary,0.0,
+hx_liver,History of liver disease,Prior medical history,Binary,0.0,
+hx_malignancy,History of malignancy,Prior medical history,Binary,0.0,Support
+hx_diabetes,History of diabetes,Prior medical history,Binary,0.0,
+hx_anemia,History of anemia,Prior medical history,Binary,0.0,
+hx_bleeding,History of bleeding,Prior medical history,Binary,0.0,
+hx_ischemic_heart,History of ischemic heart disease,Prior medical history,Binary,0.0,
+hx_chronic_lung,History of chronic lung disease,Prior medical history,Binary,0.0,
+lab_bicarbonate_last,Most recent pre-trigger bicarbonate measurement,Laboratory,Continuous,24.1,
+lab_bun_last,Most recent pre-trigger blood urea nitrogen measurement,Laboratory,Continuous,23.5,S
+lab_creatinine_last,Most recent pre-trigger creatinine measurement,Laboratory,Continuous,23.5,
+lab_glucose_last,Most recent pre-trigger glucose measurement,Laboratory,Continuous,24.8,
+lab_hematocrit_last,Most recent pre-trigger hematocrit measurement,Laboratory,Continuous,17.7,
+lab_inr_last,Most recent pre-trigger international normalized ratio measurement,Laboratory,Continuous,30.4,
+lab_lactate_last,Most recent pre-trigger lactate measurement,Laboratory,Continuous,37.5,C
+lab_platelets_last,Most recent pre-trigger platelet count measurement,Laboratory,Continuous,18.0,
+lab_potassium_last,Most recent pre-trigger potassium measurement,Laboratory,Continuous,23.7,
+lab_ptt_last,Most recent pre-trigger partial thromboplastin time measurement,Laboratory,Continuous,29.8,
+lab_sodium_last,Most recent pre-trigger sodium measurement,Laboratory,Continuous,23.9,
+lab_wbc_last,Most recent pre-trigger white blood cell count measurement,Laboratory,Continuous,18.3,
+baseline_lab_count,Number of baseline laboratory measurements,Measurement history,Count,0.0,
+baseline_hb_count,Number of baseline hemoglobin measurements,Measurement history,Count,0.0,
+baseline_hb_min,Minimum baseline hemoglobin concentration,Measurement history,Continuous,0.0,C
+prior_crystalloid,Pre-trigger crystalloid exposure,Pre-trigger treatment,Binary,0.0,
+prior_vasopressor,Pre-trigger vasopressor exposure,Pre-trigger treatment,Binary,0.0,
+urine_output_6h,Urine output during the six hours before the trigger,Renal output,Continuous,52.9,
+service_medical,Medical service indicator,Care setting and utilization,Binary,0.0,C
+service_cardiac,Cardiac service indicator,Care setting and utilization,Binary,0.0,
+service_surgical,Surgical service indicator,Care setting and utilization,Binary,0.0,
+service_neuro,Neurologic service indicator,Care setting and utilization,Binary,0.0,
+service_trauma,Trauma service indicator,Care setting and utilization,Binary,0.0,
+pretrigger_invasive_respiratory_support,Pre-trigger invasive respiratory support,Procedures and support,Binary,0.0,
+pretrigger_dialysis,Pre-trigger dialysis,Procedures and support,Binary,0.0,
+pretrigger_invasive_line,Pre-trigger invasive-line procedure,Procedures and support,Binary,0.0,
+pretrigger_operating_room,Pre-trigger operating-room exposure,Procedures and support,Binary,0.0,
+pretrigger_mechanical_support,Pre-trigger mechanical organ support,Procedures and support,Binary,0.0,
+pretrigger_procedure_count,Number of pre-trigger procedures,Procedures and support,Count,0.0,
+urine_observed_6h,Indicator that pre-trigger six-hour urine output was observed,Renal output,Indicator,0.0,C
+lab_glucose_last_missing,Missingness indicator for baseline glucose,Measurement process,Indicator,0.0,C
+chart_heart_rate_last,Most recent pre-trigger heart rate,Bedside physiology,Continuous,33.7,
+chart_heart_rate_high_fraction,Fraction of pre-trigger heart-rate measurements above 100 beats/min,Bedside physiology,Proportion,33.7,
+chart_sbp_last,Most recent pre-trigger systolic blood pressure,Bedside physiology,Continuous,34.9,
+chart_sbp_min,Minimum pre-trigger systolic blood pressure,Bedside physiology,Continuous,34.9,
+chart_map_last,Most recent pre-trigger mean arterial pressure,Bedside physiology,Continuous,35.0,
+chart_map_low_fraction,Fraction of pre-trigger mean arterial pressure measurements below 65 mmHg,Bedside physiology,Proportion,35.0,
+chart_resp_rate_last,Most recent pre-trigger respiratory rate,Bedside physiology,Continuous,34.0,
+chart_resp_rate_max,Maximum pre-trigger respiratory rate,Bedside physiology,Continuous,34.0,
+chart_spo2_last,Most recent pre-trigger peripheral oxygen saturation,Bedside physiology,Continuous,34.4,
+chart_spo2_low_fraction,Fraction of pre-trigger oxygen-saturation measurements below 92%,Bedside physiology,Proportion,34.4,
+chart_temp_c_last,Most recent pre-trigger temperature in degrees Celsius,Bedside physiology,Continuous,38.1,C
+chart_gcs_combined_last,Most recent pre-trigger Glasgow Coma Scale total,Neurologic status,Continuous,42.5,C
+chart_rass_last,Most recent pre-trigger Richmond Agitation-Sedation Scale score,Neurologic status,Ordinal,55.2,C
+chart_shock_index_last,Most recent pre-trigger heart-rate to systolic-pressure ratio,Bedside physiology,Continuous,35.0,
+chart_weight_kg_last,Most recent pre-trigger body weight in kilograms,Anthropometry,Continuous,2.0,
+chart_o2_flow_last,Most recent pre-trigger supplemental oxygen flow,Respiratory support,Continuous,68.9,
+chart_fio2_recorded,Indicator that inspired oxygen fraction was charted before the trigger,Respiratory support,Indicator,0.0,
+chart_ventilator_measurement_recorded,Indicator that a ventilator setting was charted before the trigger,Respiratory support,Indicator,0.0,

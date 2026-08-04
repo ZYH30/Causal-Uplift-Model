@@ -1,5 +1,0 @@
-Figure,Source,Role
-figure_2_synthetic_evidence_chain,synthetic CATE + direction + graph recovery,Mechanism-to-estimation evidence chain
-figure_3_mimic_target_trial_evidence,mimic_rbc_target_trial_v3,Target-trial design and temporally locked evidence
-figure_4_mimic_clinical_interpretation,mimic_rbc_target_trial_v3,Clinical phenotype mechanism and policy interpretation
-figure_5_neurosymbolic_graph_audit,llm_adjudication,Constrained semantic graph audit

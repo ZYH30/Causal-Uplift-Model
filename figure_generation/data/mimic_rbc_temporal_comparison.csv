@@ -1,0 +1,4 @@
+comparison,intervention,comparator,Metric,Point_Estimate,Bootstrap_Mean,CI_Low,CI_High,Probability_Positive,Draws
+TLCD_chart_vs_all_chart,RITE_CPlusS,AllVariables,R_Loss_Improvement,0.0001266026239557,0.0001247934121496,-0.0006611499357662,0.0009218881012646,0.62,2000
+TLCD_chart_vs_all_chart,RITE_CPlusS,AllVariables,DR_Qini_Improvement,0.0140023395928695,0.0140311282499711,-0.0216256070957479,0.0508388661883054,0.7825,2000
+TLCD_chart_vs_all_chart,RITE_CPlusS,AllVariables,Policy_Risk_Reduction_Improvement,0.0177734417417799,0.0041914088832234,-0.0555349206480665,0.0736667757440834,0.5195,2000

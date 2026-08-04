@@ -1,0 +1,98 @@
+{
+  "selection_dataset": "repeated held-out splits of MIMIC-IV 2017-2019 common-support cohort; 2008-2016 records were available only for model fitting",
+  "selection_rule": "maximize metrics with a positive repeated-split confidence bound, then positive mean gains, mean win rate, and equal-weight rank sum",
+  "primary_learner": "R-Learner",
+  "primary_interface": "RITE_CPlusS",
+  "primary_comparator": "AllVariables",
+  "validation_repeats": 10,
+  "validation_test_size": 0.4,
+  "selection_summary": {
+    "Learner": "R-Learner",
+    "ci_positive_count": 1,
+    "positive_mean_count": 2,
+    "mean_win_rate": 0.6666666666666666,
+    "rank_sum": 6.0,
+    "R_Loss_Improvement": -1.5136728638340258e-05,
+    "DR_Qini_Improvement": 0.011887290969510626,
+    "Policy_Risk_Reduction_Improvement": 0.01561252418466684
+  },
+  "all_candidates": [
+    {
+      "Learner": "DR-Learner",
+      "ci_positive_count": 0,
+      "positive_mean_count": 3,
+      "mean_win_rate": 0.6333333333333333,
+      "rank_sum": 5.0,
+      "R_Loss_Improvement": 6.314961225248328e-05,
+      "DR_Qini_Improvement": 0.014390910416011853,
+      "Policy_Risk_Reduction_Improvement": 0.004631303205463147
+    },
+    {
+      "Learner": "R-Learner",
+      "ci_positive_count": 1,
+      "positive_mean_count": 2,
+      "mean_win_rate": 0.6666666666666666,
+      "rank_sum": 6.0,
+      "R_Loss_Improvement": -1.5136728638340258e-05,
+      "DR_Qini_Improvement": 0.011887290969510626,
+      "Policy_Risk_Reduction_Improvement": 0.01561252418466684
+    },
+    {
+      "Learner": "S-Learner",
+      "ci_positive_count": 0,
+      "positive_mean_count": 0,
+      "mean_win_rate": 0.3666666666666667,
+      "rank_sum": 11.0,
+      "R_Loss_Improvement": -2.7727111639486156e-05,
+      "DR_Qini_Improvement": -0.0028559372153664636,
+      "Policy_Risk_Reduction_Improvement": -0.02650126633298867
+    },
+    {
+      "Learner": "T-Learner",
+      "ci_positive_count": 0,
+      "positive_mean_count": 1,
+      "mean_win_rate": 0.30000000000000004,
+      "rank_sum": 8.0,
+      "R_Loss_Improvement": 9.05284425829267e-05,
+      "DR_Qini_Improvement": -0.008402329019354334,
+      "Policy_Risk_Reduction_Improvement": -0.010730532839327438
+    }
+  ],
+  "temporal_test_used_for_selection": false,
+  "propensity_lock": {
+    "selection_dataset": "MIMIC-IV 2017-2019 common-support cohort",
+    "selection_uses_outcomes": false,
+    "selection_rule": "require every repeat to retain ESS/n >= 0.50 and every C-set variable to have absolute SMD below 0.10; among eligible models, minimize mean absolute SMD, then mean maximum SMD, and retain greater minimum ESS",
+    "strategy": "lgb_d3_m50",
+    "clip": 0.005,
+    "c_set": [
+      "baseline_hb_min",
+      "chart_gcs_combined_last",
+      "chart_rass_last",
+      "chart_temp_c_last",
+      "lab_glucose_last_missing",
+      "lab_lactate_last",
+      "service_medical",
+      "trigger_hour",
+      "trigger_value",
+      "unit_cardiac",
+      "urine_observed_6h"
+    ],
+    "validation_diagnostics": {
+      "strategy": "lgb_d3_m50",
+      "clip": 0.005,
+      "repeats": 3,
+      "features_above_0_10_max": 0,
+      "features_above_0_10_mean": 0.0,
+      "max_abs_smd_worst": 0.07169384861255206,
+      "max_abs_smd_mean": 0.0647465958848009,
+      "mean_abs_smd_mean": 0.02942657891727671,
+      "mean_abs_smd_sd": 0.00451480555779189,
+      "ess_ratio_min": 0.7070509662592922,
+      "ess_ratio_mean": 0.7153956499460404,
+      "log_loss_mean": 0.38818196928207316,
+      "auc_mean": 0.7808979013708456
+    },
+    "repeats": 3
+  }
+}

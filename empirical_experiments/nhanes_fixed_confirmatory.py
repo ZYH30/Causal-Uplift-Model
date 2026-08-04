@@ -28,7 +28,7 @@ LOCKED_SPECS = [
     {
         "task": "antihypertensive_sbp",
         "model": "S-Learner",
-        "method": "OCU_CCIA_COnly",
+        "method": "RITE_COnly",
         "conf_type": "proximal",
         "graph_variant": "Statistical+LLM-Conservative",
         "graph": "results/llm_adjudication/nhanes_antihypertensive_sbp_graph_llm_conservative.json",
@@ -36,7 +36,7 @@ LOCKED_SPECS = [
     {
         "task": "chol_med_tchol",
         "model": "ClassTransform",
-        "method": "OCU_CCIA_COnly",
+        "method": "RITE_COnly",
         "conf_type": "proximal",
         "graph_variant": "Statistical+LLM-Conservative",
         "graph": "results/llm_adjudication/nhanes_chol_med_tchol_graph_llm_conservative.json",
@@ -99,11 +99,11 @@ def run_locked_split(df_all: pd.DataFrame, spec: dict, seed: int, args) -> dict:
     tau_naive = candidate_tau(
         spec["model"], model, "Naive_AllFeatures", train, test, feature_cols, stage1, model_args
     )
-    tau_ocu = candidate_tau(
+    tau_rite = candidate_tau(
         spec["model"], model, spec["method"], train, test, feature_cols, stage1, model_args
     )
     naive = evaluate_tau(spec["task"], test, tau_naive, e, mu, m0, m1)
-    ocu = evaluate_tau(spec["task"], test, tau_ocu, e, mu, m0, m1)
+    rite = evaluate_tau(spec["task"], test, tau_rite, e, mu, m0, m1)
 
     return {
         "Task": spec["task"],
@@ -120,15 +120,15 @@ def run_locked_split(df_all: pd.DataFrame, spec: dict, seed: int, args) -> dict:
         "C_Set": ";".join(c_set),
         "S_Prec": ";".join(stage1["s_prec"]),
         "Naive_R_Loss": naive["R_Loss"],
-        "OCU_R_Loss": ocu["R_Loss"],
-        "R_Loss_Improvement": naive["R_Loss"] - ocu["R_Loss"],
+        "RITE_R_Loss": rite["R_Loss"],
+        "R_Loss_Improvement": naive["R_Loss"] - rite["R_Loss"],
         "Naive_DR_Qini": naive["DR_Qini"],
-        "OCU_DR_Qini": ocu["DR_Qini"],
-        "DR_Qini_Improvement": ocu["DR_Qini"] - naive["DR_Qini"],
+        "RITE_DR_Qini": rite["DR_Qini"],
+        "DR_Qini_Improvement": rite["DR_Qini"] - naive["DR_Qini"],
         "Naive_ObservedBudgetOutcome": naive["PolicyOutcome_ObservedBudget"],
-        "OCU_ObservedBudgetOutcome": ocu["PolicyOutcome_ObservedBudget"],
+        "RITE_ObservedBudgetOutcome": rite["PolicyOutcome_ObservedBudget"],
         "ObservedBudgetOutcome_Improvement": (
-            naive["PolicyOutcome_ObservedBudget"] - ocu["PolicyOutcome_ObservedBudget"]
+            naive["PolicyOutcome_ObservedBudget"] - rite["PolicyOutcome_ObservedBudget"]
         ),
     }
 
@@ -205,7 +205,7 @@ def main() -> None:
         "test_size": args.test_size,
         "evaluation_propensity": "e(C)",
         "evaluation_outcome_nuisance": "m(C union S)",
-        "comparison": "fixed OCU_CCIA_COnly versus Naive_AllFeatures",
+        "comparison": "fixed RITE_COnly versus Naive_AllFeatures",
         "bootstrap_resamples": args.bootstrap,
     }
     (out_dir / "fixed_confirmatory_manifest.json").write_text(

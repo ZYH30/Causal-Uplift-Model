@@ -19,10 +19,10 @@ PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
-from ccia.ccia_runner import merge_graphs, run_ccia, save_json
-from ccia.graph_metrics import complete_graph
+from tlcd.tlcd_runner import merge_graphs, run_tlcd, save_json
+from tlcd.graph_metrics import complete_graph
 from experiments.reproduce_synthetic import fit_predict_stage2
-from experiments.run_ccia_synthetic import (
+from experiments.run_tlcd_synthetic import (
     prune_deeper_edges_by_shallow_nonadjacency,
     rescue_outcome_edges_from_treatment_parents,
     rescue_post_treatment_children,
@@ -31,7 +31,7 @@ from experiments.run_ccia_synthetic import (
 )
 from models.class_transform import ClassTransformEstimator
 from models.meta_learners import SLearner
-from ocu_framework import FirstStageDeconfounder
+from rite_framework import RITEPropensityStage
 
 
 CYCLES = [(2011, "G"), (2013, "H"), (2015, "I"), (2017, "J")]
@@ -334,7 +334,7 @@ def fit_nuisance(
 ):
     """Fit evaluation nuisances with separate treatment/outcome covariates.
 
-    The propensity model uses only the CCIA C-set when supplied by the OCU
+    The propensity model uses only the TLCD C-set when supplied by the RITE
     experiment. Outcome regressions may additionally use S-precision.
     """
     if not propensity_feature_cols:
@@ -594,12 +594,12 @@ def screen_tasks(args):
     return result
 
 
-def run_ccia_graph(train: pd.DataFrame, feature_cols: list[str], args) -> tuple[dict, list[dict]]:
+def run_tlcd_graph(train: pd.DataFrame, feature_cols: list[str], args) -> tuple[dict, list[dict]]:
     observed_cols = ["T", "Y"] + feature_cols
     graph_results = []
     for target in ["Y", "T"]:
-        print(f"\n=== Empirical CCIA target={target} ===", flush=True)
-        result = run_ccia(
+        print(f"\n=== Empirical TLCD target={target} ===", flush=True)
+        result = run_tlcd(
             train[observed_cols],
             target=target,
             output_dir=args.out_dir,
@@ -613,7 +613,7 @@ def run_ccia_graph(train: pd.DataFrame, feature_cols: list[str], args) -> tuple[
             max_importance_neighbors=args.max_importance_neighbors,
             max_condition_candidates=args.max_condition_candidates,
             max_search_depth=args.max_search_depth,
-            lgb_estimators=args.ccia_lgb_estimators,
+            lgb_estimators=args.tlcd_lgb_estimators,
             lgb_max_depth=3,
             lgb_num_leaves=15,
             lgb_min_child_samples=30,
@@ -631,11 +631,11 @@ def run_ccia_graph(train: pd.DataFrame, feature_cols: list[str], args) -> tuple[
     rescue_args = SimpleNamespace(
         seed=args.seed,
         ci_theta=args.ci_theta,
-        post_treatment_rescue_lgb_estimators=args.ccia_lgb_estimators,
+        post_treatment_rescue_lgb_estimators=args.tlcd_lgb_estimators,
         rescue_lgb_estimators=args.rescue_lgb_estimators,
-        ccia_lgb_max_depth=3,
-        ccia_lgb_num_leaves=15,
-        ccia_lgb_min_child_samples=30,
+        tlcd_lgb_max_depth=3,
+        tlcd_lgb_num_leaves=15,
+        tlcd_lgb_min_child_samples=30,
         rescue_min_importance_ratio=0.05,
         rescue_max_rank=12,
         precision_rescue_min_importance_ratio=0.10,
@@ -664,10 +664,10 @@ def run_ccia_graph(train: pd.DataFrame, feature_cols: list[str], args) -> tuple[
 
 
 def sanitize_uplift_graph(graph: dict, observed_cols: list[str], post_rescue_edges: list[dict]) -> tuple[dict, list[dict]]:
-    """Apply minimal task-level constraints before OCU feature extraction.
+    """Apply minimal task-level constraints before RITE feature extraction.
 
     The statistical direction voter is intentionally run without temporal order.
-    For downstream OCU, however, Y must not be an upstream cause of baseline
+    For downstream RITE, however, Y must not be an upstream cause of baseline
     covariates/T, and T must not cause ordinary covariates. Post-treatment
     variables detected statistically are exempted.
     """
@@ -699,7 +699,7 @@ def sanitize_uplift_graph(graph: dict, observed_cols: list[str], post_rescue_edg
 
 
 def compute_stage1(df_train, graph, args):
-    deconfounder = FirstStageDeconfounder(
+    deconfounder = RITEPropensityStage(
         treatment_var="T",
         target_var="Y",
         ancestors_graph=graph,
@@ -732,9 +732,9 @@ def run_task(args):
         graph_results = []
         graph_meta = {"source": args.reuse_graph_json, "mode": "reuse_graph_json"}
     else:
-        learned_graph, graph_results, graph_meta = run_ccia_graph(train, feature_cols, args)
-    save_json(learned_graph, str(Path(args.out_dir) / f"nhanes_{args.task}_ccia_graph.json"))
-    save_json(graph_meta, str(Path(args.out_dir) / f"nhanes_{args.task}_ccia_graph_meta.json"))
+        learned_graph, graph_results, graph_meta = run_tlcd_graph(train, feature_cols, args)
+    save_json(learned_graph, str(Path(args.out_dir) / f"nhanes_{args.task}_tlcd_graph.json"))
+    save_json(graph_meta, str(Path(args.out_dir) / f"nhanes_{args.task}_tlcd_graph_meta.json"))
 
     all_decisions = []
     for result in graph_results:
@@ -743,7 +743,7 @@ def run_task(args):
             row["target_run"] = result["target"]
             row["ci_tests"] = json.dumps(row.get("ci_tests", []), ensure_ascii=False)
             all_decisions.append(row)
-    pd.DataFrame(all_decisions).to_csv(Path(args.out_dir) / f"nhanes_{args.task}_ccia_edge_decisions.csv", index=False)
+    pd.DataFrame(all_decisions).to_csv(Path(args.out_dir) / f"nhanes_{args.task}_tlcd_edge_decisions.csv", index=False)
 
     stage1 = compute_stage1(train, learned_graph, args)
     c_set = sorted(stage1["c_set"])
@@ -759,12 +759,12 @@ def run_task(args):
     pd.DataFrame(
         [
             {"Estimand": "AIPW_AllBaseline", "PropensityFeatures": ";".join(feature_cols), "OutcomeFeatures": ";".join(feature_cols), **ate_all_baseline},
-            {"Estimand": "AIPW_CCIA_COnly", "PropensityFeatures": ";".join(c_set), "OutcomeFeatures": ";".join(c_set), **aipw_c_only},
-            {"Estimand": "AIPW_CCIA_CPlusS", "PropensityFeatures": ";".join(c_set), "OutcomeFeatures": ";".join(outcome_c_plus_s), **aipw_c_plus_s},
+            {"Estimand": "AIPW_RITE_COnly", "PropensityFeatures": ";".join(c_set), "OutcomeFeatures": ";".join(c_set), **aipw_c_only},
+            {"Estimand": "AIPW_RITE_CPlusS", "PropensityFeatures": ";".join(c_set), "OutcomeFeatures": ";".join(outcome_c_plus_s), **aipw_c_plus_s},
         ]
     ).to_csv(Path(args.out_dir) / f"nhanes_{args.task}_aipw_estimands.csv", index=False)
 
-    # DR uplift evaluation follows the same identification contract as OCU:
+    # DR uplift evaluation follows the same identification contract as RITE:
     # e(C) for treatment assignment and m(C,S) for outcome prediction.
     e_test, mu_test, m0_test, m1_test = fit_nuisance(
         train,
@@ -832,7 +832,7 @@ def run_task(args):
             }
         )
 
-        for use_precision, method in [(False, "OCU_CCIA_COnly"), (True, "OCU_CCIA_CPlusS")]:
+        for use_precision, method in [(False, "RITE_COnly"), (True, "RITE_CPlusS")]:
             try:
                 tau = fit_predict_stage2(base_model, test, "T", "Y", stage1, use_precision=use_precision, args=args)
                 policy = (tau < 0).astype(int) if TASKS[args.task]["lower_is_better"] else (tau > 0).astype(int)
@@ -878,10 +878,10 @@ def run_task(args):
         **aipw_c_plus_s,
         "aipw_estimands": {
             "AIPW_AllBaseline": ate_all_baseline,
-            "AIPW_CCIA_COnly": aipw_c_only,
-            "AIPW_CCIA_CPlusS": aipw_c_plus_s,
+            "AIPW_RITE_COnly": aipw_c_only,
+            "AIPW_RITE_CPlusS": aipw_c_plus_s,
         },
-        "aipw_main_estimand": "AIPW_CCIA_CPlusS",
+        "aipw_main_estimand": "AIPW_RITE_CPlusS",
         "evaluation_propensity_features": c_set,
         "evaluation_outcome_features": outcome_c_plus_s,
         "train_shape": list(train.shape),
@@ -926,7 +926,7 @@ def parse_args():
     parser.add_argument("--max-importance-neighbors", type=int, default=12)
     parser.add_argument("--max-condition-candidates", type=int, default=10)
     parser.add_argument("--max-search-depth", type=int, default=1)
-    parser.add_argument("--ccia-lgb-estimators", type=int, default=80)
+    parser.add_argument("--tlcd-lgb-estimators", type=int, default=80)
     parser.add_argument("--rescue-lgb-estimators", type=int, default=200)
     parser.add_argument("--uplift-estimators", type=int, default=80)
     parser.add_argument("--n-trials", type=int, default=0)

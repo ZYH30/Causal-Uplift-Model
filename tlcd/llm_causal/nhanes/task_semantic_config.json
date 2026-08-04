@@ -1,0 +1,93 @@
+{
+  "antihypertensive_sbp": {
+    "display_name": "Antihypertensive medication use -> systolic blood pressure",
+    "graph_path": "results/nhanes_antihypertensive_sbp_v3_total_conf/nhanes_antihypertensive_sbp_tlcd_graph.json",
+    "graph_meta_path": "results/nhanes_antihypertensive_sbp_v1/nhanes_antihypertensive_sbp_tlcd_graph_meta.json",
+    "edge_decisions_path": "results/nhanes_antihypertensive_sbp_v1/nhanes_antihypertensive_sbp_tlcd_edge_decisions.csv",
+    "run_meta_path": "results/nhanes_antihypertensive_sbp_v3_total_conf/nhanes_antihypertensive_sbp_run_meta.json",
+    "domain_context_path": "tlcd/llm_causal/nhanes/domain_context_antihypertensive_sbp.md",
+    "nodes_description_path": "tlcd/llm_causal/nhanes/nodes_description_antihypertensive_sbp.json",
+    "treatment": {
+      "nhanes_code": "T derived from BPQ050A",
+      "label": "Currently taking prescribed antihypertensive medicine",
+      "source_table": "BPQ",
+      "data_type": "binary treatment",
+      "timing": "current medication use initiated before the MEC blood-pressure measurement",
+      "causal_role": "study treatment",
+      "coding": "1 currently taking prescribed medicine; 0 not currently taking, among participants with BPQ020=1",
+      "medical_context": "Medication is prescribed in response to prior hypertension severity and cardiovascular risk and is intended to lower current systolic blood pressure.",
+      "eligible_for_c_set": false,
+      "eligible_for_s_precision": false,
+      "semantic_constraints": [
+        "For the target intervention, T may cause Y; current Y must not be oriented as the cause of already initiated T.",
+        "Historical disease severity may cause both T and Y and represents confounding by indication."
+      ]
+    },
+    "outcome": {
+      "nhanes_code": "Y derived from BPXSY1-BPXSY4",
+      "label": "Mean systolic blood pressure",
+      "source_table": "BPX",
+      "data_type": "continuous outcome",
+      "timing": "MEC examination after current medication status was reported",
+      "causal_role": "study outcome",
+      "coding": "mean of available systolic readings in mmHg",
+      "medical_context": "Arterial pressure during cardiac contraction; lower values generally indicate better blood-pressure control in this cohort.",
+      "eligible_for_c_set": false,
+      "eligible_for_s_precision": false,
+      "semantic_constraints": [
+        "Y is the terminal outcome for local uplift discovery and cannot cause predetermined baseline attributes.",
+        "T -> Y is fixed by the intervention query."
+      ]
+    },
+    "task_specific_overrides": {
+      "BPQ020": {
+        "eligible_for_c_set": false,
+        "eligible_for_s_precision": false,
+        "causal_role": "cohort-defining constant",
+        "medical_context": "All included participants have BPQ020=1, so this node contains no within-cohort information and should not enter graph learning or adjustment."
+      }
+    }
+  },
+  "chol_med_tchol": {
+    "display_name": "Cholesterol-lowering medication use -> total cholesterol",
+    "graph_path": "results/nhanes_chol_med_tchol_v1_dr_metrics/nhanes_chol_med_tchol_tlcd_graph.json",
+    "graph_meta_path": "results/nhanes_chol_med_tchol_v1_dr_metrics/nhanes_chol_med_tchol_tlcd_graph_meta.json",
+    "edge_decisions_path": "results/nhanes_chol_med_tchol_v1_dr_metrics/nhanes_chol_med_tchol_tlcd_edge_decisions.csv",
+    "run_meta_path": "results/nhanes_chol_med_tchol_v1_dr_metrics/nhanes_chol_med_tchol_run_meta.json",
+    "domain_context_path": "tlcd/llm_causal/nhanes/domain_context_chol_med_tchol.md",
+    "nodes_description_path": "tlcd/llm_causal/nhanes/nodes_description_chol_med_tchol.json",
+    "treatment": {
+      "nhanes_code": "T derived from BPQ100D",
+      "label": "Currently following medical advice to take prescribed cholesterol-lowering medicine",
+      "source_table": "BPQ",
+      "data_type": "binary treatment",
+      "timing": "current medication use initiated before the laboratory cholesterol measurement",
+      "causal_role": "study treatment",
+      "coding": "1 currently following prescribed-medicine advice; 0 not following, among eligible participants with BPQ080=1",
+      "medical_context": "Treatment is selected partly because of prior lipid severity and cardiovascular risk and is intended to lower current circulating cholesterol.",
+      "eligible_for_c_set": false,
+      "eligible_for_s_precision": false,
+      "semantic_constraints": [
+        "For the target intervention, T may cause Y; current Y must not be oriented as the cause of already initiated T.",
+        "Prior lipid severity and cardiovascular disease may cause both T and Y, creating confounding by indication."
+      ]
+    },
+    "outcome": {
+      "nhanes_code": "Y = LBXTC",
+      "label": "Serum total cholesterol",
+      "source_table": "TCHOL",
+      "data_type": "continuous outcome",
+      "timing": "MEC laboratory examination after current medication status was reported",
+      "causal_role": "study outcome",
+      "coding": "mg/dL",
+      "medical_context": "Direct laboratory measure used in cardiovascular risk assessment and treatment monitoring; lower values generally indicate stronger lipid control in this cohort.",
+      "eligible_for_c_set": false,
+      "eligible_for_s_precision": false,
+      "semantic_constraints": [
+        "Y is the terminal outcome for local uplift discovery and cannot cause predetermined baseline attributes.",
+        "T -> Y is fixed by the intervention query."
+      ]
+    },
+    "task_specific_overrides": {}
+  }
+}

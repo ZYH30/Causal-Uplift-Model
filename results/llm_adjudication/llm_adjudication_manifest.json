@@ -789,7 +789,7 @@
   },
   "input_hashes": {
     "results/llm_adjudication_dryrun/nhanes_llm_edge_queue.json": "9ccdfca81171eb05d7f60f0a41028051dcd55fa66f14c0bc3cd05fb2ddcfc45b",
-    "ccia/llm_causal/nhanes/task_semantic_config.json": "20dfafbebaa369b2cb60e92b69783e1a37dc68b5e577cacd2bcc146245dc783a",
-    "ccia/llm_causal/nhanes/prompt_nhanes_causal_adjudication.json": "06958e10d1e83fa4d09ec10f01a2cbac3b40a7af46a4ea409d5d78f968f2b5ca"
+    "tlcd/llm_causal/nhanes/task_semantic_config.json": "20dfafbebaa369b2cb60e92b69783e1a37dc68b5e577cacd2bcc146245dc783a",
+    "tlcd/llm_causal/nhanes/prompt_nhanes_causal_adjudication.json": "06958e10d1e83fa4d09ec10f01a2cbac3b40a7af46a4ea409d5d78f968f2b5ca"
   }
 }

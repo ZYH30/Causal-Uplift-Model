@@ -1,7 +1,7 @@
 {
   "task": "chol_med_tchol",
   "variant": "hard_only",
-  "source_graph": "results/nhanes_chol_med_tchol_v1_dr_metrics/nhanes_chol_med_tchol_ccia_graph.json",
+  "source_graph": "results/nhanes_chol_med_tchol_v1_dr_metrics/nhanes_chol_med_tchol_tlcd_graph.json",
   "actions": [
     {
       "task": "chol_med_tchol",

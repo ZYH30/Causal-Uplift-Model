@@ -52,20 +52,20 @@
       "aipw_ci_low": -48.33731521255213,
       "aipw_ci_high": -40.12071851709568
     },
-    "AIPW_CCIA_COnly": {
+    "AIPW_RITE_COnly": {
       "aipw_ate": -44.64511780241185,
       "aipw_se": 2.1422954975710446,
       "aipw_ci_low": -48.8440169776511,
       "aipw_ci_high": -40.446218627172605
     },
-    "AIPW_CCIA_CPlusS": {
+    "AIPW_RITE_CPlusS": {
       "aipw_ate": -43.82074727039124,
       "aipw_se": 2.108051053829643,
       "aipw_ci_low": -47.95252733589734,
       "aipw_ci_high": -39.68896720488514
     }
   },
-  "aipw_main_estimand": "AIPW_CCIA_CPlusS",
+  "aipw_main_estimand": "AIPW_RITE_CPlusS",
   "evaluation_propensity_features": [
     "BMXWAIST",
     "BPXPLS",

@@ -1,0 +1,233 @@
+{
+  "trigger_hour": [
+    "baseline_hb_min",
+    "chart_resp_rate_max",
+    "chart_sbp_min",
+    "trigger_value"
+  ],
+  "trigger_value": [],
+  "age": [
+    "chart_heart_rate_last",
+    "chart_temp_c_last",
+    "chart_weight_kg_last",
+    "hx_heart_failure",
+    "hx_ischemic_heart",
+    "insurance_medicaid",
+    "insurance_medicare",
+    "insurance_private"
+  ],
+  "sex_male": [],
+  "race_white": [],
+  "race_black": [],
+  "race_hispanic": [],
+  "race_asian": [],
+  "insurance_medicare": [],
+  "insurance_medicaid": [],
+  "insurance_private": [],
+  "unit_cardiac": [
+    "age",
+    "lab_glucose_last_missing",
+    "prior_crystalloid",
+    "service_medical",
+    "unit_medical",
+    "unit_surgical",
+    "urine_observed_6h"
+  ],
+  "unit_medical": [
+    "hx_malignancy",
+    "lab_glucose_last_missing",
+    "service_medical"
+  ],
+  "unit_surgical": [
+    "hx_malignancy"
+  ],
+  "unit_neuro": [],
+  "admission_emergency": [],
+  "admission_from_ed": [],
+  "admission_transfer": [],
+  "era_index": [],
+  "prior_admission_count": [
+    "hx_malignancy"
+  ],
+  "days_since_last_admission": [],
+  "hx_sepsis": [],
+  "hx_heart_failure": [],
+  "hx_renal": [
+    "hx_malignancy"
+  ],
+  "hx_liver": [],
+  "hx_malignancy": [],
+  "hx_diabetes": [],
+  "hx_anemia": [],
+  "hx_bleeding": [],
+  "hx_ischemic_heart": [],
+  "hx_chronic_lung": [],
+  "lab_bicarbonate_last": [
+    "lab_lactate_last"
+  ],
+  "lab_bun_last": [
+    "age",
+    "chart_temp_c_last",
+    "hx_heart_failure",
+    "lab_bicarbonate_last",
+    "lab_creatinine_last",
+    "lab_potassium_last"
+  ],
+  "lab_creatinine_last": [
+    "chart_temp_c_last"
+  ],
+  "lab_glucose_last": [],
+  "lab_hematocrit_last": [
+    "baseline_hb_min",
+    "trigger_value"
+  ],
+  "lab_inr_last": [
+    "lab_lactate_last"
+  ],
+  "lab_lactate_last": [
+    "lab_glucose_last"
+  ],
+  "lab_platelets_last": [
+    "lab_lactate_last"
+  ],
+  "lab_potassium_last": [],
+  "lab_ptt_last": [],
+  "lab_sodium_last": [],
+  "lab_wbc_last": [
+    "lab_lactate_last"
+  ],
+  "baseline_lab_count": [
+    "lab_lactate_last",
+    "trigger_hour",
+    "trigger_value"
+  ],
+  "baseline_hb_count": [],
+  "baseline_hb_min": [
+    "sex_male",
+    "trigger_value"
+  ],
+  "prior_crystalloid": [
+    "baseline_hb_min",
+    "chart_gcs_combined_last",
+    "chart_rass_last",
+    "lab_glucose_last_missing",
+    "trigger_hour",
+    "urine_observed_6h"
+  ],
+  "prior_vasopressor": [
+    "chart_rass_last",
+    "lab_lactate_last"
+  ],
+  "urine_output_6h": [],
+  "service_medical": [
+    "admission_from_ed",
+    "lab_glucose_last_missing",
+    "service_neuro",
+    "service_surgical"
+  ],
+  "service_cardiac": [
+    "chart_rass_last",
+    "lab_glucose_last_missing",
+    "service_medical",
+    "unit_cardiac",
+    "urine_observed_6h"
+  ],
+  "service_surgical": [],
+  "service_neuro": [],
+  "service_trauma": [],
+  "pretrigger_invasive_respiratory_support": [
+    "chart_gcs_combined_last",
+    "chart_rass_last",
+    "chart_temp_c_last",
+    "lab_lactate_last"
+  ],
+  "pretrigger_dialysis": [],
+  "pretrigger_invasive_line": [
+    "chart_gcs_combined_last",
+    "chart_rass_last"
+  ],
+  "pretrigger_operating_room": [],
+  "pretrigger_mechanical_support": [],
+  "pretrigger_procedure_count": [
+    "baseline_hb_min",
+    "chart_gcs_combined_last",
+    "chart_rass_last",
+    "lab_glucose_last_missing",
+    "trigger_hour",
+    "urine_observed_6h"
+  ],
+  "urine_observed_6h": [
+    "baseline_hb_min",
+    "chart_gcs_combined_last",
+    "chart_rass_last",
+    "trigger_hour",
+    "urine_output_6h"
+  ],
+  "lab_glucose_last_missing": [
+    "baseline_lab_count",
+    "lab_glucose_last",
+    "trigger_hour",
+    "urine_observed_6h"
+  ],
+  "chart_heart_rate_last": [
+    "chart_temp_c_last",
+    "lab_lactate_last"
+  ],
+  "chart_heart_rate_high_fraction": [
+    "age",
+    "chart_temp_c_last"
+  ],
+  "chart_sbp_last": [],
+  "chart_sbp_min": [],
+  "chart_map_last": [],
+  "chart_map_low_fraction": [],
+  "chart_resp_rate_last": [],
+  "chart_resp_rate_max": [
+    "chart_temp_c_last"
+  ],
+  "chart_spo2_last": [],
+  "chart_spo2_low_fraction": [],
+  "chart_temp_c_last": [],
+  "chart_gcs_combined_last": [
+    "baseline_hb_min",
+    "chart_rass_last",
+    "lab_sodium_last",
+    "prior_vasopressor"
+  ],
+  "chart_rass_last": [],
+  "chart_shock_index_last": [
+    "chart_temp_c_last"
+  ],
+  "chart_weight_kg_last": [],
+  "chart_o2_flow_last": [],
+  "chart_fio2_recorded": [
+    "chart_gcs_combined_last",
+    "chart_rass_last"
+  ],
+  "chart_ventilator_measurement_recorded": [
+    "chart_gcs_combined_last",
+    "chart_rass_last"
+  ],
+  "T": [
+    "baseline_hb_min",
+    "lab_glucose_last_missing",
+    "lab_lactate_last",
+    "service_medical",
+    "trigger_hour",
+    "trigger_value",
+    "urine_observed_6h"
+  ],
+  "Y": [
+    "T",
+    "age",
+    "chart_gcs_combined_last",
+    "chart_rass_last",
+    "chart_temp_c_last",
+    "hx_malignancy",
+    "lab_bun_last",
+    "lab_glucose_last_missing",
+    "service_medical",
+    "unit_cardiac",
+    "unit_medical"
+  ]
+}

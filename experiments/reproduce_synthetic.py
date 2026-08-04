@@ -20,7 +20,7 @@ from data_generation import generate_complex_environment
 from models.class_transform import ClassTransformEstimator
 from models.meta_learners import SLearner, TLearner, XLearner
 from models.tree import UniversalUpliftForest
-from ocu_framework import FirstStageDeconfounder, SecondStageUpliftTrainer
+from rite_framework import RITEPropensityStage, RITETreatmentEffectStage
 
 
 def build_models(args):
@@ -86,7 +86,7 @@ def effect_metrics(y_true_tau, pred_tau):
 
 
 def compute_stage1(df_train, graph, treat_col, target_col, conf_type, args):
-    deconfounder = FirstStageDeconfounder(
+    deconfounder = RITEPropensityStage(
         treatment_var=treat_col,
         target_var=target_col,
         ancestors_graph=graph,
@@ -110,7 +110,7 @@ def compute_stage1(df_train, graph, treat_col, target_col, conf_type, args):
 
 
 def fit_predict_stage2(base_model, df_test, treat_col, target_col, stage1, use_precision, args):
-    trainer = SecondStageUpliftTrainer(
+    trainer = RITETreatmentEffectStage(
         copy.deepcopy(base_model),
         stage1["p_model"],
         stage1["c_set"],
@@ -147,9 +147,9 @@ def run(args):
     models = build_models(args)
     selected = set(args.models) if args.models else None
 
-    print("\n=== First-stage deconfounding: total confounders ===", flush=True)
+    print("\n=== RITE propensity stage: total adjustment set ===", flush=True)
     stage1_total = compute_stage1(df_train, graph, treat_col, target_col, "total", args)
-    print("\n=== First-stage deconfounding: proximal confounders ===", flush=True)
+    print("\n=== RITE propensity stage: proximal adjustment set ===", flush=True)
     stage1_proximal = compute_stage1(df_train, graph, treat_col, target_col, "proximal", args)
 
     for model_name, base_model in models.items():
@@ -198,7 +198,7 @@ def run(args):
             use_precision=True,
             args=args,
         )
-        rows.append({"Model": model_name, "Method": "OCU_Ours", **effect_metrics(df_test["true_tau"], pred)})
+        rows.append({"Model": model_name, "Method": "RITE_Ours", **effect_metrics(df_test["true_tau"], pred)})
 
         partial = pd.DataFrame(rows)
         partial.to_csv(os.path.join(args.out_dir, args.out_csv), index=False)

@@ -1,0 +1,163 @@
+{
+  "source_table": "physionet-data.mimiciv_3_1_icu.chartevents",
+  "billing_project": "user-supplied Google Cloud project",
+  "cohort_n": 15568,
+  "cohort_treated": 3017,
+  "cohort_outcomes": 3312,
+  "window": "[trigger_time - 24 hours, trigger_time)",
+  "itemids": {
+    "heart_rate": [
+      220045
+    ],
+    "sbp": [
+      220050,
+      220179
+    ],
+    "dbp": [
+      220051,
+      220180
+    ],
+    "map": [
+      220052,
+      220181
+    ],
+    "resp_rate": [
+      220210
+    ],
+    "spo2": [
+      220277
+    ],
+    "temp_c": [
+      223761,
+      223762
+    ],
+    "cvp": [
+      220074
+    ],
+    "fio2": [
+      223835
+    ],
+    "o2_flow": [
+      223834,
+      227287,
+      227582
+    ],
+    "gcs_eye": [
+      220739
+    ],
+    "gcs_verbal": [
+      223900
+    ],
+    "gcs_motor": [
+      223901
+    ],
+    "gcs_total": [
+      226755,
+      227013
+    ],
+    "rass": [
+      228096
+    ],
+    "weight_kg": [
+      224639,
+      226512
+    ],
+    "peep": [
+      220339
+    ],
+    "tidal_volume": [
+      224685,
+      224686
+    ],
+    "peak_pressure": [
+      224695
+    ]
+  },
+  "plausible_ranges": {
+    "heart_rate": [
+      20.0,
+      250.0
+    ],
+    "sbp": [
+      30.0,
+      300.0
+    ],
+    "dbp": [
+      10.0,
+      200.0
+    ],
+    "map": [
+      20.0,
+      200.0
+    ],
+    "resp_rate": [
+      2.0,
+      80.0
+    ],
+    "spo2": [
+      50.0,
+      100.0
+    ],
+    "temp_c": [
+      30.0,
+      43.0
+    ],
+    "cvp": [
+      -20.0,
+      50.0
+    ],
+    "fio2": [
+      21.0,
+      100.0
+    ],
+    "o2_flow": [
+      0.0,
+      100.0
+    ],
+    "gcs_eye": [
+      1.0,
+      4.0
+    ],
+    "gcs_verbal": [
+      1.0,
+      5.0
+    ],
+    "gcs_motor": [
+      1.0,
+      6.0
+    ],
+    "gcs_total": [
+      3.0,
+      15.0
+    ],
+    "rass": [
+      -5.0,
+      4.0
+    ],
+    "weight_kg": [
+      20.0,
+      400.0
+    ],
+    "peep": [
+      0.0,
+      40.0
+    ],
+    "tidal_volume": [
+      50.0,
+      2000.0
+    ],
+    "peak_pressure": [
+      0.0,
+      80.0
+    ]
+  },
+  "estimated_bytes_processed": 17093316026,
+  "actual_bytes_processed": 17093316026,
+  "aggregate_rows": 140953,
+  "stays_with_chart_features": 15509,
+  "wide_feature_count": 186,
+  "temporary_table_deleted": true,
+  "started_utc": "2026-08-04T07:08:15.827882+00:00",
+  "completed_utc": "2026-08-04T07:09:09.786878+00:00",
+  "patient_level_raw_events_exported": false
+}

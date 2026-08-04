@@ -91,7 +91,7 @@ class ClassTransformEstimator(BaseUpliftEstimator):
         self.estimator_ = clone(self.base_estimator)
 
         # The transformed outcome already contains inverse-propensity scaling.
-        # Applying the OCU IPW weights again would create double weighting.
+        # Applying the RITE IPW weights again would create double weighting.
         self.estimator_.fit(X, transformed_outcome)
         return self
 

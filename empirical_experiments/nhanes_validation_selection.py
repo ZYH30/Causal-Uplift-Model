@@ -51,9 +51,9 @@ def candidate_tau(model_name: str, base_model, method: str, train_df: pd.DataFra
         model = copy.deepcopy(base_model)
         model.fit(train_df[feature_cols].values, train_df["Y"].values, train_df["T"].values)
         return model.predict(eval_df[feature_cols].values)
-    if method == "OCU_CCIA_COnly":
+    if method == "RITE_COnly":
         return fit_predict_stage2(base_model, eval_df, "T", "Y", stage1, use_precision=False, args=args)
-    if method == "OCU_CCIA_CPlusS":
+    if method == "RITE_CPlusS":
         return fit_predict_stage2(base_model, eval_df, "T", "Y", stage1, use_precision=True, args=args)
     raise ValueError(method)
 
@@ -158,7 +158,7 @@ def run_one(df_all: pd.DataFrame, spec: dict, seed: int, args) -> tuple[list[dic
         outcome_feature_cols=test_cs,
     )
 
-    methods = ["Naive_AllFeatures", "OCU_CCIA_COnly", "OCU_CCIA_CPlusS"]
+    methods = ["Naive_AllFeatures", "RITE_COnly", "RITE_CPlusS"]
     val_rows = []
     test_rows = []
     model_args = SimpleNamespace(seed=seed)

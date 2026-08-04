@@ -1,4 +1,4 @@
-"""Uplift learners used by the CCIA-OCU experiments."""
+"""Uplift learners used by the TLCD-RITE experiments."""
 
 from .base import BaseUpliftEstimator
 from .class_transform import ClassTransformEstimator

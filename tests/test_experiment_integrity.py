@@ -4,8 +4,8 @@ from pathlib import Path
 
 import pandas as pd
 
-from ccia.llm_causal.neurosymbolic_merge import _violates_task_order
-from ccia.llm_causal.semantic_adjudication import directed_edges, is_acyclic
+from tlcd.llm_causal.neurosymbolic_merge import _violates_task_order
+from tlcd.llm_causal.semantic_adjudication import directed_edges, is_acyclic
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -18,8 +18,8 @@ class ExperimentIntegrityTests(unittest.TestCase):
     def test_multiseed_graph_recovery_matches_locked_protocol(self):
         rows = pd.read_csv(
             RESULTS
-            / "ccia_synthetic_multiseed_dag_gated_v2"
-            / "ccia_multiseed_per_seed.csv"
+            / "tlcd_synthetic_multiseed_dag_gated_v2"
+            / "tlcd_multiseed_per_seed.csv"
         )
         self.assertEqual(set(rows["seed"]), set(range(2026, 2031)))
         self.assertEqual(len(rows), 5)
@@ -29,39 +29,52 @@ class ExperimentIntegrityTests(unittest.TestCase):
         self.assertAlmostEqual(rows["directed_f1"].mean(), 0.8549448064, places=8)
 
     def test_mimic_aggregate_results_are_complete_and_deidentified(self):
-        result_dir = RESULTS / "mimic_rbc_target_trial_v3"
+        result_dir = RESULTS / "mimic_rbc_chart_augmented"
         manifest = json.loads(
-            (result_dir / "mimic_rbc_cohort_manifest.json").read_text(
+            (result_dir / "chartevents_extraction_manifest.json").read_text(
                 encoding="utf-8"
             )
         )
-        self.assertEqual(manifest["flow"]["landmark_eligible"], 15568)
-        self.assertEqual(manifest["feature_count"], 79)
-        self.assertEqual(manifest["database_file"], "mimic_iv_ccia.sqlite")
+        self.assertEqual(manifest["cohort_n"], 15568)
+        self.assertEqual(manifest["stays_with_chart_features"], 15509)
+        self.assertFalse(manifest["patient_level_raw_events_exported"])
+
+        variables = pd.read_csv(result_dir / "variable_manifest.csv")
+        self.assertEqual(len(variables), 80)
+        self.assertEqual(variables["variable"].str.startswith("chart_").sum(), 18)
+
+        cohort = pd.read_csv(result_dir / "final/common_support_cohort_audit.csv")
+        final = cohort.loc[
+            cohort["era"].eq("overall")
+            & cohort["population"].eq("common_support")
+        ].iloc[0]
+        self.assertEqual(int(final["n"]), 13990)
+        self.assertEqual(int(final["treated"]), 2819)
+        self.assertEqual(int(final["outcomes"]), 2649)
 
         forbidden_columns = {"subject_id", "hadm_id", "stay_id"}
-        result_dirs = [
-            result_dir,
-            RESULTS / "mimic_rbc_target_trial_v5_product_audit",
-        ]
-        for directory in result_dirs:
-            for path in directory.glob("*.csv"):
-                columns = set(pd.read_csv(path, nrows=0).columns)
-                self.assertFalse(
-                    columns & forbidden_columns,
-                    f"Patient identifiers found in {path.name}",
-                )
+        for path in result_dir.rglob("*.csv"):
+            columns = set(pd.read_csv(path, nrows=0).columns)
+            self.assertFalse(
+                columns & forbidden_columns,
+                f"Patient identifiers found in {path.name}",
+            )
 
-    def test_mimic_legacy_total_set_sensitivity_is_intact(self):
-        result_dir = RESULTS / "mimic_rbc_target_trial_v3"
-        sensitivity = pd.read_csv(
-            result_dir / "mimic_rbc_temporal_c_total_sensitivity.csv"
-        ).iloc[0]
-        self.assertLess(
-            sensitivity["mean_abs_smd_ipw"],
-            sensitivity["mean_abs_smd_pre"],
+    def test_mimic_temporal_balance_and_effect_metrics_match_paper(self):
+        result_dir = RESULTS / "mimic_rbc_chart_augmented/final"
+        diagnostics = json.loads(
+            (result_dir / "temporal_diagnostics.json").read_text(encoding="utf-8")
         )
-        self.assertGreater(sensitivity["ess_ratio"], 0.90)
+        self.assertLess(
+            diagnostics["mean_abs_smd_ipw"],
+            diagnostics["mean_abs_smd_pre"],
+        )
+        self.assertGreater(diagnostics["ess_ratio"], 0.70)
+
+        temporal = pd.read_csv(result_dir / "temporal_paired_bootstrap_summary.csv")
+        primary = temporal.loc[temporal["comparison"].eq("TLCD_chart_vs_all_chart")]
+        self.assertEqual(len(primary), 3)
+        self.assertTrue(primary["Point_Estimate"].gt(0).all())
 
     def test_locked_confirmation_has_all_prespecified_seeds(self):
         rows = pd.read_csv(
@@ -144,7 +157,7 @@ class ExperimentIntegrityTests(unittest.TestCase):
     def test_component_ablation_covers_prespecified_variants(self):
         path = (
             RESULTS
-            / "ccia_component_ablation_v1/ccia_component_ablation.csv"
+            / "tlcd_component_ablation_v1/tlcd_component_ablation.csv"
         )
         if not path.exists():
             self.skipTest("component-ablation artifact is not present")
@@ -154,7 +167,7 @@ class ExperimentIntegrityTests(unittest.TestCase):
         self.assertEqual(
             set(rows["Variant"]),
             {
-                "Complete_CCIA",
+                "Complete_TLCD",
                 "PairwiseANM_FullRepair",
                 "TaskAdaptive_NoDAGGate",
                 "TaskAdaptive_NoRepair",
@@ -162,32 +175,28 @@ class ExperimentIntegrityTests(unittest.TestCase):
         )
         means = rows.groupby("Variant").mean(numeric_only=True)
         self.assertGreater(
-            means.loc["Complete_CCIA", "Directed_F1"],
+            means.loc["Complete_TLCD", "Directed_F1"],
             means.loc["PairwiseANM_FullRepair", "Directed_F1"],
         )
         self.assertGreater(
-            means.loc["Complete_CCIA", "C_Proximal_F1"],
+            means.loc["Complete_TLCD", "C_Proximal_F1"],
             means.loc["TaskAdaptive_NoRepair", "C_Proximal_F1"],
         )
 
-    def test_mimic_safety_audit_matches_final_interface(self):
-        result_dir = RESULTS / "mimic_rbc_target_trial_v5_product_audit"
-        roles_path = result_dir / "mimic_rbc_safety_validated_roles.json"
-        repeated_path = (
-            result_dir / "mimic_rbc_safety_validated_repeated_summary.csv"
+    def test_mimic_final_role_interface_and_repeated_splits(self):
+        result_dir = RESULTS / "mimic_rbc_chart_augmented"
+        protocol = json.loads(
+            (result_dir / "final/common_support_protocol.json").read_text(
+                encoding="utf-8"
+            )
         )
-        if not roles_path.exists() or not repeated_path.exists():
-            self.skipTest("MIMIC safety-audit artifacts are not present")
-        roles = json.loads(roles_path.read_text(encoding="utf-8"))
-        repeated = pd.read_csv(repeated_path)
-        self.assertEqual(len(roles["c_proximal"]), 7)
-        self.assertEqual(len(roles["s_precision"]), 1)
-        r_loss = repeated.loc[
-            repeated["Metric"].eq("R_Loss_Improvement")
-        ].iloc[0]
-        self.assertEqual(int(r_loss["Repeats"]), 20)
-        self.assertEqual(int(r_loss["Wins"]), 19)
-        self.assertGreater(float(r_loss["CI_Low"]), 0.0)
+        repeated = pd.read_csv(
+            result_dir / "final/post_discovery_repeated_summary.csv"
+        )
+        self.assertEqual(len(protocol["c_set"]), 11)
+        self.assertEqual(len(protocol["s_set"]), 3)
+        self.assertEqual(set(repeated["Wins"]), {12, 15})
+        self.assertTrue(repeated["CI_Low"].gt(0).all())
 
 
 if __name__ == "__main__":

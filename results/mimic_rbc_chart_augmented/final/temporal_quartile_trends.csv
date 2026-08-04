@@ -1,0 +1,4 @@
+metric,q4_minus_q1,spearman_r,adjacent_monotonicity_violations
+predicted_benefit,0.1872231684082078,1.0,0
+dr_observed_benefit,0.2513377394506689,0.7999999999999999,1
+aipw_hb_change_difference,1.1102454150088317,1.0,0

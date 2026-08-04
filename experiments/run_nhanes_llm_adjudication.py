@@ -1,4 +1,4 @@
-"""Run adaptive Kimi/DeepSeek semantic adjudication and merge NHANES CCIA graphs."""
+"""Run adaptive Kimi/DeepSeek semantic adjudication and merge NHANES TLCD graphs."""
 
 from __future__ import annotations
 
@@ -20,7 +20,7 @@ WORKSPACE_ROOT = PROJECT_ROOT
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from ccia.llm_causal.api_client import (
+from tlcd.llm_causal.api_client import (
     ApiCallError,
     CompatibleChatClient,
     provider_config,
@@ -28,14 +28,14 @@ from ccia.llm_causal.api_client import (
     response_reasoning_content,
     response_usage,
 )
-from ccia.llm_causal.neurosymbolic_merge import (
+from tlcd.llm_causal.neurosymbolic_merge import (
     aggregate_votes,
     graph_diff_rows,
     merge_semantic_graph,
     needs_tiebreak,
     set_diff_rows,
 )
-from ccia.llm_causal.semantic_adjudication import (
+from tlcd.llm_causal.semantic_adjudication import (
     build_messages,
     chunks,
     load_json,
@@ -44,7 +44,7 @@ from ccia.llm_causal.semantic_adjudication import (
 )
 
 
-RESOURCE_DIR = PROJECT_ROOT / "ccia" / "llm_causal" / "nhanes"
+RESOURCE_DIR = PROJECT_ROOT / "tlcd" / "llm_causal" / "nhanes"
 DEFAULT_QUEUE = PROJECT_ROOT / "results" / "llm_adjudication_dryrun" / "nhanes_llm_edge_queue.json"
 DEFAULT_OUTPUT = PROJECT_ROOT / "results" / "llm_adjudication"
 VALID_JUDGEMENTS = {"X_TO_Y", "Y_TO_X", "NO_DIRECT_EDGE", "UNRESOLVED"}
@@ -304,7 +304,7 @@ def execute_call(
             messages,
             max_completion_tokens=max_completion_tokens,
             thinking_enabled=thinking_enabled,
-            prompt_cache_key=f"ccia-nhanes-{task_resource['task']}",
+            prompt_cache_key=f"tlcd-nhanes-{task_resource['task']}",
         )
     except ApiCallError as exc:
         error_record = {
@@ -644,8 +644,8 @@ def main() -> None:
         "merge_summaries": merge_summaries,
         "input_hashes": {
             str(queue_path.relative_to(PROJECT_ROOT)): sha256_file(queue_path),
-            "ccia/llm_causal/nhanes/task_semantic_config.json": sha256_file(RESOURCE_DIR / "task_semantic_config.json"),
-            "ccia/llm_causal/nhanes/prompt_nhanes_causal_adjudication.json": sha256_file(
+            "tlcd/llm_causal/nhanes/task_semantic_config.json": sha256_file(RESOURCE_DIR / "task_semantic_config.json"),
+            "tlcd/llm_causal/nhanes/prompt_nhanes_causal_adjudication.json": sha256_file(
                 RESOURCE_DIR / "prompt_nhanes_causal_adjudication.json"
             ),
         },

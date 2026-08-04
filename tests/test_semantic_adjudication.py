@@ -9,13 +9,13 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from ccia.llm_causal.semantic_adjudication import (
+from tlcd.llm_causal.semantic_adjudication import (
     build_edge_queue,
     build_messages,
     is_acyclic,
     materialize_node_descriptions,
 )
-from ccia.llm_causal.neurosymbolic_merge import merge_semantic_graph, needs_tiebreak
+from tlcd.llm_causal.neurosymbolic_merge import merge_semantic_graph, needs_tiebreak
 from experiments.run_nhanes_llm_adjudication import normalize_response_decisions
 
 

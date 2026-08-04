@@ -6,11 +6,11 @@ import numpy as np
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.linear_model import LogisticRegression
 
-from ccia.graph_metrics import evaluate_graph_recovery
+from tlcd.graph_metrics import evaluate_graph_recovery
 from data_generation import generate_complex_environment
 from graph_roles import causal_role_sets
 from models.class_transform import ClassTransformEstimator
-from ocu_framework import FirstStageDeconfounder
+from rite_framework import RITEPropensityStage
 
 
 class CorePipelineTests(unittest.TestCase):
@@ -29,7 +29,7 @@ class CorePipelineTests(unittest.TestCase):
         self.assertNotIn("Collid_1", roles["C_Proximal"])
 
     def test_first_stage_propensity_uses_only_selected_c_set(self):
-        stage = FirstStageDeconfounder(
+        stage = RITEPropensityStage(
             treatment_var="T",
             target_var="Y",
             ancestors_graph=self.graph,
@@ -50,7 +50,7 @@ class CorePipelineTests(unittest.TestCase):
         self.assertEqual(metrics["directed"]["f1"], 1.0)
         self.assertEqual(metrics["skeleton"]["f1"], 1.0)
         self.assertEqual(metrics["shd"], 0)
-        self.assertEqual(metrics["ocu_sets"]["C_Proximal"]["f1"], 1.0)
+        self.assertEqual(metrics["rite_sets"]["C_Proximal"]["f1"], 1.0)
 
     def test_centered_class_transform_returns_finite_cate(self):
         features = self.data[["C_prox_1", "C_prox_2", "C_prox_3", "P_1", "P_2"]]

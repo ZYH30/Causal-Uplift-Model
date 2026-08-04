@@ -54,7 +54,7 @@ def locked_analysis_inputs(
         mimic_root,
     )
     roles = json.loads(
-        (out_dir / "mimic_rbc_ccia_roles.json").read_text(encoding="utf-8")
+        (out_dir / "mimic_rbc_tlcd_roles.json").read_text(encoding="utf-8")
     )
     lock = json.loads(
         (out_dir / "mimic_rbc_locked_spec.json").read_text(encoding="utf-8")
@@ -74,13 +74,13 @@ def locked_analysis_inputs(
         for feature in roles["s_precision"]
         if feature in feature_cols and feature not in c_set
     )
-    ccia = AdjustmentInterface("CCIA_CPlusS", c_set, s_set)
+    tlcd = AdjustmentInterface("RITE_CPlusS", c_set, s_set)
     all_variables = AdjustmentInterface("AllVariables", tuple(feature_cols))
     analysis_seed = seed + 1
     evaluator = crossfit_training_nuisance(
         evaluation,
-        list(ccia.c_set),
-        ccia.outcome_set,
+        list(tlcd.c_set),
+        tlcd.outcome_set,
         analysis_seed + 700,
         folds=5,
     )
@@ -93,11 +93,11 @@ def locked_analysis_inputs(
             all_variables,
             analysis_seed,
         ),
-        "CCIA_CPlusS": fit_tau(
+        "RITE_CPlusS": fit_tau(
             learner,
             train,
             evaluation,
-            ccia,
+            tlcd,
             analysis_seed,
         ),
     }
@@ -106,7 +106,7 @@ def locked_analysis_inputs(
         "train": train,
         "evaluation": evaluation,
         "feature_cols": feature_cols,
-        "ccia": ccia,
+        "tlcd": tlcd,
         "all_variables": all_variables,
         "learner": learner,
         "analysis_seed": analysis_seed,
@@ -119,7 +119,7 @@ def verify_locked_result(payload: dict, out_dir: Path) -> None:
     expected = pd.read_csv(out_dir / "mimic_rbc_temporal_test_metrics.csv")
     expected = expected[
         expected["Learner"].eq(payload["learner"])
-        & expected["Interface"].isin(["AllVariables", "CCIA_CPlusS"])
+        & expected["Interface"].isin(["AllVariables", "RITE_CPlusS"])
     ].set_index("Interface")
     outcome = payload["evaluation"]["Y"].to_numpy(dtype=int)
     treatment = payload["evaluation"]["T"].to_numpy(dtype=int)
@@ -175,14 +175,14 @@ def paired_patient_bootstrap(
                 "draw": draw,
                 "R_Loss_Improvement": (
                     metrics["AllVariables"]["R_Loss"]
-                    - metrics["CCIA_CPlusS"]["R_Loss"]
+                    - metrics["RITE_CPlusS"]["R_Loss"]
                 ),
                 "DR_Qini_Improvement": (
-                    metrics["CCIA_CPlusS"]["DR_Qini"]
+                    metrics["RITE_CPlusS"]["DR_Qini"]
                     - metrics["AllVariables"]["DR_Qini"]
                 ),
                 "Policy_Risk_Reduction_Improvement": (
-                    metrics["CCIA_CPlusS"]["Policy_Risk_Reduction"]
+                    metrics["RITE_CPlusS"]["Policy_Risk_Reduction"]
                     - metrics["AllVariables"]["Policy_Risk_Reduction"]
                 ),
             }
@@ -195,14 +195,14 @@ def paired_patient_bootstrap(
     point = {
         "R_Loss_Improvement": (
             full_metrics["AllVariables"]["R_Loss"]
-            - full_metrics["CCIA_CPlusS"]["R_Loss"]
+            - full_metrics["RITE_CPlusS"]["R_Loss"]
         ),
         "DR_Qini_Improvement": (
-            full_metrics["CCIA_CPlusS"]["DR_Qini"]
+            full_metrics["RITE_CPlusS"]["DR_Qini"]
             - full_metrics["AllVariables"]["DR_Qini"]
         ),
         "Policy_Risk_Reduction_Improvement": (
-            full_metrics["CCIA_CPlusS"]["Policy_Risk_Reduction"]
+            full_metrics["RITE_CPlusS"]["Policy_Risk_Reduction"]
             - full_metrics["AllVariables"]["Policy_Risk_Reduction"]
         ),
     }
@@ -261,7 +261,7 @@ def conservative_total_set_sensitivity(
     seed: int,
 ) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     roles = json.loads(
-        (out_dir / "mimic_rbc_ccia_roles.json").read_text(encoding="utf-8")
+        (out_dir / "mimic_rbc_tlcd_roles.json").read_text(encoding="utf-8")
     )
     c_total = [
         feature
@@ -317,14 +317,14 @@ def conservative_total_set_sensitivity(
     point = {
         "R_Loss_Improvement": (
             metrics["AllVariables"]["R_Loss"]
-            - metrics["CCIA_CPlusS"]["R_Loss"]
+            - metrics["RITE_CPlusS"]["R_Loss"]
         ),
         "DR_Qini_Improvement": (
-            metrics["CCIA_CPlusS"]["DR_Qini"]
+            metrics["RITE_CPlusS"]["DR_Qini"]
             - metrics["AllVariables"]["DR_Qini"]
         ),
         "Policy_Risk_Reduction_Improvement": (
-            metrics["CCIA_CPlusS"]["Policy_Risk_Reduction"]
+            metrics["RITE_CPlusS"]["Policy_Risk_Reduction"]
             - metrics["AllVariables"]["Policy_Risk_Reduction"]
         ),
     }
@@ -351,14 +351,14 @@ def conservative_total_set_sensitivity(
                 "draw": draw,
                 "R_Loss_Improvement": (
                     draw_metrics["AllVariables"]["R_Loss"]
-                    - draw_metrics["CCIA_CPlusS"]["R_Loss"]
+                    - draw_metrics["RITE_CPlusS"]["R_Loss"]
                 ),
                 "DR_Qini_Improvement": (
-                    draw_metrics["CCIA_CPlusS"]["DR_Qini"]
+                    draw_metrics["RITE_CPlusS"]["DR_Qini"]
                     - draw_metrics["AllVariables"]["DR_Qini"]
                 ),
                 "Policy_Risk_Reduction_Improvement": (
-                    draw_metrics["CCIA_CPlusS"]["Policy_Risk_Reduction"]
+                    draw_metrics["RITE_CPlusS"]["Policy_Risk_Reduction"]
                     - draw_metrics["AllVariables"]["Policy_Risk_Reduction"]
                 ),
             }
@@ -390,7 +390,7 @@ def benefit_quartile_profiles(
     payload: dict,
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
     evaluation = payload["evaluation"].copy()
-    benefit = -payload["tau"]["CCIA_CPlusS"]
+    benefit = -payload["tau"]["RITE_CPlusS"]
     dr_benefit = -dr_effect_score(
         evaluation["Y"].to_numpy(dtype=int),
         evaluation["T"].to_numpy(dtype=int),
@@ -558,19 +558,19 @@ def pairwise_robustness_summary(
         "AllVariables",
         "ExpertClinical",
         "DoubleSelection",
-        "CCIA_COnly",
+        "RITE_COnly",
     ):
         improvements = {
             "R_Loss_Improvement": (
                 pivot["R_Loss"][comparator]
-                - pivot["R_Loss"]["CCIA_CPlusS"]
+                - pivot["R_Loss"]["RITE_CPlusS"]
             ).to_numpy(),
             "DR_Qini_Improvement": (
-                pivot["DR_Qini"]["CCIA_CPlusS"]
+                pivot["DR_Qini"]["RITE_CPlusS"]
                 - pivot["DR_Qini"][comparator]
             ).to_numpy(),
             "Policy_Risk_Reduction_Improvement": (
-                pivot["Policy_Risk_Reduction"]["CCIA_CPlusS"]
+                pivot["Policy_Risk_Reduction"]["RITE_CPlusS"]
                 - pivot["Policy_Risk_Reduction"][comparator]
             ).to_numpy(),
         }
@@ -688,10 +688,10 @@ def hemoglobin_mechanism_analysis(
     evaluation = payload["evaluation"].copy()
     score, nuisance = crossfit_missing_continuous_effect(
         evaluation,
-        payload["ccia"],
+        payload["tlcd"],
         payload["analysis_seed"] + 1200,
     )
-    benefit = -payload["tau"]["CCIA_CPlusS"]
+    benefit = -payload["tau"]["RITE_CPlusS"]
     quartile = (
         pd.qcut(
             pd.Series(benefit).rank(method="first"),
@@ -758,8 +758,8 @@ def late_transfusion_sensitivity(payload: dict) -> pd.DataFrame:
     index = np.flatnonzero(keep.to_numpy())
     evaluator = crossfit_training_nuisance(
         subset,
-        list(payload["ccia"].c_set),
-        payload["ccia"].outcome_set,
+        list(payload["tlcd"].c_set),
+        payload["tlcd"].outcome_set,
         payload["analysis_seed"] + 1500,
         folds=5,
     )
@@ -780,14 +780,14 @@ def late_transfusion_sensitivity(payload: dict) -> pd.DataFrame:
                 "excluded_late_controls": int((~keep).sum()),
                 "R_Loss_Improvement": (
                     metrics["AllVariables"]["R_Loss"]
-                    - metrics["CCIA_CPlusS"]["R_Loss"]
+                    - metrics["RITE_CPlusS"]["R_Loss"]
                 ),
                 "DR_Qini_Improvement": (
-                    metrics["CCIA_CPlusS"]["DR_Qini"]
+                    metrics["RITE_CPlusS"]["DR_Qini"]
                     - metrics["AllVariables"]["DR_Qini"]
                 ),
                 "Policy_Risk_Reduction_Improvement": (
-                    metrics["CCIA_CPlusS"]["Policy_Risk_Reduction"]
+                    metrics["RITE_CPlusS"]["Policy_Risk_Reduction"]
                     - metrics["AllVariables"]["Policy_Risk_Reduction"]
                 ),
             }

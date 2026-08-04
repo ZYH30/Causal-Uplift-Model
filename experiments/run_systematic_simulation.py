@@ -1,4 +1,4 @@
-"""Systematic graph and treatment-effect benchmark for CCIA-OCU."""
+"""Systematic graph and treatment-effect benchmark for TLCD-RITE."""
 
 from __future__ import annotations
 
@@ -21,8 +21,8 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from ccia.ccia_runner import merge_graphs, project_graph_to_dag, run_ccia
-from ccia.graph_metrics import (
+from tlcd.tlcd_runner import merge_graphs, project_graph_to_dag, run_tlcd
+from tlcd.graph_metrics import (
     complete_graph,
     confounder_and_precision_sets,
     directed_edges,
@@ -30,7 +30,7 @@ from ccia.graph_metrics import (
     prf,
     skeleton_edges,
 )
-from experiments.run_ccia_synthetic import (
+from experiments.run_tlcd_synthetic import (
     detect_post_treatment_variables,
     outcome_importance_without_post_treatment,
     prune_deeper_edges_by_shallow_nonadjacency,
@@ -48,7 +48,7 @@ SCENARIOS = (
     "weak_edges",
     "noisy_missing",
 )
-METHODS = ("CCIA", "PC", "FCI", "GES", "DirectLiNGAM")
+METHODS = ("TLCD", "PC", "FCI", "GES", "DirectLiNGAM")
 
 
 def _standardize(values: np.ndarray) -> np.ndarray:
@@ -238,13 +238,13 @@ def generate_environment(
     return frame, graph, propensity
 
 
-def ccia_config(seed: int) -> SimpleNamespace:
+def tlcd_config(seed: int) -> SimpleNamespace:
     return SimpleNamespace(
         seed=seed,
         ci_theta=0.05,
-        ccia_lgb_max_depth=3,
-        ccia_lgb_num_leaves=15,
-        ccia_lgb_min_child_samples=30,
+        tlcd_lgb_max_depth=3,
+        tlcd_lgb_num_leaves=15,
+        tlcd_lgb_min_child_samples=30,
         rescue_lgb_estimators=160,
         post_treatment_rescue_lgb_estimators=60,
         rescue_min_importance_ratio=0.05,
@@ -258,16 +258,16 @@ def ccia_config(seed: int) -> SimpleNamespace:
     )
 
 
-def learn_ccia_graph(
+def learn_tlcd_graph(
     frame: pd.DataFrame,
     observed: list[str],
     seed: int,
 ) -> dict[str, list[str]]:
-    args = ccia_config(seed)
+    args = tlcd_config(seed)
     results = []
     for target in ("Y", "T"):
         results.append(
-            run_ccia(
+            run_tlcd(
                 frame[observed],
                 target=target,
                 model="lgb",
@@ -619,8 +619,8 @@ def run_cell(
     for method in methods:
         started = time.perf_counter()
         try:
-            if method == "CCIA":
-                graph = learn_ccia_graph(train, observed, seed)
+            if method == "TLCD":
+                graph = learn_tlcd_graph(train, observed, seed)
                 skeleton = skeleton_edges(graph)
             else:
                 graph, skeleton = learn_baseline_graph(

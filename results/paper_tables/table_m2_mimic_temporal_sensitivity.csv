@@ -1,3 +1,0 @@
-Analysis,C size,Mean |SMD| pre,Mean |SMD| weighted,ESS ratio,R-loss gain,DR-Qini gain,Policy-risk gain
-Locked proximal C-set,3,0.315,0.026,0.982,0.000106,0.024498,0.010270
-Conservative total C-set,22,0.223,0.086,0.919,0.000070,0.013166,0.019284

@@ -1,6 +1,6 @@
 {
   "task": "antihypertensive_sbp",
-  "source_graph": "results/nhanes_antihypertensive_sbp_v3_total_conf/nhanes_antihypertensive_sbp_ccia_graph.json",
+  "source_graph": "results/nhanes_antihypertensive_sbp_v3_total_conf/nhanes_antihypertensive_sbp_tlcd_graph.json",
   "actions": [
     {
       "task": "antihypertensive_sbp",

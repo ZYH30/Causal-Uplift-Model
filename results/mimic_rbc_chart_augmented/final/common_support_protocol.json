@@ -1,0 +1,27 @@
+{
+  "rule": "exclude records with hx_malignancy = 1",
+  "rationale": "No treated patient in the 2020--2022 era had a prior malignancy diagnosis, so effects in that stratum are not identified from the observed treatment support.",
+  "rule_inputs": "treatment and baseline covariates only; no outcomes",
+  "selected_panel": "vital_oxygen",
+  "model_feature_count_after_support": 79,
+  "chart_feature_count": 18,
+  "structured_feature_count": 61,
+  "c_set": [
+    "baseline_hb_min",
+    "chart_gcs_combined_last",
+    "chart_rass_last",
+    "chart_temp_c_last",
+    "lab_glucose_last_missing",
+    "lab_lactate_last",
+    "service_medical",
+    "trigger_hour",
+    "trigger_value",
+    "unit_cardiac",
+    "urine_observed_6h"
+  ],
+  "s_set": [
+    "age",
+    "lab_bun_last",
+    "unit_medical"
+  ]
+}

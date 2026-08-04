@@ -591,7 +591,7 @@ def save_metadata(
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--mimic-root", type=Path, default=DEFAULT_MIMIC_ROOT)
-    parser.add_argument("--database", type=Path, default=PROJECT_ROOT / "data" / "mimic_iv_ccia.sqlite")
+    parser.add_argument("--database", type=Path, default=PROJECT_ROOT / "data" / "mimic_iv_tlcd.sqlite")
     parser.add_argument("--chunksize", type=int, default=500_000)
     parser.add_argument("--min-hour", type=float, default=-24.0)
     parser.add_argument("--max-hour", type=float, default=72.0)

@@ -1,0 +1,20 @@
+{
+  "n": 2107,
+  "treated": 147,
+  "control": 1960,
+  "treatment_rate": 0.06976744186046512,
+  "propensity_p01": 0.005,
+  "propensity_p05": 0.006139483946116178,
+  "propensity_p50": 0.04067347539918971,
+  "propensity_p95": 0.2323113890028069,
+  "propensity_p99": 0.3748107431404144,
+  "ess_ratio": 0.7734189993952958,
+  "mean_abs_smd_pre": 0.3859271738926156,
+  "mean_abs_smd_ipw": 0.11074933026514566,
+  "max_abs_smd_pre": 0.6153008473449089,
+  "max_abs_smd_ipw": 0.18505464462037144,
+  "aipw_risk_difference": 0.02596032761977873,
+  "aipw_se": 0.10232754717567728,
+  "aipw_ci_low": -0.17460166484454873,
+  "aipw_ci_high": 0.2265223200841062
+}

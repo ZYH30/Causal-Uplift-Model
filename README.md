@@ -1,66 +1,62 @@
-# CCIA-OCU
+# TLCD-RITE
 
-Reference implementation for learning personalized treatment benefit from
-observational clinical data when the required adjustment variables are not
-known in advance.
+Reference implementation of **task-local causal discovery (TLCD)** and
+**role-informed treatment-effect learning (RITE)** for personalized treatment
+effect estimation from observational clinical data.
+
+TLCD learns treatment- and outcome-local structure and assigns measured
+variables to an adjustment set `C`, an outcome-precision set `S`, or exclusion.
+RITE preserves this role interface across estimation: the propensity model uses
+only `C`, while outcome and treatment-effect models may use `C + S`.
 
 ```text
-clinical treatment question and target trial
-  -> task-local statistical causal discovery
-  -> optional constrained semantic adjudication
-  -> graph-proximal adjustment set C and precision set S
-  -> propensity e(C) and outcome models m_t(C,S)
-  -> individualized benefit ranking and policy evaluation
+clinical treatment question and target-trial protocol
+  -> TLCD local graph and optional semantic review
+  -> role interface: adjustment C, precision S, exclusion
+  -> RITE nuisance and heterogeneous-effect models
+  -> benefit strata and capacity-constrained treatment ranking
 ```
 
-## Method
+## Main Components
 
-- `ccia/ccia_runner.py`: bounded local ancestor search, generalized covariance
-  conditional-independence tests, priority-ordered DAG projection, and complete
-  edge-decision provenance.
-- `ccia/direction_methods.py`: mixed-type randomized quantile residuals,
-  additive-noise evidence, and task-adaptive direction rules.
-- `ccia/llm_causal/`: clinical variable dictionaries, multi-model semantic
-  adjudication, and DAG-constrained graph fusion.
-- `graph_roles.py`: scalable extraction of total, graph-proximal, and root
-  adjustment sets plus outcome-precision variables.
-- `ocu_framework.py`: role-separated propensity weighting and heterogeneous
-  treatment-effect learning.
+- `tlcd/tlcd_runner.py`: bounded local search, conditional-independence tests,
+  mixed-type direction evidence, endpoint checks, and acyclic projection.
+- `tlcd/direction_methods.py`: randomized quantile residuals, additive-noise
+  evidence, and task-adaptive direction rules.
+- `tlcd/llm_causal/`: optional multi-model semantic review with constrained,
+  provenance-preserving graph fusion.
+- `graph_roles.py`: adjustment- and precision-set extraction from a local DAG.
+- `rite_framework.py`: propensity weighting with `C` and treatment-effect
+  learning with `C + S`.
+- `empirical_experiments/`: synthetic, MIMIC-IV, and NHANES pipelines.
+- `figure_generation/`: exact programs and frozen aggregate inputs for Figures
+  2--5.
 
-The propensity model uses only `C`. Outcome and treatment-effect models may use
-`C union S`.
+## Paper Evidence
 
-## Paper-Facing Evidence
-
-| Experiment | Main result |
+| Study | Paper-facing result |
 |---|---|
-| Synthetic CATE, `n=10,000` | OCU reduces mean CATE MAE by 9.1% across five uplift learners. |
-| Mixed-type direction, five seeds | Task-adaptive direction accuracy is `1.000` over 135 decisions versus `0.585` for pairwise ANM. |
-| Systematic graph recovery | Four mechanisms, four sample sizes, ten seeds, five graph learners, and 800 completed graph runs. |
-| Nonlinear and noisy-missing settings | At `n=10,000`, CCIA exceeds GES in directed F1 by `0.064` and `0.073`; GES is stronger in the linear and weak-edge settings. |
-| Learned-role transfer | CCIA roles retain 99.5--100.3% of the oracle CATE-MAE improvement over the all-recorded collider stress test. |
-| Component ablation | Endpoint repair increases proximal-set F1 from `0.444` to `0.888`; the DAG projection is retained as a safety guard. |
-| MIMIC-IV RBC target trial | `N=15,568`; graph discovery, learner selection, and temporal testing use non-overlapping eras. |
-| MIMIC-IV safety audit | A discovery-only gate yields seven assignment variables and one precision variable; temporal mean absolute SMD is `0.057` and ESS ratio is `0.905`. |
-| MIMIC-IV repeated splits | R-loss improves in 19/20 splits, with mean gain `0.90e-4` and 95% interval `[0.59e-4, 1.19e-4]`; ranking and policy remain secondary. |
-| NHANES medication studies | Locked R-loss gains occur in both tasks; the cholesterol task also has a significant DR-Qini gain. |
+| Known-graph simulation | Across 160 datasets, TLCD improves directed and role-set recovery over GES in nonlinear and measurement-perturbed mechanisms; learned roles approach oracle-role CATE performance. |
+| Direction benchmark | The task-adaptive rule resolves the endpoint direction failures seen with pairwise ANM under the study mechanisms. |
+| MIMIC-IV early RBC initiation | The common-support cohort contains 13,990 stays. TLCD learns 11 adjustment and 3 precision variables from 80 candidates, including 18 pre-trigger bedside features. |
+| MIMIC-IV post-discovery splits | Relative to the same R-learner using all 79 analysis variables, RITE improves mean R-loss by `3.48e-4`, DR-Qini by `0.0103`, and policy risk reduction by `1.59` percentage points over 20 splits. |
+| MIMIC-IV temporal cohort | All three point differences remain positive. Mean absolute SMD falls from `0.386` to `0.111`, with an ESS ratio of `0.773`. |
+| NHANES medication studies | RITE lowers held-out R-loss in both tasks and improves DR-Qini in the cholesterol-medication task. |
 
-Real-data AIPW, DR-Qini, and policy values are estimands under measured
-confounding assumptions. They are not observed individual counterfactual
-labels or clinical treatment recommendations.
+Real-data estimands rely on consistency, positivity, and exchangeability given
+the measured adjustment variables. They are not observed individual
+counterfactual labels or clinical treatment recommendations.
 
 ## Installation
 
 Python 3.10 or later is required.
 
 ```bash
-python3 -m venv .venv
-.venv/bin/pip install -r requirements.txt
-.venv/bin/python -m unittest discover -s tests -p "test_*.py" -v
+make env
+make test
 ```
 
-The paper experiments use LightGBM. The optional KAN residual backend has
-separate dependencies:
+The optional KAN residual backend has separate dependencies:
 
 ```bash
 .venv/bin/pip install -r requirements-kan.txt
@@ -68,31 +64,45 @@ separate dependencies:
 
 ## Reproduction
 
+The nonrestricted experiments run from the repository root:
+
 ```bash
 make synthetic
 make direction
-make ccia-synthetic
+make tlcd-synthetic
 make systematic
-make ccia-ablation
+make tlcd-ablation
 make nhanes-confirmatory
 make nhanes-survey
 make figures
 ```
 
+### MIMIC-IV
+
 MIMIC-IV v3.1 requires independent PhysioNet credentialing and acceptance of
-its data-use agreement:
+its data-use agreement. Structured source files are read locally; pre-trigger
+`chartevents` aggregates are queried from the authorized PhysioNet BigQuery
+dataset. Patient-level data are never committed.
 
 ```bash
 make mimic-db MIMIC_ROOT=/path/to/mimiciv/3.1
-make mimic MIMIC_ROOT=/path/to/mimiciv/3.1
-make mimic-interpretation MIMIC_ROOT=/path/to/mimiciv/3.1
-make mimic-audit
+make mimic-chart-data GCP_PROJECT=your-authorized-gcp-project
+make mimic-chart-discovery MIMIC_ROOT=/path/to/mimiciv/3.1
+make mimic-chart-analysis MIMIC_ROOT=/path/to/mimiciv/3.1
 ```
 
-See [`docs/REPRODUCIBILITY.md`](docs/REPRODUCIBILITY.md) for the target-trial
-protocol, immutable artifact provenance, and expected outputs.
+The complete sequence is also available as:
 
-## Semantic Audit
+```bash
+make mimic-chart \
+  MIMIC_ROOT=/path/to/mimiciv/3.1 \
+  GCP_PROJECT=your-authorized-gcp-project
+```
+
+See [`docs/REPRODUCIBILITY.md`](docs/REPRODUCIBILITY.md) for the cohort
+protocol, temporal split, output contracts, and data-access requirements.
+
+## Semantic Review
 
 Prepare the edge queue and token budget without network access:
 
@@ -100,40 +110,32 @@ Prepare the edge queue and token budget without network access:
 make llm-dryrun
 ```
 
-Fresh Kimi and DeepSeek calls are paid and remain locked by default. Put
-credentials in an untracked `.env`, inspect the dry-run budget, and explicitly
-unlock execution:
+Fresh Kimi and DeepSeek calls are paid and locked by default. Store credentials
+in an untracked `.env`, review the dry-run budget, and explicitly unlock calls:
 
 ```bash
 ALLOW_PAID_API=1 make llm-api
 ```
 
-The API client never writes keys to requests, responses, ledgers, or results.
+The API client does not write credentials to requests, responses, ledgers, or
+result artifacts.
 
-## Data Safety
+## Released Artifacts
 
-- MIMIC-IV source files, SQLite databases, and patient-level extracts are not
-  distributed.
-- NHANES public XPT files are downloaded from CDC and cached under
-  `data/nhanes_raw/`.
-- Committed MIMIC artifacts are aggregate CSV/JSON outputs only.
-- `.env`, raw data, generated results, and local build caches are excluded from
-  version control.
+- `results/mimic_rbc_chart_augmented/`: aggregate chart extraction, selected
+  TLCD graph and roles, validation locks, repeated splits, temporal evaluation,
+  benefit phenotypes, and policy curves.
+- `results/systematic_simulation_v1/`: systematic graph and downstream CATE
+  benchmark.
+- `results/tlcd_component_ablation_v1/`: TLCD component ablation.
+- `results/llm_adjudication/`: normalized semantic-review decisions and API
+  usage records.
+- `results/nhanes_llm_fixed_confirmatory_v1/`: locked NHANES comparisons.
 
-## Repository Layout
-
-- `ccia/`: local discovery, direction methods, graph metrics, and semantic
-  fusion.
-- `models/`: S-, T-, X-, class-transformation, and uplift-forest learners.
-- `experiments/`: systematic graph recovery, component ablation, CATE,
-  direction, and semantic-audit entry points.
-- `empirical_experiments/`: MIMIC-IV and NHANES target-study pipelines.
-- `results/`: compact immutable aggregate artifacts reported in the paper.
-- `figures/`: publication figures regenerated from committed artifacts.
-- `tests/`: algorithm, temporal-feature, semantic, and artifact-integrity
-  checks.
+Raw MIMIC-IV data, patient-level caches, NHANES downloads, `.env`, and generated
+intermediate results are excluded from version control.
 
 ## License
 
-MIT. See [`LICENSE`](LICENSE). The optional KAN backend retains upstream
-attribution in [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
+MIT. The optional KAN backend retains upstream attribution in
+[`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).

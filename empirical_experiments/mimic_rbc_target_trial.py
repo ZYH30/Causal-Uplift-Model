@@ -1,4 +1,4 @@
-"""CCIA-OCU target-trial analysis for early red-cell transfusion in MIMIC-IV."""
+"""TLCD-RITE target-trial analysis for early red-cell transfusion in MIMIC-IV."""
 
 from __future__ import annotations
 
@@ -23,7 +23,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from ccia.ccia_runner import complete_graph, merge_graphs, run_ccia
+from tlcd.tlcd_runner import complete_graph, merge_graphs, run_tlcd
 from empirical_experiments.mimic_rbc_data import (
     DEFAULT_MIMIC_ROOT,
     RBCTargetTrialSpec,
@@ -42,10 +42,10 @@ from graph_roles import (
 )
 
 
-DEFAULT_DATABASE = PROJECT_ROOT / "data" / "mimic_iv_ccia.sqlite"
-DEFAULT_OUT_DIR = PROJECT_ROOT / "results" / "mimic_rbc_target_trial_v3"
-GRAPH_FILENAME = "mimic_rbc_ccia_graph.json"
-ROLE_FILENAME = "mimic_rbc_ccia_roles.json"
+DEFAULT_DATABASE = PROJECT_ROOT / "data" / "mimic_iv_tlcd.sqlite"
+DEFAULT_OUT_DIR = PROJECT_ROOT / "results" / "generated" / "mimic-rbc-base"
+GRAPH_FILENAME = "mimic_rbc_tlcd_graph.json"
+ROLE_FILENAME = "mimic_rbc_tlcd_roles.json"
 LOCK_FILENAME = "mimic_rbc_locked_spec.json"
 
 EXPERT_CANDIDATE_C = [
@@ -770,7 +770,7 @@ def graph_roles(graph: dict[str, list[str]]) -> dict[str, list[str]]:
     }
 
 
-def learn_ccia_graph(
+def learn_tlcd_graph(
     discovery: pd.DataFrame,
     feature_cols: list[str],
     out_dir: Path,
@@ -793,14 +793,14 @@ def learn_ccia_graph(
     variable_order.update({"T": 1, "Y": 2})
     results = []
     started = time.time()
-    if args.reuse_raw_ccia:
-        raw_dir = out_dir / "ccia_raw"
+    if args.reuse_raw_tlcd:
+        raw_dir = out_dir / "tlcd_raw"
         for target in ("T", "Y"):
-            graph_path = raw_dir / f"ccia_graph_target_{target}.json"
-            decision_path = raw_dir / f"ccia_edge_decisions_target_{target}.csv"
+            graph_path = raw_dir / f"tlcd_graph_target_{target}.json"
+            decision_path = raw_dir / f"tlcd_edge_decisions_target_{target}.csv"
             if not graph_path.exists() or not decision_path.exists():
                 raise FileNotFoundError(
-                    f"Missing raw CCIA artifact for target={target}"
+                    f"Missing raw TLCD artifact for target={target}"
                 )
             decisions = pd.read_csv(decision_path)
             decisions = decisions.where(pd.notna(decisions), None).to_dict("records")
@@ -812,14 +812,14 @@ def learn_ccia_graph(
                     "runtime_sec": None,
                 }
             )
-        print("Reusing completed raw CCIA target runs", flush=True)
+        print("Reusing completed raw TLCD target runs", flush=True)
     else:
         for target in ("T", "Y"):
-            print(f"Learning CCIA neighborhood for target={target}", flush=True)
-            result = run_ccia(
+            print(f"Learning TLCD neighborhood for target={target}", flush=True)
+            result = run_tlcd(
                 graph_frame,
                 target=target,
-                output_dir=str(out_dir / "ccia_raw"),
+                output_dir=str(out_dir / "tlcd_raw"),
                 variable_order=variable_order,
                 model="lgb",
                 cor_quantile=args.cor_quantile,
@@ -831,7 +831,7 @@ def learn_ccia_graph(
                 max_importance_neighbors=args.max_importance_neighbors,
                 max_condition_candidates=args.max_condition_candidates,
                 max_search_depth=args.max_search_depth,
-                lgb_estimators=args.ccia_estimators,
+                lgb_estimators=args.tlcd_estimators,
                 lgb_max_depth=3,
                 lgb_num_leaves=15,
                 lgb_min_child_samples=30,
@@ -855,7 +855,7 @@ def learn_ccia_graph(
     )
     roles = graph_roles(graph)
     if not roles["c_proximal"]:
-        raise ValueError("CCIA produced an empty proximal C-set for the RBC task")
+        raise ValueError("TLCD produced an empty proximal C-set for the RBC task")
     write_json(graph, out_dir / GRAPH_FILENAME)
     write_json(roles, out_dir / ROLE_FILENAME)
     write_json(
@@ -879,10 +879,10 @@ def learn_ccia_graph(
                 "max_condition_set_size": args.max_condition_set_size,
                 "max_neighbors": args.max_neighbors,
                 "max_search_depth": args.max_search_depth,
-                "ccia_estimators": args.ccia_estimators,
+                "tlcd_estimators": args.tlcd_estimators,
             },
         },
-        out_dir / "mimic_rbc_ccia_graph_meta.json",
+        out_dir / "mimic_rbc_tlcd_graph_meta.json",
     )
     return graph, roles
 
@@ -899,11 +899,11 @@ def adjustment_interfaces(
     roles: dict[str, list[str]],
     seed: int,
 ) -> list[AdjustmentInterface]:
-    ccia_c = tuple(column for column in roles["c_proximal"] if column in feature_cols)
-    ccia_s = tuple(
+    tlcd_c = tuple(column for column in roles["c_proximal"] if column in feature_cols)
+    tlcd_s = tuple(
         column
         for column in roles["s_precision"]
-        if column in feature_cols and column not in ccia_c
+        if column in feature_cols and column not in tlcd_c
     )
     expert_c = tuple(column for column in EXPERT_CANDIDATE_C if column in feature_cols)
     expert_s = tuple(
@@ -916,8 +916,8 @@ def adjustment_interfaces(
         AdjustmentInterface("AllVariables", tuple(feature_cols)),
         AdjustmentInterface("ExpertClinical", expert_c, expert_s),
         AdjustmentInterface("DoubleSelection", double),
-        AdjustmentInterface("CCIA_COnly", ccia_c),
-        AdjustmentInterface("CCIA_CPlusS", ccia_c, ccia_s),
+        AdjustmentInterface("RITE_COnly", tlcd_c),
+        AdjustmentInterface("RITE_CPlusS", tlcd_c, tlcd_s),
     ]
 
 
@@ -936,8 +936,8 @@ def run_comparison(
         feature_cols,
     )
     interfaces = adjustment_interfaces(train, feature_cols, roles, seed)
-    ccia_interface = next(
-        interface for interface in interfaces if interface.name == "CCIA_CPlusS"
+    tlcd_interface = next(
+        interface for interface in interfaces if interface.name == "RITE_CPlusS"
     )
     # Evaluation nuisances are estimated within the target period, strictly
     # out of fold. The treatment-effect model never sees evaluation outcomes,
@@ -945,20 +945,20 @@ def run_comparison(
     # mechanism under temporal practice shifts.
     evaluator = crossfit_training_nuisance(
         evaluation,
-        list(ccia_interface.c_set),
-        ccia_interface.outcome_set,
+        list(tlcd_interface.c_set),
+        tlcd_interface.outcome_set,
         seed + 700,
         folds=5,
     )
     diagnostics, balance = overlap_balance_diagnostics(
         evaluation,
-        list(ccia_interface.c_set),
+        list(tlcd_interface.c_set),
         evaluator["e"],
     )
     diagnostics.update(aipw_summary(evaluation, evaluator))
     diagnostics["split"] = split_name
-    diagnostics["evaluation_propensity_features"] = list(ccia_interface.c_set)
-    diagnostics["evaluation_outcome_features"] = ccia_interface.outcome_set
+    diagnostics["evaluation_propensity_features"] = list(tlcd_interface.c_set)
+    diagnostics["evaluation_outcome_features"] = tlcd_interface.outcome_set
 
     rows = []
     calibration = []
@@ -1041,20 +1041,20 @@ def select_primary_learner(development: pd.DataFrame) -> dict[str, Any]:
     rows = []
     for learner, group in development.groupby("Learner"):
         by_interface = group.set_index("Interface")
-        ccia = by_interface.loc["CCIA_CPlusS"]
+        tlcd = by_interface.loc["RITE_CPlusS"]
         baseline = by_interface.loc["AllVariables"]
         rows.append(
             {
                 "Learner": learner,
-                "R_Loss_Improvement": baseline["R_Loss"] - ccia["R_Loss"],
-                "DR_Qini_Improvement": ccia["DR_Qini"] - baseline["DR_Qini"],
+                "R_Loss_Improvement": baseline["R_Loss"] - tlcd["R_Loss"],
+                "DR_Qini_Improvement": tlcd["DR_Qini"] - baseline["DR_Qini"],
                 "Policy_Risk_Reduction_Improvement": (
-                    ccia["Policy_Risk_Reduction"]
+                    tlcd["Policy_Risk_Reduction"]
                     - baseline["Policy_Risk_Reduction"]
                 ),
-                "CCIA_R_Loss": ccia["R_Loss"],
-                "CCIA_DR_Qini": ccia["DR_Qini"],
-                "CCIA_Policy_Risk_Reduction": ccia["Policy_Risk_Reduction"],
+                "RITE_R_Loss": tlcd["R_Loss"],
+                "RITE_DR_Qini": tlcd["DR_Qini"],
+                "RITE_Policy_Risk_Reduction": tlcd["Policy_Risk_Reduction"],
             }
         )
     candidates = pd.DataFrame(rows)
@@ -1096,12 +1096,12 @@ def select_primary_learner(development: pd.DataFrame) -> dict[str, Any]:
         "locked_temporal_test": "MIMIC-IV anchor-year group 2020-2022",
         "selection_rule": (
             "maximize the number of positive paired gains and then minimize "
-            "the equal-weight rank sum of CCIA_CPlusS gains over the "
+            "the equal-weight rank sum of RITE_CPlusS gains over the "
             "same-learner AllVariables comparator for R-loss, DR-Qini, and "
             "observed-budget policy risk reduction"
         ),
         "primary_learner": selected["Learner"],
-        "primary_interface": "CCIA_CPlusS",
+        "primary_interface": "RITE_CPlusS",
         "primary_comparator": "AllVariables",
         "selection_metrics": {
             "R_Loss_Improvement": selected["R_Loss_Improvement"],
@@ -1109,10 +1109,10 @@ def select_primary_learner(development: pd.DataFrame) -> dict[str, Any]:
             "Policy_Risk_Reduction_Improvement": selected[
                 "Policy_Risk_Reduction_Improvement"
             ],
-            "CCIA_R_Loss": selected["CCIA_R_Loss"],
-            "CCIA_DR_Qini": selected["CCIA_DR_Qini"],
-            "CCIA_Policy_Risk_Reduction": selected[
-                "CCIA_Policy_Risk_Reduction"
+            "RITE_R_Loss": selected["RITE_R_Loss"],
+            "RITE_DR_Qini": selected["RITE_DR_Qini"],
+            "RITE_Policy_Risk_Reduction": selected[
+                "RITE_Policy_Risk_Reduction"
             ],
             "positive_gain_count": selected["positive_gain_count"],
             "rank_sum": selected["rank_sum"],
@@ -1138,7 +1138,7 @@ def select_primary_learner(development: pd.DataFrame) -> dict[str, Any]:
 def metric_improvements(
     rows: pd.DataFrame,
     learner: str,
-    intervention: str = "CCIA_CPlusS",
+    intervention: str = "RITE_CPlusS",
     comparator: str = "AllVariables",
 ) -> dict[str, float]:
     selected = rows[
@@ -1183,14 +1183,14 @@ def summarize_robustness(rows: pd.DataFrame, draws: int) -> pd.DataFrame:
         improvements = {
             "R_Loss_Improvement": (
                 pivot["R_Loss"]["AllVariables"]
-                - pivot["R_Loss"]["CCIA_CPlusS"]
+                - pivot["R_Loss"]["RITE_CPlusS"]
             ),
             "DR_Qini_Improvement": (
-                pivot["DR_Qini"]["CCIA_CPlusS"]
+                pivot["DR_Qini"]["RITE_CPlusS"]
                 - pivot["DR_Qini"]["AllVariables"]
             ),
             "Policy_Risk_Reduction_Improvement": (
-                pivot["Policy_Risk_Reduction"]["CCIA_CPlusS"]
+                pivot["Policy_Risk_Reduction"]["RITE_CPlusS"]
                 - pivot["Policy_Risk_Reduction"]["AllVariables"]
             ),
         }
@@ -1494,7 +1494,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--max-importance-neighbors", type=int, default=12)
     parser.add_argument("--max-condition-candidates", type=int, default=8)
     parser.add_argument("--max-search-depth", type=int, default=1)
-    parser.add_argument("--ccia-estimators", type=int, default=60)
+    parser.add_argument("--tlcd-estimators", type=int, default=60)
     parser.add_argument("--robustness-seed-start", type=int, default=3100)
     parser.add_argument("--robustness-repeats", type=int, default=20)
     parser.add_argument("--robustness-test-size", type=float, default=0.40)
@@ -1505,9 +1505,9 @@ def parse_args() -> argparse.Namespace:
         help="Reuse the graph and role files already present in out-dir.",
     )
     parser.add_argument(
-        "--reuse-raw-ccia",
+        "--reuse-raw-tlcd",
         action="store_true",
-        help="Rebuild the merged graph from completed raw T/Y CCIA artifacts.",
+        help="Rebuild the merged graph from completed raw T/Y TLCD artifacts.",
     )
     return parser.parse_args()
 
@@ -1530,7 +1530,7 @@ def main() -> None:
     if args.reuse_graph or args.mode in {"develop", "confirm", "robustness"}:
         graph, roles = load_graph_roles(args.out_dir)
     else:
-        graph, roles = learn_ccia_graph(
+        graph, roles = learn_tlcd_graph(
             discovery,
             feature_cols,
             args.out_dir,

@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "causal-uplift-model"
-version = "0.3.0"
-description = "Causal adjustment learning for personalized treatment benefit from observational clinical data"
+version = "1.0.0"
+description = "TLCD-RITE for role-informed personalized treatment-effect learning"
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "MIT"}
@@ -23,13 +23,14 @@ dependencies = [
   "python-dotenv>=1.0",
   "joblib>=1.4",
   "causal-learn>=0.1.4",
+  "google-cloud-bigquery[pandas]>=3.42",
 ]
 
 [tool.setuptools]
-py-modules = ["data_generation", "graph_roles", "propensity", "ocu_framework"]
+py-modules = ["data_generation", "graph_roles", "propensity", "rite_framework"]
 
 [tool.setuptools.packages.find]
-include = ["ccia*", "models*", "experiments*", "empirical_experiments*"]
+include = ["tlcd*", "models*", "experiments*", "empirical_experiments*"]
 
 [tool.ruff]
 line-length = 100

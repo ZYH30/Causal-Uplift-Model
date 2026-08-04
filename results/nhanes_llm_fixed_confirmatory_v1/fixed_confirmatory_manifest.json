@@ -4,7 +4,7 @@
     {
       "task": "antihypertensive_sbp",
       "model": "S-Learner",
-      "method": "OCU_CCIA_COnly",
+      "method": "RITE_COnly",
       "conf_type": "proximal",
       "graph_variant": "Statistical+LLM-Conservative",
       "graph": "results/llm_adjudication/nhanes_antihypertensive_sbp_graph_llm_conservative.json"
@@ -12,7 +12,7 @@
     {
       "task": "chol_med_tchol",
       "model": "ClassTransform",
-      "method": "OCU_CCIA_COnly",
+      "method": "RITE_COnly",
       "conf_type": "proximal",
       "graph_variant": "Statistical+LLM-Conservative",
       "graph": "results/llm_adjudication/nhanes_chol_med_tchol_graph_llm_conservative.json"
@@ -43,6 +43,6 @@
   "test_size": 0.4,
   "evaluation_propensity": "e(C)",
   "evaluation_outcome_nuisance": "m(C union S)",
-  "comparison": "fixed OCU_CCIA_COnly versus Naive_AllFeatures",
+  "comparison": "fixed RITE_COnly versus Naive_AllFeatures",
   "bootstrap_resamples": 10000
 }

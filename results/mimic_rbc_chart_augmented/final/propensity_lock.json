@@ -1,0 +1,36 @@
+{
+  "selection_dataset": "MIMIC-IV 2017-2019 common-support cohort",
+  "selection_uses_outcomes": false,
+  "selection_rule": "require every repeat to retain ESS/n >= 0.50 and every C-set variable to have absolute SMD below 0.10; among eligible models, minimize mean absolute SMD, then mean maximum SMD, and retain greater minimum ESS",
+  "strategy": "lgb_d3_m50",
+  "clip": 0.005,
+  "c_set": [
+    "baseline_hb_min",
+    "chart_gcs_combined_last",
+    "chart_rass_last",
+    "chart_temp_c_last",
+    "lab_glucose_last_missing",
+    "lab_lactate_last",
+    "service_medical",
+    "trigger_hour",
+    "trigger_value",
+    "unit_cardiac",
+    "urine_observed_6h"
+  ],
+  "validation_diagnostics": {
+    "strategy": "lgb_d3_m50",
+    "clip": 0.005,
+    "repeats": 3,
+    "features_above_0_10_max": 0,
+    "features_above_0_10_mean": 0.0,
+    "max_abs_smd_worst": 0.07169384861255206,
+    "max_abs_smd_mean": 0.0647465958848009,
+    "mean_abs_smd_mean": 0.02942657891727671,
+    "mean_abs_smd_sd": 0.00451480555779189,
+    "ess_ratio_min": 0.7070509662592922,
+    "ess_ratio_mean": 0.7153956499460404,
+    "log_loss_mean": 0.38818196928207316,
+    "auc_mean": 0.7808979013708456
+  },
+  "repeats": 3
+}

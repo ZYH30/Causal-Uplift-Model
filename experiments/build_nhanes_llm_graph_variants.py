@@ -10,18 +10,18 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from ccia.llm_causal.neurosymbolic_merge import merge_semantic_graph
-from ccia.llm_causal.semantic_adjudication import load_json, write_json
+from tlcd.llm_causal.neurosymbolic_merge import merge_semantic_graph
+from tlcd.llm_causal.semantic_adjudication import load_json, write_json
 
 
 RESULT_DIR = PROJECT_ROOT / "results" / "llm_adjudication"
 TASKS = {
     "antihypertensive_sbp": {
-        "source": PROJECT_ROOT / "results" / "nhanes_antihypertensive_sbp_v3_total_conf" / "nhanes_antihypertensive_sbp_ccia_graph.json",
+        "source": PROJECT_ROOT / "results" / "nhanes_antihypertensive_sbp_v3_total_conf" / "nhanes_antihypertensive_sbp_tlcd_graph.json",
         "stem": "nhanes_antihypertensive_sbp_graph_llm",
     },
     "chol_med_tchol": {
-        "source": PROJECT_ROOT / "results" / "nhanes_chol_med_tchol_v1_dr_metrics" / "nhanes_chol_med_tchol_ccia_graph.json",
+        "source": PROJECT_ROOT / "results" / "nhanes_chol_med_tchol_v1_dr_metrics" / "nhanes_chol_med_tchol_tlcd_graph.json",
         "stem": "nhanes_chol_med_tchol_graph_llm",
     },
 }

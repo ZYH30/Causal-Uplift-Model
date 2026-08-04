@@ -2,7 +2,7 @@
 
 ## PyKAN
 
-The optional implementation under `ccia/kanPro/` contains code adapted from
+The optional implementation under `tlcd/kanPro/` contains code adapted from
 [PyKAN](https://github.com/KindXiaoming/pykan).
 
 MIT License

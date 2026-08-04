@@ -51,20 +51,20 @@
       "aipw_ci_low": -5.131956232383716,
       "aipw_ci_high": -2.133638493759155
     },
-    "AIPW_CCIA_COnly": {
+    "AIPW_RITE_COnly": {
       "aipw_ate": -3.454704639469369,
       "aipw_se": 0.791606657805067,
       "aipw_ci_low": -5.0062536887673,
       "aipw_ci_high": -1.9031555901714376
     },
-    "AIPW_CCIA_CPlusS": {
+    "AIPW_RITE_CPlusS": {
       "aipw_ate": -3.490116848166981,
       "aipw_se": 0.788138362097926,
       "aipw_ci_low": -5.0348680378789155,
       "aipw_ci_high": -1.9453656584550463
     }
   },
-  "aipw_main_estimand": "AIPW_CCIA_CPlusS",
+  "aipw_main_estimand": "AIPW_RITE_CPlusS",
   "evaluation_propensity_features": [
     "BMXWAIST",
     "BPQ080",
