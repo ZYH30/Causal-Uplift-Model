@@ -1,3 +1,0 @@
-Task,Edges_Before,Edges_After,Order_Violations_Before,Order_Violations_After,C_Proximal_Before,C_Proximal_After,S_Before,S_After,Semantic_Orientations,Semantic_Removals,Hard_Order_Removals,DAG_After
-antihypertensive_sbp,37,29,9,0,9,6,1,2,12,4,4,True
-chol_med_tchol,45,42,8,0,6,7,5,4,10,2,2,True

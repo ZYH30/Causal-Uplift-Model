@@ -1,0 +1,24 @@
+{
+  "antihypertensive_sbp": {
+    "cohort_n": 7711,
+    "treated_n": 5830,
+    "learner": "S-learner",
+    "outcome": "Systolic blood pressure",
+    "units": "mmHg",
+    "title": "Antihypertensive medication",
+    "C": 6,
+    "S": 2
+  },
+  "chol_med_tchol": {
+    "cohort_n": 4521,
+    "treated_n": 3483,
+    "learner": "Class transformation",
+    "outcome": "Total cholesterol",
+    "units": "mg/dL",
+    "title": "Cholesterol medication",
+    "C": 7,
+    "S": 4
+  },
+  "_source": "authoring/02_results.tex, Results: Role-informed learning extends to population medication analyses; authoring/05_endmatter.tex, Table 1; role counts verified against table_3_neurosymbolic_graph_audit.csv.",
+  "_manuscript_sha256": "9cbfdb202d29db01e522352d36db00901c4035196939c50af7567e971c38fe21"
+}

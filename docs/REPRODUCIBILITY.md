@@ -148,6 +148,7 @@ file without contacting an API.
 make figures
 ```
 
-This rebuilds MIMIC figure inputs from committed aggregate results and renders
-Figures 2--5 as PDF, SVG, and 600-dpi PNG. It does not refit models, access
-patient-level data, or invoke paid APIs.
+This renders the final Figures 3--6 from the included aggregate and seed-level
+results as PDF, SVG, and 900-dpi PNG. The standalone environment and optional
+exports of all 19 panels are documented in
+[`figure_generation/README.md`](../figure_generation/README.md).

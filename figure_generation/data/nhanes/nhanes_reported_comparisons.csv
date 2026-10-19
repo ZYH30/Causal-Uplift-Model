@@ -1,0 +1,7 @@
+Task,Metric,Mean,CI_Low,CI_High,Wins,Units,Reported_Holm_P,Repeats,Source
+antihypertensive_sbp,R-loss,0.516,0.23,0.792,15.0,mmHg^2,0.0049,20,Uploaded main.tex: Results 2.5 and Table 8 (fixed-role held-out results)
+antihypertensive_sbp,DR-Qini,0.017,-0.128,0.193,,mmHg,,20,Uploaded main.tex: Results 2.5 and Table 8 (fixed-role held-out results)
+antihypertensive_sbp,Budget outcome,0.073,-0.11,0.288,,mmHg,,20,Uploaded main.tex: Results 2.5 and Table 8 (fixed-role held-out results)
+chol_med_tchol,R-loss,78.739,62.921,92.82,19.0,(mg/dL)^2,1.2e-08,20,Uploaded main.tex: Results 2.5 and Table 8 (fixed-role held-out results)
+chol_med_tchol,DR-Qini,0.747,0.395,1.1,16.0,mg/dL,0.0016,20,Uploaded main.tex: Results 2.5 and Table 8 (fixed-role held-out results)
+chol_med_tchol,Budget outcome,0.558,-0.226,1.38,,mg/dL,,20,Uploaded main.tex: Results 2.5 and Table 8 (fixed-role held-out results)

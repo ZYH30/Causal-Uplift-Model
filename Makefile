@@ -4,6 +4,10 @@ MIMIC_ROOT ?=
 GCP_PROJECT ?=
 MIMIC_DB ?= data/mimic_iv_tlcd.sqlite
 MIMIC_OUT ?= results/generated/mimic-rbc-chart
+FIGURES ?= 3 4 5 6
+FIGURE_DPI ?= 900
+FIGURE_OUT ?= figures
+FIGURE_ARGS ?=
 MIMIC_ROOT_ARG = $(if $(MIMIC_ROOT),--mimic-root "$(MIMIC_ROOT)",)
 export MPLCONFIGDIR
 
@@ -66,5 +70,4 @@ nhanes-survey:
 	$(PYTHON) empirical_experiments/nhanes_survey_aipw_sensitivity.py --cache-dir data/nhanes_raw --out-dir results/generated/nhanes-survey
 
 figures:
-	$(PYTHON) figure_generation/scripts/prepare_mimic_figure_data.py
-	$(PYTHON) figure_generation/scripts/plot_all_figures.py --output-dir figures
+	$(PYTHON) figure_generation/generate.py --figures $(FIGURES) --output-dir "$(FIGURE_OUT)" --dpi $(FIGURE_DPI) $(FIGURE_ARGS)

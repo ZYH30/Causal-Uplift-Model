@@ -8,6 +8,8 @@ htmlcov/
 .venv/
 .venv_synth/
 .venv_kan/
+.mplconfig/
+figures/panels/
 .env
 
 data/nhanes_raw/

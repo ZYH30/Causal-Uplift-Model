@@ -1,0 +1,581 @@
+{
+  "task": "antihypertensive_sbp",
+  "variant": "conservative",
+  "source_graph": "results/nhanes_antihypertensive_sbp_v3_total_conf/nhanes_antihypertensive_sbp_tlcd_graph.json",
+  "actions": [
+    {
+      "task": "antihypertensive_sbp",
+      "pair_id": "antihypertensive_sbp::BPQ080::RIDAGEYR",
+      "node_a": "BPQ080",
+      "node_b": "RIDAGEYR",
+      "consensus_judgement": "B_TO_A",
+      "semantic_confidence": 0.975,
+      "action": "removed_cycle_blocked_orientation",
+      "note": "proposed RIDAGEYR->BPQ080 would create a directed cycle"
+    },
+    {
+      "task": "antihypertensive_sbp",
+      "pair_id": "antihypertensive_sbp::BPXPLS::RIDAGEYR",
+      "node_a": "BPXPLS",
+      "node_b": "RIDAGEYR",
+      "consensus_judgement": "B_TO_A",
+      "semantic_confidence": 0.975,
+      "action": "oriented_by_semantic_consensus",
+      "note": ""
+    },
+    {
+      "task": "antihypertensive_sbp",
+      "pair_id": "antihypertensive_sbp::LBXGH::RIDAGEYR",
+      "node_a": "LBXGH",
+      "node_b": "RIDAGEYR",
+      "consensus_judgement": "B_TO_A",
+      "semantic_confidence": 0.975,
+      "action": "oriented_by_semantic_consensus",
+      "note": ""
+    },
+    {
+      "task": "antihypertensive_sbp",
+      "pair_id": "antihypertensive_sbp::RIDAGEYR::T",
+      "node_a": "RIDAGEYR",
+      "node_b": "T",
+      "consensus_judgement": "A_TO_B",
+      "semantic_confidence": 0.975,
+      "action": "oriented_by_semantic_consensus",
+      "note": ""
+    },
+    {
+      "task": "antihypertensive_sbp",
+      "pair_id": "antihypertensive_sbp::T::Y",
+      "node_a": "T",
+      "node_b": "Y",
+      "consensus_judgement": "A_TO_B",
+      "semantic_confidence": 0.975,
+      "action": "fixed_treatment_outcome",
+      "note": "intervention_query_constraint"
+    },
+    {
+      "task": "antihypertensive_sbp",
+      "pair_id": "antihypertensive_sbp::BMXHT::RIDAGEYR",
+      "node_a": "BMXHT",
+      "node_b": "RIDAGEYR",
+      "consensus_judgement": "B_TO_A",
+      "semantic_confidence": 0.97,
+      "action": "oriented_by_semantic_consensus",
+      "note": ""
+    },
+    {
+      "task": "antihypertensive_sbp",
+      "pair_id": "antihypertensive_sbp::BMXWT::RIDAGEYR",
+      "node_a": "BMXWT",
+      "node_b": "RIDAGEYR",
+      "consensus_judgement": "B_TO_A",
+      "semantic_confidence": 0.97,
+      "action": "oriented_by_semantic_consensus",
+      "note": ""
+    },
+    {
+      "task": "antihypertensive_sbp",
+      "pair_id": "antihypertensive_sbp::RIDAGEYR::Y",
+      "node_a": "RIDAGEYR",
+      "node_b": "Y",
+      "consensus_judgement": "A_TO_B",
+      "semantic_confidence": 0.95,
+      "action": "oriented_by_semantic_consensus",
+      "note": ""
+    },
+    {
+      "task": "antihypertensive_sbp",
+      "pair_id": "antihypertensive_sbp::BMXHT::T",
+      "node_a": "BMXHT",
+      "node_b": "T",
+      "consensus_judgement": "NO_DIRECT_EDGE",
+      "semantic_confidence": 0.85,
+      "action": "removed_by_semantic_consensus",
+      "note": ""
+    },
+    {
+      "task": "antihypertensive_sbp",
+      "pair_id": "antihypertensive_sbp::BPQ080::T",
+      "node_a": "BPQ080",
+      "node_b": "T",
+      "consensus_judgement": "A_TO_B",
+      "semantic_confidence": 0.825,
+      "action": "oriented_by_semantic_consensus",
+      "note": ""
+    },
+    {
+      "task": "antihypertensive_sbp",
+      "pair_id": "antihypertensive_sbp::INDFMPIR::T",
+      "node_a": "INDFMPIR",
+      "node_b": "T",
+      "consensus_judgement": "A_TO_B",
+      "semantic_confidence": 0.8,
+      "action": "oriented_by_semantic_consensus",
+      "note": ""
+    },
+    {
+      "task": "antihypertensive_sbp",
+      "pair_id": "antihypertensive_sbp::DIQ050::T",
+      "node_a": "DIQ050",
+      "node_b": "T",
+      "consensus_judgement": "NO_DIRECT_EDGE",
+      "semantic_confidence": 0.775,
+      "action": "removed_by_semantic_consensus",
+      "note": ""
+    },
+    {
+      "task": "antihypertensive_sbp",
+      "pair_id": "antihypertensive_sbp::INDFMPIR::Y",
+      "node_a": "INDFMPIR",
+      "node_b": "Y",
+      "consensus_judgement": "A_TO_B",
+      "semantic_confidence": 0.7250000000000001,
+      "action": "oriented_by_semantic_consensus",
+      "note": ""
+    },
+    {
+      "task": "antihypertensive_sbp",
+      "pair_id": "antihypertensive_sbp::PAQ605::RIAGENDR",
+      "node_a": "PAQ605",
+      "node_b": "RIAGENDR",
+      "consensus_judgement": "NO_DIRECT_EDGE",
+      "semantic_confidence": 0.6333333333333333,
+      "action": "retained_statistical",
+      "note": "semantic removal confidence below conservative threshold"
+    },
+    {
+      "task": "antihypertensive_sbp",
+      "pair_id": "antihypertensive_sbp::PAQ605::RIDAGEYR",
+      "node_a": "PAQ605",
+      "node_b": "RIDAGEYR",
+      "consensus_judgement": "NO_DIRECT_EDGE",
+      "semantic_confidence": 0.6333333333333333,
+      "action": "retained_statistical",
+      "note": "semantic removal confidence below conservative threshold"
+    },
+    {
+      "task": "antihypertensive_sbp",
+      "pair_id": "antihypertensive_sbp::PAQ650::RIDAGEYR",
+      "node_a": "PAQ650",
+      "node_b": "RIDAGEYR",
+      "consensus_judgement": "NO_DIRECT_EDGE",
+      "semantic_confidence": 0.6333333333333333,
+      "action": "retained_statistical",
+      "note": "semantic removal confidence below conservative threshold"
+    },
+    {
+      "task": "antihypertensive_sbp",
+      "pair_id": "antihypertensive_sbp::MCQ220::RIDAGEYR",
+      "node_a": "MCQ220",
+      "node_b": "RIDAGEYR",
+      "consensus_judgement": "NO_DIRECT_EDGE",
+      "semantic_confidence": 0.5666666666666667,
+      "action": "retained_statistical",
+      "note": "semantic removal confidence below conservative threshold"
+    },
+    {
+      "task": "antihypertensive_sbp",
+      "pair_id": "antihypertensive_sbp::BMXWT::Y",
+      "node_a": "BMXWT",
+      "node_b": "Y",
+      "consensus_judgement": "A_TO_B",
+      "semantic_confidence": 0.5499999999999999,
+      "action": "retained_statistical",
+      "note": "semantic direction confidence below threshold"
+    },
+    {
+      "task": "antihypertensive_sbp",
+      "pair_id": "antihypertensive_sbp::BMXWAIST::T",
+      "node_a": "BMXWAIST",
+      "node_b": "T",
+      "consensus_judgement": "A_TO_B",
+      "semantic_confidence": 0.5333333333333333,
+      "action": "retained_statistical",
+      "note": "semantic direction confidence below threshold"
+    },
+    {
+      "task": "antihypertensive_sbp",
+      "pair_id": "antihypertensive_sbp::BMXWAIST::Y",
+      "node_a": "BMXWAIST",
+      "node_b": "Y",
+      "consensus_judgement": "A_TO_B",
+      "semantic_confidence": 0.4666666666666666,
+      "action": "retained_statistical",
+      "note": "semantic direction confidence below threshold"
+    },
+    {
+      "task": "antihypertensive_sbp",
+      "pair_id": "antihypertensive_sbp::PAQ605::T",
+      "node_a": "PAQ605",
+      "node_b": "T",
+      "consensus_judgement": "UNRESOLVED",
+      "semantic_confidence": 0.39999999999999997,
+      "action": "retained_statistical",
+      "note": "semantic_unresolved"
+    },
+    {
+      "task": "antihypertensive_sbp",
+      "pair_id": "antihypertensive_sbp::BPXPLS::T",
+      "node_a": "BPXPLS",
+      "node_b": "T",
+      "consensus_judgement": "UNRESOLVED",
+      "semantic_confidence": 0.2833333333333333,
+      "action": "retained_statistical",
+      "note": "semantic_unresolved"
+    },
+    {
+      "task": "antihypertensive_sbp",
+      "pair_id": "antihypertensive_sbp::LBXGH::T",
+      "node_a": "LBXGH",
+      "node_b": "T",
+      "consensus_judgement": "UNRESOLVED",
+      "semantic_confidence": 0.0,
+      "action": "retained_statistical",
+      "note": "semantic_unresolved"
+    },
+    {
+      "task": "antihypertensive_sbp",
+      "pair_id": "antihypertensive_sbp::PAQ605::PAQ620",
+      "node_a": "PAQ605",
+      "node_b": "PAQ620",
+      "consensus_judgement": "A_TO_B",
+      "semantic_confidence": 0.95,
+      "action": "oriented_by_semantic_consensus",
+      "note": ""
+    },
+    {
+      "task": "antihypertensive_sbp",
+      "pair_id": "antihypertensive_sbp::LBXGH::Y",
+      "node_a": "LBXGH",
+      "node_b": "Y",
+      "consensus_judgement": "A_TO_B",
+      "semantic_confidence": 0.9,
+      "action": "oriented_by_semantic_consensus",
+      "note": ""
+    },
+    {
+      "task": "antihypertensive_sbp",
+      "pair_id": "antihypertensive_sbp::DIQ050::MCQ160B",
+      "node_a": "DIQ050",
+      "node_b": "MCQ160B",
+      "consensus_judgement": "NO_DIRECT_EDGE",
+      "semantic_confidence": 0.85,
+      "action": "removed_by_semantic_consensus",
+      "note": ""
+    },
+    {
+      "task": "antihypertensive_sbp",
+      "pair_id": "antihypertensive_sbp::DIQ050::MCQ160C",
+      "node_a": "DIQ050",
+      "node_b": "MCQ160C",
+      "consensus_judgement": "NO_DIRECT_EDGE",
+      "semantic_confidence": 0.85,
+      "action": "removed_by_semantic_consensus",
+      "note": ""
+    },
+    {
+      "task": "antihypertensive_sbp",
+      "pair_id": "antihypertensive_sbp::BMXHT::Y",
+      "node_a": "BMXHT",
+      "node_b": "Y",
+      "consensus_judgement": "A_TO_B",
+      "semantic_confidence": 0.8,
+      "action": "oriented_by_semantic_consensus",
+      "note": ""
+    },
+    {
+      "task": "antihypertensive_sbp",
+      "pair_id": "antihypertensive_sbp::BPQ080::DIQ010",
+      "node_a": "BPQ080",
+      "node_b": "DIQ010",
+      "consensus_judgement": "NO_DIRECT_EDGE",
+      "semantic_confidence": 0.5,
+      "action": "retained_statistical",
+      "note": "semantic removal confidence below conservative threshold"
+    },
+    {
+      "task": "antihypertensive_sbp",
+      "pair_id": "antihypertensive_sbp::BPQ080::MCQ160C",
+      "node_a": "BPQ080",
+      "node_b": "MCQ160C",
+      "consensus_judgement": "NO_DIRECT_EDGE",
+      "semantic_confidence": 0.4833333333333334,
+      "action": "retained_statistical",
+      "note": "semantic removal confidence below conservative threshold"
+    },
+    {
+      "task": "antihypertensive_sbp",
+      "pair_id": "antihypertensive_sbp::BPQ080::MCQ160E",
+      "node_a": "BPQ080",
+      "node_b": "MCQ160E",
+      "consensus_judgement": "NO_DIRECT_EDGE",
+      "semantic_confidence": 0.4833333333333334,
+      "action": "retained_statistical",
+      "note": "semantic removal confidence below conservative threshold"
+    },
+    {
+      "task": "antihypertensive_sbp",
+      "pair_id": "antihypertensive_sbp::BPQ080::LBXGH",
+      "node_a": "BPQ080",
+      "node_b": "LBXGH",
+      "consensus_judgement": "NO_DIRECT_EDGE",
+      "semantic_confidence": 0.4666666666666666,
+      "action": "retained_statistical",
+      "note": "semantic removal confidence below conservative threshold"
+    },
+    {
+      "task": "antihypertensive_sbp",
+      "pair_id": "antihypertensive_sbp::PAQ605::PAQ650",
+      "node_a": "PAQ605",
+      "node_b": "PAQ650",
+      "consensus_judgement": "NO_DIRECT_EDGE",
+      "semantic_confidence": 0.4,
+      "action": "retained_statistical",
+      "note": "semantic removal confidence below conservative threshold"
+    },
+    {
+      "task": "antihypertensive_sbp",
+      "pair_id": "antihypertensive_sbp::BMXWAIST::DIQ050",
+      "node_a": "BMXWAIST",
+      "node_b": "DIQ050",
+      "consensus_judgement": "UNRESOLVED",
+      "semantic_confidence": 0.3,
+      "action": "retained_statistical",
+      "note": "semantic_unresolved"
+    },
+    {
+      "task": "antihypertensive_sbp",
+      "pair_id": "antihypertensive_sbp::BPXPLS::Y",
+      "node_a": "BPXPLS",
+      "node_b": "Y",
+      "consensus_judgement": "UNRESOLVED",
+      "semantic_confidence": 0.26666666666666666,
+      "action": "retained_statistical",
+      "note": "semantic_unresolved"
+    },
+    {
+      "task": "antihypertensive_sbp",
+      "pair_id": "antihypertensive_sbp::DIQ050::MCQ160F",
+      "node_a": "DIQ050",
+      "node_b": "MCQ160F",
+      "consensus_judgement": "UNRESOLVED",
+      "semantic_confidence": 0.0,
+      "action": "retained_statistical",
+      "note": "semantic_unresolved"
+    },
+    {
+      "task": "antihypertensive_sbp",
+      "pair_id": "antihypertensive_sbp::PAD680::PAQ605",
+      "node_a": "PAD680",
+      "node_b": "PAQ605",
+      "consensus_judgement": "UNRESOLVED",
+      "semantic_confidence": 0.0,
+      "action": "retained_statistical",
+      "note": "semantic_unresolved"
+    },
+    {
+      "task": "antihypertensive_sbp",
+      "pair_id": "hard_constraint::MCQ220::RIDAGEYR",
+      "node_a": "MCQ220",
+      "node_b": "RIDAGEYR",
+      "consensus_judgement": "HARD_CONSTRAINT",
+      "semantic_confidence": 1.0,
+      "action": "removed_by_hard_task_order",
+      "note": "removed impossible residual direction MCQ220->RIDAGEYR"
+    },
+    {
+      "task": "antihypertensive_sbp",
+      "pair_id": "hard_constraint::PAQ605::RIAGENDR",
+      "node_a": "PAQ605",
+      "node_b": "RIAGENDR",
+      "consensus_judgement": "HARD_CONSTRAINT",
+      "semantic_confidence": 1.0,
+      "action": "removed_by_hard_task_order",
+      "note": "removed impossible residual direction PAQ605->RIAGENDR"
+    },
+    {
+      "task": "antihypertensive_sbp",
+      "pair_id": "hard_constraint::PAQ605::RIDAGEYR",
+      "node_a": "PAQ605",
+      "node_b": "RIDAGEYR",
+      "consensus_judgement": "HARD_CONSTRAINT",
+      "semantic_confidence": 1.0,
+      "action": "removed_by_hard_task_order",
+      "note": "removed impossible residual direction PAQ605->RIDAGEYR"
+    },
+    {
+      "task": "antihypertensive_sbp",
+      "pair_id": "hard_constraint::PAQ650::RIDAGEYR",
+      "node_a": "PAQ650",
+      "node_b": "RIDAGEYR",
+      "consensus_judgement": "HARD_CONSTRAINT",
+      "semantic_confidence": 1.0,
+      "action": "removed_by_hard_task_order",
+      "note": "removed impossible residual direction PAQ650->RIDAGEYR"
+    }
+  ],
+  "graph_is_acyclic": true,
+  "edge_count_before": 37,
+  "edge_count_after": 29,
+  "edges_added": [
+    [
+      "RIDAGEYR",
+      "BMXHT"
+    ],
+    [
+      "RIDAGEYR",
+      "BMXWT"
+    ],
+    [
+      "RIDAGEYR",
+      "BPXPLS"
+    ],
+    [
+      "RIDAGEYR",
+      "LBXGH"
+    ],
+    [
+      "T",
+      "Y"
+    ]
+  ],
+  "edges_removed": [
+    [
+      "BMXHT",
+      "RIDAGEYR"
+    ],
+    [
+      "BMXHT",
+      "T"
+    ],
+    [
+      "BMXWT",
+      "RIDAGEYR"
+    ],
+    [
+      "BPQ080",
+      "RIDAGEYR"
+    ],
+    [
+      "BPXPLS",
+      "RIDAGEYR"
+    ],
+    [
+      "DIQ050",
+      "MCQ160B"
+    ],
+    [
+      "DIQ050",
+      "MCQ160C"
+    ],
+    [
+      "DIQ050",
+      "T"
+    ],
+    [
+      "LBXGH",
+      "RIDAGEYR"
+    ],
+    [
+      "MCQ220",
+      "RIDAGEYR"
+    ],
+    [
+      "PAQ605",
+      "RIAGENDR"
+    ],
+    [
+      "PAQ605",
+      "RIDAGEYR"
+    ],
+    [
+      "PAQ650",
+      "RIDAGEYR"
+    ]
+  ],
+  "sets_before": {
+    "C_Total": [
+      "BMXHT",
+      "BMXWAIST",
+      "BMXWT",
+      "BPQ080",
+      "BPXPLS",
+      "DIQ050",
+      "INDFMPIR",
+      "LBXGH",
+      "MCQ160F",
+      "MCQ220",
+      "PAD680",
+      "PAQ605",
+      "PAQ650",
+      "RIDAGEYR"
+    ],
+    "C_Proximal": [
+      "BMXHT",
+      "BMXWAIST",
+      "BPQ080",
+      "BPXPLS",
+      "DIQ050",
+      "INDFMPIR",
+      "LBXGH",
+      "PAQ605",
+      "RIDAGEYR"
+    ],
+    "C_Root": [
+      "BMXHT",
+      "BMXWT",
+      "BPQ080",
+      "BPXPLS",
+      "INDFMPIR",
+      "MCQ160F",
+      "MCQ220",
+      "PAD680"
+    ],
+    "S_Prec": [
+      "BMXWT"
+    ]
+  },
+  "sets_after": {
+    "C_Total": [
+      "BMXWAIST",
+      "BPQ080",
+      "BPXPLS",
+      "DIQ050",
+      "INDFMPIR",
+      "LBXGH",
+      "MCQ160F",
+      "RIDAGEYR"
+    ],
+    "C_Proximal": [
+      "BMXWAIST",
+      "BPQ080",
+      "BPXPLS",
+      "INDFMPIR",
+      "LBXGH",
+      "RIDAGEYR"
+    ],
+    "C_Root": [
+      "BPQ080",
+      "INDFMPIR",
+      "MCQ160F",
+      "RIDAGEYR"
+    ],
+    "S_Prec": [
+      "BMXHT",
+      "BMXWT"
+    ]
+  },
+  "action_counts": {
+    "removed_cycle_blocked_orientation": 1,
+    "oriented_by_semantic_consensus": 12,
+    "fixed_treatment_outcome": 1,
+    "removed_by_semantic_consensus": 4,
+    "retained_statistical": 19,
+    "removed_by_hard_task_order": 4
+  },
+  "fusion_thresholds": {
+    "min_direction_confidence": 0.6,
+    "min_remove_confidence": 0.75,
+    "min_add_confidence": 0.75
+  }
+}

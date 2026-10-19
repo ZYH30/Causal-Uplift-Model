@@ -29,8 +29,8 @@ clinical treatment question and target-trial protocol
 - `rite_framework.py`: propensity weighting with `C` and treatment-effect
   learning with `C + S`.
 - `empirical_experiments/`: synthetic, MIMIC-IV, and NHANES pipelines.
-- `figure_generation/`: exact programs and frozen aggregate inputs for Figures
-  2--5.
+- `figure_generation/`: production programs and aggregate inputs for final
+  Figures 3--6 and their 19 panels, with a standalone plotting environment.
 
 ## Paper Evidence
 
@@ -76,6 +76,11 @@ make nhanes-confirmatory
 make nhanes-survey
 make figures
 ```
+
+To generate the manuscript figures from the included results, install only the
+plotting dependencies and follow [`figure_generation/README.md`](figure_generation/README.md).
+The figure entry point exports PDF, SVG, and 900-dpi PNG files, with optional
+individual-panel exports.
 
 ### MIMIC-IV
 

@@ -1,39 +1,78 @@
-"""Figure 3: MIMIC-IV design, balance, and held-out evidence."""
+"""MIMIC-IV estimation gains, covariate balance and clinical eras."""
 
 from __future__ import annotations
-
-import argparse
-import os
-import sys
-import tempfile
-from pathlib import Path
-
-os.environ.setdefault("MPLCONFIGDIR", str(Path(tempfile.gettempdir()) / "tlcd_rite_mplconfig"))
-
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from matplotlib.patches import Rectangle
+from matplotlib import colors
+from matplotlib.lines import Line2D
+from .figure_io import export_figure
 
-HERE = Path(__file__).resolve().parent
-sys.path.insert(0, str(HERE))
+STEM = "Figure_3_MIMIC"
+STYLE = {
+    "font.family": "DejaVu Sans",
+    "font.size": 7.2,
+    "axes.linewidth": 0.55,
+    "axes.labelcolor": "#26323B",
+    "text.color": "#26323B",
+    "pdf.fonttype": 42,
+    "ps.fonttype": 42,
+    "svg.fonttype": "none",
+    "xtick.labelsize": 7.1,
+    "ytick.labelsize": 7.1,
+    "savefig.pad_inches": 0,
+    "mathtext.fontset": "dejavusans",
+}
 
-from figure_style import (  # noqa: E402
-    COLORS,
-    FIGURE_WIDTH,
-    configure_style,
-    light_xgrid,
-    panel_label,
-    save_figure,
-    title_left,
+WIDTH, HEIGHT = (162.0, 109.0)
+PANEL_BOUNDS = {
+    "a": (1, 5.5, 52.2, 44.3),
+    "b": (55, 5.5, 52.2, 44.3),
+    "c": (109, 5.5, 52.2, 44.3),
+    "d": (1, 55.1, 94.7, 53.4),
+    "e": (98.7, 55.1, 62.5, 53.4),
+}
+BLUE = "#0072B2"
+WARM = "#C86A4A"
+INK = "#26323B"
+GRAY = "#63717E"
+LIGHT = "#DDE3E8"
+SMDCMAP = colors.LinearSegmentedColormap.from_list(
+    "absolute_smd", ["#F0FAFD", "#B8E7EF", "#73CCD9", "#31AAC6"]
 )
-
-
-DATA = HERE.parent / "data"
-DEFAULT_OUTPUT = HERE.parent.parent / "figures"
-
-
-BALANCE_LABELS = {
+SPECS = [
+    dict(
+        letter="a",
+        column="R_Loss",
+        key="R_Loss_Improvement",
+        title="R-loss",
+        unit="Gain ($\\times 10^{-4}$)",
+        scale=10000.0,
+        lim=(-8, 18),
+        ticks=[-5, 0, 5, 10, 15],
+    ),
+    dict(
+        letter="b",
+        column="DR_Qini",
+        key="DR_Qini_Improvement",
+        title="DR-Qini",
+        unit="Gain",
+        scale=1,
+        lim=(-0.025, 0.055),
+        ticks=[-0.02, 0, 0.02, 0.04],
+    ),
+    dict(
+        letter="c",
+        column="Policy_Risk_Reduction",
+        key="Policy_Risk_Reduction_Improvement",
+        title="Policy risk reduction",
+        unit="Gain (pp)",
+        scale=100,
+        lim=(-6.5, 8),
+        ticks=[-5, 0, 5],
+    ),
+]
+NAMES = {
     "baseline_hb_min": "Minimum Hb",
     "chart_gcs_combined_last": "GCS",
     "chart_rass_last": "RASS",
@@ -48,326 +87,385 @@ BALANCE_LABELS = {
 }
 
 
-def format_interval(point: float, low: float, high: float, decimals: int) -> str:
-    return f"{point:.{decimals}f}\n[{low:.{decimals}f}, {high:.{decimals}f}]"
+def read_data(directory):
+    raw = pd.read_csv(directory / "post_discovery_repeated_splits.csv")
+    assert len(raw) == 40
+    assert not raw.duplicated(["Split", "Seed", "Interface"]).any()
+    assert set(raw.Interface) == {"AllVariables", "RITE_CPlusS"}
+    assert raw.groupby(["Split", "Seed"]).Interface.nunique().eq(2).all()
+    pair = raw.set_index(["Split", "Seed", "Interface"]).unstack("Interface").sort_index()
+    summary = pd.read_csv(directory / "mimic_rbc_repeated_summary.csv").set_index("Metric")
+    temporal = pd.read_csv(directory / "mimic_rbc_temporal_comparison.csv").set_index("Metric")
+    gains = []
+    records = []
+    for spec in SPECS:
+        col = spec["column"]
+        a, b = (pair[col, "AllVariables"], pair[col, "RITE_CPlusS"])
+        value = (a - b if col == "R_Loss" else b - a).to_numpy() * spec["scale"]
+        sm, tm = (summary.loc[spec["key"]], temporal.loc[spec["key"]])
+        mean = np.array([sm.Mean, sm.CI_Low, sm.CI_High], dtype=float) * spec["scale"]
+        time = np.array([tm.Point_Estimate, tm.CI_Low, tm.CI_High], dtype=float) * spec["scale"]
+        np.testing.assert_allclose(value.mean(), mean[0], atol=1e-10, rtol=0)
+        assert (value > 0).sum() == int(sm.Wins)
+        assert len(value) == int(sm.Repeats) == 20
+        assert spec["lim"][0] <= min(value.min(), mean[1], time[1])
+        assert spec["lim"][1] >= max(value.max(), mean[2], time[2])
+        assert time[1] < 0 < time[2]
+        gains.append(dict(spec=spec, values=value, mean=mean, temporal=time, wins=int(sm.Wins)))
+        for ordinal, ((split, seed), val) in enumerate(zip(pair.index, value), 1):
+            records.append(
+                dict(
+                    panel=spec["letter"],
+                    metric=col,
+                    ordinal=ordinal,
+                    split=split,
+                    seed=int(seed),
+                    gain=float(val),
+                    scale=spec["scale"],
+                )
+            )
+    balance = pd.read_csv(directory / "mimic_rbc_temporal_balance.csv")
+    eras = pd.read_csv(directory / "mimic_rbc_analysis_eras.csv")
+    diagnostics = pd.read_csv(directory / "mimic_rbc_temporal_diagnostics.csv").iloc[0]
+    assert len(balance) == 11 and set(balance.feature) == set(NAMES)
+    np.testing.assert_allclose(balance.abs_smd_pre.mean(), diagnostics.mean_abs_smd_pre)
+    np.testing.assert_allclose(balance.abs_smd_weighted.mean(), diagnostics.mean_abs_smd_ipw)
+    np.testing.assert_allclose(eras.treated / eras.n, eras.treatment_rate)
+    np.testing.assert_allclose(eras.outcomes / eras.n, eras.outcome_rate)
+    return (gains, balance, eras, diagnostics, pd.DataFrame(records))
 
 
-def plot_gain_panel(
-    parent_spec,
-    fig: plt.Figure,
-    label: str,
-    title: str,
-    xlabel: str,
-    repeated: pd.Series,
-    temporal: pd.Series,
-    scale: float,
-    decimals: int,
-) -> None:
-    subgrid = parent_spec.subgridspec(1, 2, width_ratios=[0.64, 0.36], wspace=0.05)
-    ax = fig.add_subplot(subgrid[0, 0])
-    evidence = fig.add_subplot(subgrid[0, 1])
+def axes(fig, x, y, w, h, panel):
+    ax = fig.add_axes([x / WIDTH, 1 - (y + h) / HEIGHT, w / WIDTH, h / HEIGHT])
+    ax._panel = panel
+    return ax
 
-    points = [
-        (
-            "Repeated",
-            float(repeated["Mean"]) * scale,
-            float(repeated["CI_Low"]) * scale,
-            float(repeated["CI_High"]) * scale,
-            COLORS["tlcd"],
-            "o",
-        ),
-        (
-            "Temporal",
-            float(temporal["Point_Estimate"]) * scale,
-            float(temporal["CI_Low"]) * scale,
-            float(temporal["CI_High"]) * scale,
-            COLORS["teal"],
-            "D",
-        ),
-    ]
-    raw_min = min(point[2] for point in points)
-    raw_max = max(point[3] for point in points)
-    span = max(raw_max - raw_min, 1e-6)
-    x_min = min(raw_min - 0.08 * span, -0.06 * span)
-    x_max = max(raw_max + 0.08 * span, 0.06 * span)
-    ax.axvspan(x_min, 0, color=COLORS["pale_gray"], alpha=0.95, lw=0)
-    ax.axvspan(0, x_max, color=COLORS["tlcd_light"], alpha=0.68, lw=0)
 
-    for y_value, (_, point, low, high, color, marker) in zip([1, 0], points):
-        ax.errorbar(
-            point,
-            y_value,
-            xerr=[[point - low], [high - point]],
-            fmt=marker,
-            markersize=5.0,
-            color=color,
-            ecolor=color,
-            capsize=2.8,
-            elinewidth=1.05,
+def text(
+    fig,
+    x,
+    y,
+    value,
+    *,
+    size=7.2,
+    color=INK,
+    ha="left",
+    va="top",
+    weight="normal",
+    panel="shared",
+    center_scope=None,
+    **kwargs,
+):
+    artist = fig.text(
+        x / WIDTH,
+        1 - y / HEIGHT,
+        value,
+        size=size,
+        color=color,
+        ha=ha,
+        va=va,
+        weight=weight,
+        **kwargs,
+    )
+    artist._panel = panel
+    if ha == "center":
+        artist._center_target_mm = x
+        artist._center_scope = center_scope or panel
+    return artist
+
+
+def title(fig, x, y, letter, label):
+    text(fig, x, y, letter, size=9.3, weight="bold", panel=letter)
+    center = PANEL_BOUNDS[letter][0] + PANEL_BOUNDS[letter][2] / 2
+    text(
+        fig,
+        center,
+        y + 0.1,
+        label,
+        size=8.5,
+        weight="bold",
+        panel=letter,
+        ha="center",
+        center_scope=f"panel {letter} title",
+    )
+
+
+def format_number(val):
+    return f"{val:g}"
+
+
+def style_axis(ax, *, grid="y"):
+    ax.spines[["top", "right"]].set_visible(False)
+    ax.spines[["left", "bottom"]].set_color(GRAY)
+    ax.tick_params(length=2, width=0.55, pad=1.7, labelsize=7.1, colors=INK)
+    ax.set_axisbelow(True)
+    if grid:
+        ax.grid(axis=grid, color=LIGHT, lw=0.45)
+
+
+def interval(ax, x, triple, marker, *, vertical=True):
+    point, low, high = triple
+    err = [[point - low], [high - point]]
+    options = dict(
+        fmt=marker,
+        color=BLUE,
+        ms=4.0,
+        lw=1.0,
+        capsize=2,
+        capthick=0.8,
+        mfc=BLUE if marker == "o" else "white",
+        mec=BLUE,
+        mew=0.9,
+        zorder=5,
+    )
+    if vertical:
+        ax.errorbar(x, point, yerr=err, **options)
+    else:
+        ax.errorbar(point, x, xerr=err, **options)
+
+
+def draw_gains(fig, groups):
+    for left, group in zip([1.5, 55.5, 109.5], groups):
+        spec = group["spec"]
+        letter = spec["letter"]
+        title(fig, left, 6.1, letter, spec["title"])
+        center = PANEL_BOUNDS[letter][0] + PANEL_BOUNDS[letter][2] / 2
+        text(
+            fig,
+            center,
+            10.7,
+            f"{spec['unit']}   ·   {group['wins']}/20 positive",
+            size=7.1,
+            panel=letter,
+            ha="center",
+            center_scope=f"panel {letter} subtitle",
+        )
+        ax = axes(fig, left + 7.8, 15.0, 43.0, 30.6, letter)
+        style_axis(ax)
+        ax.set(xlim=(0.25, 27.7), ylim=spec["lim"], yticks=spec["ticks"])
+        ax.set_yticklabels([format_number(t) for t in spec["ticks"]])
+        ax.bar(
+            np.arange(1, 21),
+            group["values"],
+            width=0.79,
+            color=np.where(group["values"] >= 0, BLUE, WARM),
+            lw=0,
             zorder=3,
         )
-    ax.axvline(0, color=COLORS["gray"], lw=0.85, ls="--", zorder=2)
-    ax.set_xlim(x_min, x_max)
-    ax.set_ylim(-0.50, 1.63)
-    ax.set_yticks([1, 0], ["Repeated", "Temporal"])
-    ax.set_xlabel(xlabel)
-    ax.text(
-        0.02,
-        0.90,
-        "All variables",
-        transform=ax.transAxes,
-        ha="left",
-        va="top",
-        fontsize=6.7,
-        color=COLORS["gray"],
-    )
-    ax.text(
-        0.98,
-        0.90,
-        "RITE",
-        transform=ax.transAxes,
-        ha="right",
-        va="top",
-        fontsize=6.7,
-        color=COLORS["tlcd"],
-        fontweight="bold",
-    )
-    light_xgrid(ax)
-    title_left(ax, title)
-    panel_label(ax, label, x=-0.27)
-
-    evidence.set_axis_off()
-    evidence.set_xlim(0, 1)
-    evidence.set_ylim(-0.50, 1.63)
-    evidence.text(
-        0.02,
-        1.52,
-        "Gain\n[95% interval]",
-        ha="left",
-        va="center",
-        fontsize=6.7,
-        color=COLORS["gray"],
-        fontweight="bold",
-    )
-    evidence.text(
-        0.02,
-        1.02,
-        format_interval(points[0][1], points[0][2], points[0][3], decimals),
-        ha="left",
-        va="center",
-        fontsize=6.7,
-        color=COLORS["tlcd"],
-        fontweight="bold",
-    )
-    evidence.text(
-        0.02,
-        0.70,
-        f"{int(repeated['Wins'])}/20 wins",
-        ha="left",
-        va="center",
-        fontsize=6.7,
-        color=COLORS["gray"],
-    )
-    evidence.text(
-        0.02,
-        0.02,
-        format_interval(points[1][1], points[1][2], points[1][3], decimals),
-        ha="left",
-        va="center",
-        fontsize=6.7,
-        color=COLORS["teal"],
-        fontweight="bold",
-    )
-    evidence.text(
-        0.02,
-        -0.30,
-        f"P(gain > 0)={100 * float(temporal['Probability_Positive']):.1f}%",
-        ha="left",
-        va="center",
-        fontsize=6.5,
-        color=COLORS["gray"],
+        ax.axhline(0, color=INK, lw=0.8, zorder=4)
+        ax.axvline(21.5, color=GRAY, lw=0.6, ls=(0, (1, 2)))
+        interval(ax, 23, group["mean"], "o")
+        interval(ax, 26, group["temporal"], "D")
+        ax.set_xticks([1, 10, 20, 23, 26], ["1", "10", "20", "M", "T"])
+    text(
+        fig,
+        WIDTH / 2,
+        50.0,
+        "Bars: paired splits   ·   M: mean   ·   T: temporal test   ·   Whiskers: 95% CI   ·   pp: percentage points",
+        size=7.1,
+        ha="center",
+        center_scope="upper row shared key",
     )
 
 
-def build_figure(output_dir: Path) -> None:
-    era = pd.read_csv(DATA / "mimic_rbc_analysis_eras.csv")
-    balance = pd.read_csv(DATA / "mimic_rbc_temporal_balance.csv")
-    diagnostics = pd.read_csv(DATA / "mimic_rbc_temporal_diagnostics.csv").iloc[0]
-    flow = pd.read_csv(DATA / "mimic_rbc_cohort_flow.csv").set_index("stage")["count"]
-    repeated = pd.read_csv(DATA / "mimic_rbc_repeated_summary.csv").set_index("Metric")
-    temporal = pd.read_csv(DATA / "mimic_rbc_temporal_comparison.csv").set_index("Metric")
-
-    fig = plt.figure(figsize=(FIGURE_WIDTH, 6.10))
-    grid = fig.add_gridspec(
-        2,
-        3,
-        height_ratios=[1.10, 0.90],
-        left=0.070,
-        right=0.985,
-        bottom=0.090,
-        top=0.950,
-        wspace=0.63,
-        hspace=0.40,
+def draw_balance(fig, frame, diagnostics):
+    title(fig, 1.5, 55.6, "d", "Temporal covariate balance")
+    matrix = axes(fig, 31.5, 63.7, 25.7, 33.6, "d")
+    values = frame[["abs_smd_pre", "abs_smd_weighted"]].to_numpy()
+    matrix.pcolormesh(
+        np.arange(3) - 0.5,
+        np.arange(12) - 0.5,
+        values,
+        vmin=0,
+        vmax=0.65,
+        cmap=SMDCMAP,
+        shading="flat",
+        edgecolors="face",
+        linewidth=0,
     )
-
-    # a: target-trial timing and transparent cohort restriction.
-    ax = fig.add_subplot(grid[0, 0])
-    ax.set_xlim(-0.35, 4.25)
-    ax.set_ylim(-0.37, 1.17)
-    ax.add_patch(Rectangle((0.00, 0.91), 1.00, 0.13, color=COLORS["pale_gray"], lw=0))
-    ax.add_patch(Rectangle((1.00, 0.74), 1.00, 0.13, color="#F9E7B6", lw=0))
-    ax.add_patch(Rectangle((2.00, 0.58), 1.00, 0.11, color="#DDEEF7", lw=0))
-    ax.add_patch(Rectangle((2.00, 0.43), 2.00, 0.11, color=COLORS["teal_light"], lw=0))
-    timeline_x = np.arange(5, dtype=float)
-    ax.plot(timeline_x, [0.35] * 5, color=COLORS["black"], lw=0.95)
-    ax.scatter(timeline_x, [0.35] * 5, color=COLORS["tlcd"], s=23, zorder=3)
-    for x_value, tick in zip(timeline_x, ["-24 h", "0 h", "6 h", "24 h", "90 d"]):
-        ax.text(x_value, 0.29, tick, ha="center", va="top", fontsize=6.6)
-    ax.text(0.92, 0.20, "Trigger", ha="right", va="top", fontsize=6.2, color=COLORS["gray"])
-    ax.text(2.08, 0.20, "Landmark", ha="left", va="top", fontsize=6.2, color=COLORS["gray"])
-    ax.text(0.50, 0.975, "Baseline\nlookback", ha="center", va="center", fontsize=6.1, fontweight="bold", linespacing=0.95)
-    ax.text(1.50, 0.805, "RBC initiation\n0-6 h", ha="center", va="center", fontsize=6.1, fontweight="bold", linespacing=0.95)
-    ax.text(2.50, 0.635, "Hb response", ha="center", va="center", fontsize=6.5, fontweight="bold")
-    ax.text(3.00, 0.485, "90-day mortality", ha="center", va="center", fontsize=6.5, fontweight="bold")
-
-    ax.text(
-        1.95,
-        0.02,
-        f"{int(flow['qualifying_triggers']):,} triggers  |  {int(flow['target_trial_eligible']):,} landmark-eligible",
+    matrix.set(xlim=(-0.5, 1.5), ylim=(10.5, -0.5), xticks=[], yticks=np.arange(11))
+    matrix.set_yticklabels([NAMES[name] for name in frame.feature], fontsize=7.1)
+    matrix.tick_params(axis="y", length=0, pad=2.2)
+    matrix.spines[:].set_visible(False)
+    matrix.axvline(0.5, color="white", lw=1.1)
+    for r in range(1, 11):
+        matrix.axhline(r - 0.5, color="white", lw=0.5)
+    for i in range(11):
+        for j in range(2):
+            val = float(values[i, j])
+            rgba = SMDCMAP(val / 0.65)
+            rgb = np.array(rgba[:3])
+            linear = np.where(rgb <= 0.04045, rgb / 12.92, ((rgb + 0.055) / 1.055) ** 2.4)
+            foreground = "white" if linear @ np.array([0.2126, 0.7152, 0.0722]) < 0.19 else INK
+            matrix.text(j, i, f"{val:.3f}", ha="center", va="center", size=7.1, color=foreground)
+    text(fig, 31.5 + 25.7 / 4, 60.3, "Before", ha="center", panel="d")
+    text(fig, 31.5 + 3 * 25.7 / 4, 60.3, "Weighted", ha="center", panel="d", color=BLUE)
+    change = axes(fig, 63.0, 63.7, 31.9, 33.6, "d")
+    style_axis(change, grid="x")
+    reductions = frame.abs_smd_pre.to_numpy() - frame.abs_smd_weighted.to_numpy()
+    change.barh(
+        np.arange(11), reductions, height=0.59, color=np.where(reductions >= 0, BLUE, WARM), lw=0
+    )
+    change.axvline(0, color=INK, lw=0.7)
+    change.set(xlim=(-0.1, 0.55), ylim=(10.5, -0.5), yticks=[], xticks=[-0.1, 0, 0.2, 0.4])
+    change.set_xticklabels(["−0.1", "0", "0.2", "0.4"])
+    change.spines["left"].set_visible(False)
+    text(fig, 78.95, 60.3, "Reduction", ha="center", panel="d")
+    cb = axes(fig, 32.6, 98.7, 18.0, 1.25, "d")
+    cb.pcolormesh(
+        np.linspace(0, 1, 129),
+        [0, 1],
+        np.linspace(0, 0.65, 128)[None, :],
+        cmap=SMDCMAP,
+        vmin=0,
+        vmax=0.65,
+        shading="flat",
+        edgecolors="face",
+        linewidth=0,
+    )
+    cb.set_axis_off()
+    text(fig, 30.5, 99.32, "0", ha="right", va="center", size=7.0, panel="d")
+    text(fig, 52.2, 99.32, "0.65", va="center", size=7.0, panel="d")
+    center = PANEL_BOUNDS["d"][0] + PANEL_BOUNDS["d"][2] / 2
+    text(
+        fig,
+        center,
+        103.8,
+        f"Mean |SMD| {values[:, 0].mean():.3f} → {values[:, 1].mean():.3f}    ESS/n = {diagnostics.ess_ratio:.3f}",
+        size=7.2,
+        panel="d",
         ha="center",
         va="center",
-        fontsize=6.7,
-        color=COLORS["gray"],
+        center_scope="panel d summary",
     )
-    ax.text(
-        1.95,
-        -0.085,
-        f"{int(flow['excluded_prior_rbc']):,} prior RBC  |  {int(flow['excluded_unavailable_landmark']):,} unavailable",
+    below = (values <= 0.1).sum(axis=0)
+    text(
+        fig,
+        center,
+        106.8,
+        f"Variables with |SMD| ≤ 0.10: {below[0]}/11 → {below[1]}/11",
+        size=7.0,
+        panel="d",
         ha="center",
         va="center",
-        fontsize=6.7,
-        color=COLORS["gray"],
+        center_scope="panel d threshold counts",
     )
-    ax.text(
-        1.95,
-        -0.190,
-        f"{int(flow['excluded_no_support']):,} excluded: no treated temporal support",
-        ha="center",
-        va="center",
-        fontsize=6.7,
-        color="#8A6100",
-    )
-    ax.text(
-        1.95,
-        -0.310,
-        f"{int(flow['analysis_cohort']):,} analyzed  |  {int(flow['early_rbc']):,} RBC  |  {int(flow['deaths_90d']):,} deaths",
-        ha="center",
-        va="center",
-        fontsize=6.8,
-        color=COLORS["black"],
-        fontweight="bold",
-    )
-    ax.set_axis_off()
-    title_left(ax, "Target trial and analysis cohort")
-    panel_label(ax, "a")
 
-    # b: non-overlapping discovery, selection, and temporal-test eras.
-    ax = fig.add_subplot(grid[0, 1])
-    x = np.arange(len(era))
-    background = [COLORS["tlcd_light"], "#F9EBC9", COLORS["teal_light"]]
-    for x_value, color in zip(x, background):
-        ax.axvspan(x_value - 0.46, x_value + 0.46, color=color, alpha=0.72, lw=0)
-    treatment_rate = 100 * era["treatment_rate"].to_numpy(float)
-    mortality_rate = 100 * era["outcome_rate"].to_numpy(float)
-    ax.plot(x, treatment_rate, "D-", color=COLORS["tlcd"], lw=1.35, label="Early RBC")
-    ax.plot(x, mortality_rate, "o--", color=COLORS["ges"], lw=1.25, label="90-day mortality")
-    for index, x_value in enumerate(x):
-        treatment_offset = 0.9 if index != 1 else -1.0
-        treatment_va = "bottom" if treatment_offset > 0 else "top"
-        mortality_offset = -0.9 if index != 1 else 1.0
-        mortality_va = "top" if mortality_offset < 0 else "bottom"
-        ax.text(x_value, treatment_rate[index] + treatment_offset, f"{treatment_rate[index]:.1f}%", ha="center", va=treatment_va, fontsize=6.7, color=COLORS["tlcd"], fontweight="bold")
-        ax.text(x_value, mortality_rate[index] + mortality_offset, f"{mortality_rate[index]:.1f}%", ha="center", va=mortality_va, fontsize=6.7, color=COLORS["ges"], fontweight="bold")
-        ax.text(x_value, 1.1, f"n={int(era.iloc[index]['n']):,}", ha="center", va="bottom", fontsize=6.5, color=COLORS["gray"])
-    tick_labels = [
-        f"{row.calendar_era}\n{row.analysis_role}"
-        for row in era.itertuples(index=False)
+
+def draw_eras(fig, frame):
+    title(fig, 99.2, 55.6, "e", "Clinical eras")
+    center = PANEL_BOUNDS["e"][0] + PANEL_BOUNDS["e"][2] / 2
+    handles = [
+        Line2D([], [], color=BLUE, marker="D", lw=1.1, ms=3.8, label="Early RBC"),
+        Line2D([], [], color=WARM, marker="o", ls="--", lw=1.1, ms=3.8, label="90-day mortality"),
     ]
-    ax.set_xticks(x, tick_labels)
-    ax.set_ylim(0, 29)
-    ax.set_xlim(-0.55, 2.55)
-    ax.set_ylabel("Cohort rate (%)")
-    ax.legend(frameon=False, loc="upper center", ncol=2, bbox_to_anchor=(0.5, 1.01))
-    title_left(ax, "Treatment and outcome shift\nacross eras")
-    panel_label(ax, "b")
-
-    # c: every variable in the final treatment-adjustment set is shown.
-    ax = fig.add_subplot(grid[0, 2])
-    balance = balance.sort_values("abs_smd_weighted", ascending=True).reset_index(drop=True)
-    y = np.arange(len(balance))
-    pre = balance["abs_smd_pre"].to_numpy(float)
-    weighted = balance["abs_smd_weighted"].to_numpy(float)
-    for y_value, before, after in zip(y, pre, weighted):
-        ax.plot([after, before], [y_value, y_value], color=COLORS["light_gray"], lw=1.8, zorder=1)
-    ax.scatter(pre, y, marker="o", s=20, color=COLORS["gray"], label="Before", zorder=2)
-    ax.scatter(weighted, y, marker="D", s=22, color=COLORS["tlcd"], label="Weighted", zorder=3)
-    ax.axvline(0.10, color=COLORS["ges"], ls="--", lw=0.9)
-    ax.text(0.103, len(balance) - 0.15, "0.10", ha="left", va="top", fontsize=6.2, color=COLORS["ges"])
-    ax.set_yticks(y, [BALANCE_LABELS[value] for value in balance["feature"]])
-    ax.tick_params(axis="y", labelsize=5.9, pad=2.0)
-    ax.set_xlim(0, 0.66)
-    ax.set_ylim(-0.75, len(balance) + 0.72)
-    ax.set_xlabel("Absolute standardized mean difference")
-    ax.legend(
-        frameon=False,
+    legend = fig.legend(
+        handles=handles,
+        loc="upper center",
         ncol=2,
-        loc="upper right",
-        bbox_to_anchor=(1.0, 0.925),
-        fontsize=6.2,
+        frameon=False,
+        bbox_to_anchor=(center / WIDTH, 1 - 60.0 / HEIGHT),
+        bbox_transform=fig.transFigure,
+        fontsize=7.1,
+        borderaxespad=0,
+        borderpad=0,
+        handlelength=1.35,
+        handletextpad=0.45,
+        columnspacing=0.9,
     )
-    ax.text(
-        0.02,
-        0.99,
-        f"Mean 0.386 to 0.111  |  ESS/n={float(diagnostics['ess_ratio']):.3f}",
-        transform=ax.transAxes,
-        ha="left",
-        va="top",
-        fontsize=6.4,
-        color=COLORS["black"],
-        bbox={"boxstyle": "square,pad=0.14", "facecolor": "white", "edgecolor": "none", "alpha": 0.90},
+    legend._center_target_mm = center
+    legend._center_scope = "panel e legend (handles and text together)"
+    for item in legend.get_texts():
+        item._panel = "e"
+    ax = axes(fig, 106.7, 65.1, 53.7, 25.2, "e")
+    style_axis(ax)
+    ax.set(ylim=(0, 32), yticks=[0, 10, 20, 30], xlim=(-0.35, 2.35))
+    ax.set_yticklabels(["0%", "10%", "20%", "30%"])
+    for column, color, marker, linestyle in [
+        ("treatment_rate", BLUE, "D", "-"),
+        ("outcome_rate", WARM, "o", "--"),
+    ]:
+        x = np.arange(3)
+        vals = 100 * frame[column].to_numpy()
+        ax.plot(x, vals, marker=marker, ms=4.0, color=color, lw=1.1, ls=linestyle, zorder=3)
+        for i, (xx, val) in enumerate(zip(x, vals)):
+            other = 100 * float(
+                frame.iloc[i]["outcome_rate" if column == "treatment_rate" else "treatment_rate"]
+            )
+            higher = val > other
+            ax.text(
+                xx,
+                val + (2.6 if higher else -2.6),
+                f"{val:.1f}%",
+                ha="center",
+                va="bottom" if higher else "top",
+                size=7.0,
+                color=INK,
+            )
+    ax.set_xticks(np.arange(3))
+    ax.set_xticklabels(
+        [
+            f"{year}\n{role}"
+            for year, role in zip(
+                ["2008–16", "2017–19", "2020–22"], ["Discovery", "Selection", "Temporal"]
+            )
+        ],
+        fontsize=7.1,
+        linespacing=1.1,
     )
-    light_xgrid(ax)
-    title_left(ax, "Temporal balance across 11\nadjustment variables")
-    panel_label(ax, "c", x=-0.25)
-
-    metric_specs = [
-        ("R_Loss_Improvement", "Effect risk: R-loss", r"Gain ($\times10^{-4}$)", 10000.0, 2),
-        ("DR_Qini_Improvement", "Ranking: DR-Qini", "Gain", 1.0, 3),
-        ("Policy_Risk_Reduction_Improvement", "Policy value", "Gain (pp)", 100.0, 2),
-    ]
-    for col, (metric, title, xlabel, scale, decimals) in enumerate(metric_specs):
-        plot_gain_panel(
-            grid[1, col],
-            fig,
-            chr(ord("d") + col),
-            title,
-            xlabel,
-            repeated.loc[metric],
-            temporal.loc[metric],
-            scale,
-            decimals,
-        )
-
-    save_figure(fig, output_dir, "figure_3")
+    ax.tick_params(axis="x", length=0, pad=2.5)
+    for y, key, label in [
+        (99.5, "n", "n"),
+        (102.8, "treated", "RBC"),
+        (106.1, "outcomes", "Deaths"),
+    ]:
+        text(fig, 107.6, y, label, ha="right", va="center", size=7.0, panel="e")
+        for i, value in enumerate(frame[key]):
+            xx = 106.7 + (i + 0.35) / 2.7 * 53.7
+            text(
+                fig,
+                xx,
+                y,
+                f"{int(value):,}",
+                ha="center",
+                va="center",
+                size=7.0,
+                panel="e",
+                center_scope=f"panel e era {i + 1} {key} count",
+            )
 
 
-def main() -> None:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT)
-    args = parser.parse_args()
-    configure_style()
-    build_figure(args.output_dir)
+def make_figure(groups, balance, eras, diagnostics):
+    fig = plt.figure(figsize=(WIDTH / 25.4, HEIGHT / 25.4), facecolor="white")
+    text(
+        fig,
+        WIDTH / 2,
+        1.1,
+        "RITE versus all-variable baseline   ·   Positive gain favours RITE",
+        size=7.4,
+        ha="center",
+        center_scope="whole figure header",
+    )
+    draw_gains(fig, groups)
+    draw_balance(fig, balance, diagnostics)
+    draw_eras(fig, eras)
+    return fig
 
 
-if __name__ == "__main__":
-    main()
+def render(data_dir, output_dir, *, dpi=900, panels=False):
+    """Generate the manuscript figure and optional individual panels."""
+    with plt.rc_context(STYLE):
+        groups, balance, eras, diagnostics, _ = read_data(data_dir)
+        fig = make_figure(groups, balance, eras, diagnostics)
+        try:
+            return export_figure(
+                fig,
+                output_dir,
+                STEM,
+                dpi=dpi,
+                panel_bounds=PANEL_BOUNDS if panels else None,
+                height_mm=HEIGHT,
+                figure_number=3,
+            )
+        finally:
+            plt.close(fig)
